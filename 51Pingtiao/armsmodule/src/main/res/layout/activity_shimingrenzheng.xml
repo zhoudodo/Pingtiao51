@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_margin="20dp"
+        android:id="@+id/back_btn"
+        android:layout_width="8dp"
+        android:layout_height="14dp"
+        android:src="@drawable/fanhui"/>
+    <TextView
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black_color_222222"
+        android:text="@string/shimingrenzheng"
+        />
+
+
+
+    <TextView
+        android:id="@+id/service_hint"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/black_color_222222"
+        android:text="@string/shimingrenzheng_hint"
+        />
+
+    <LinearLayout
+        android:layout_margin="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <RelativeLayout
+            android:id="@+id/shimingrenzheng_shoujihao_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/phone_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="@string/phone_nums"
+                    android:textColor="@color/black_color_1e1e1e"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                >
+                <EditText
+                    android:id="@+id/shimingrenzheng_shoujihao_edit"
+                    android:focusable="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_bottom_line_1px"
+                    android:gravity="center_vertical"
+                    android:hint="请输入您的手机号"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="@color/black_color_222222"
+                    android:textColorHint="@color/gray_color_D9D9D9"
+                    android:textCursorDrawable="@drawable/shape_et_cursor_color"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/cancel1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/register_cancel"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:id="@+id/shimingrenzheng_xingming_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/xingming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="@string/xingming"
+                    android:textColor="@color/black_color_1e1e1e"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                >
+                <EditText
+                    android:id="@+id/shimingrenzheng_xingming_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_bottom_line_1px"
+                    android:gravity="center_vertical"
+                    android:hint="@string/shimingrenzheng_hint2"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black_color_222222"
+                    android:textColorHint="@color/gray_color_D9D9D9"
+                    android:textCursorDrawable="@drawable/shape_et_cursor_color"
+                    android:textSize="15sp"
+                    tools:ignore="LabelFor" />
+
+                <ImageView
+                    android:id="@+id/cancel2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/register_cancel"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:id="@+id/shenfenzheng_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/shimingrenzheng_shenfenzhenghao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="@string/idcard"
+                    android:textColor="@color/black_color_1e1e1e"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                >
+                <EditText
+                    android:id="@+id/shimingrenzheng_shenfenzhenghao_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_bottom_line_1px"
+                    android:gravity="center_vertical"
+                    android:hint="请填写本人真实身份证号"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black_color_222222"
+                    android:textColorHint="@color/gray_color_D9D9D9"
+                    android:textCursorDrawable="@drawable/shape_et_cursor_color"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/cancel3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/register_cancel"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:id="@+id/login_et_auth"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/rl_login_et_userid"
+            android:visibility="gone">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/yzm_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="@string/yanzhengma"
+                    android:textColor="@color/black_color_1e1e1e"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <EditText
+                    android:id="@+id/yzm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/bg_bottom_line_1px"
+                    android:gravity="center_vertical"
+                    android:hint="请输入验证码"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="@color/black_color_222222"
+                    android:textColorHint="@color/gray_color_D9D9D9"
+                    android:textCursorDrawable="@drawable/shape_et_cursor_color"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:padding="3dp"
+                    android:id="@+id/get_yzm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/yzm_bg"
+                    android:gravity="center"
+                    android:text="获取验证码"
+                    android:textSize="12sp"
+                    android:textColor="@color/orange_color_FF7F0D"
+                    />
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/shimingrenzheng_commit_btn"
+        android:layout_marginTop="31dp"
+        android:layout_width="311dp"
+        android:layout_height="41dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:background="@drawable/anniu_shimingrenzheng_commit"
+        />
+
+</LinearLayout>

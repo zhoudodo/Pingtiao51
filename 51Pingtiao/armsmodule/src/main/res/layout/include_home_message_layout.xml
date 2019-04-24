@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:gravity="center_vertical"
+    android:layout_height="50dp">
+    <ImageView
+        android:id="@+id/message_show_icon"
+        android:layout_width="58dp"
+        android:layout_height="16dp"
+        android:src="@drawable/pingtiao_icon"
+        />
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.CtsScrollTextView
+        android:id="@+id/message_content"
+        android:layout_marginLeft="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

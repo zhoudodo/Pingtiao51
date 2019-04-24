@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.pingtiao51.armsmodule.mvp.ui.custom.view.NestedStickerHeaderView
+            android:id="@+id/stick_layout"
+            android:layout_width="match_parent"
+            android:layout_height="850dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+
+
+            <include
+                android:id="@+id/search_layout"
+                layout="@layout/include_my_pingtiao_search"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_margin="@dimen/default_margin"></include>
+
+            <include
+                android:id="@+id/pingtiao_infos"
+                layout="@layout/include_my_pingtiao_infos"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/search_layout"
+                android:layout_marginTop="45dp">
+            </include>
+
+            <include
+                android:id="@+id/pingtiaoxiangqing"
+                layout="@layout/include_pingtiao_style_layout"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_below="@+id/pingtiao_infos"></include>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="625dp"
+                android:minHeight="625dp"
+                android:layout_below="@+id/pingtiaoxiangqing">
+            </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:id="@+id/no_layout"
+                android:visibility="gone"
+                android:layout_below="@+id/pingtiaoxiangqing"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="625dp">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/zanwuneirong"
+                    android:layout_width="254dp"
+                    android:layout_height="224dp" />
+            </LinearLayout>
+            <com.pingtiao51.armsmodule.mvp.ui.custom.view.PingtiaoChoiceView
+                android:id="@+id/choice_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_layout"
+                android:background="@color/transparent">
+            </com.pingtiao51.armsmodule.mvp.ui.custom.view.PingtiaoChoiceView>
+
+        </com.pingtiao51.armsmodule.mvp.ui.custom.view.NestedStickerHeaderView>
+    </com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout>
+</RelativeLayout>

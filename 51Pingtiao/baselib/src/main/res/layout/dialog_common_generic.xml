@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_generic_layout_root"
+    android:layout_width="280dp"
+    android:background="@color/pink"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/dialog_generic_layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/dialog_generic_layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="53dp">
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:id="@+id/dialog_generic_htv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:shadowDx="0.0"
+                android:shadowDy="-1.0"
+                android:shadowRadius="1.0"
+                android:soundEffectsEnabled="true"
+                android:text="dialog_generic_htv_title"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/dialog_generic_view_titleline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="7dp"
+            android:background="#e7e7e7" />
+
+        <LinearLayout
+            android:id="@+id/dialog_generic_layout_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fadingEdge="none">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="30dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="30dp">
+
+                    <TextView
+                        android:layout_centerInParent="true"
+                        android:id="@+id/dialog_generic_htv_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:lineSpacingExtra="5dp"
+                        android:text="dialog_generic_htv_message"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:id="@+id/dialog_generic_layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:gravity="center_horizontal|bottom">
+
+        <Button
+            android:id="@+id/dialog_generic_btn_button1"
+            style="@style/Style_Dialog_Button"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_left"
+            android:gravity="center"
+            android:text="确认" />
+
+        <View
+            android:id="@+id/view_dialog_one"
+            android:layout_width="0.1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="0.1dp"
+            android:background="@color/white" />
+
+        <Button
+            android:id="@+id/dialog_generic_btn_button2"
+            style="@style/Style_Dialog_Button"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_middle"
+            android:gravity="center"
+            android:text="button"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/view_dialog_two"
+            android:layout_width="0.1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="1px"
+            android:background="@color/gray"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/dialog_generic_btn_button3"
+            style="@style/Style_Dialog_Button"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_right"
+            android:gravity="center"
+            android:text="取消" />
+    </LinearLayout>
+
+</LinearLayout>

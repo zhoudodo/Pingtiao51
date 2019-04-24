@@ -1,0 +1,1 @@
+include ':armsmodule', ':baselib', ':magicindicator', ':zxinglibrary'

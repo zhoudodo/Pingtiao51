@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#6371F6"
+    >
+    <include
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/include_title"
+        ></include>
+
+    <RelativeLayout
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/jietiaoyulan_bg"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/jietiao_suoluetu"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BaseLib</string>
+
+
+    <string name="main_page1">首页</string>
+    <string name="main_page2">信用</string>
+    <string name="main_page3">我的</string>
+
+</resources>

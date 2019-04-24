@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="50dp"
+    android:background="#6371F6">
+    <include
+        layout="@layout/include_title"
+        ></include>
+    <RelativeLayout
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/jietiaoyulan_bg"
+        >
+        <TextView
+            android:id="@+id/jietiao_title"
+            android:layout_marginTop="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="借条"
+            android:textSize="22sp"
+            android:textColor="@color/black_color_333333"/>
+
+        <TextView
+            android:id="@+id/content"
+            android:lineSpacingExtra="7dp"
+            android:layout_below="@+id/jietiao_title"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/gray"
+            android:text="好多字不想看了"
+            >
+        </TextView>
+
+        <RelativeLayout
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="82dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/jiekuanren_xingming_shenfenzheng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="借款人里斯（身份证）1234567890"
+                android:textSize="12sp"
+                android:textColor="@color/gray_color_6A6A6A"
+                >
+            </TextView>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/chujieren_xingming_shenfenzheng"
+                android:layout_below="@+id/jiekuanren_xingming_shenfenzheng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="出借人阿联（身份证）1234567890"
+                android:textSize="12sp"
+                android:textColor="@color/gray_color_6A6A6A"
+                >
+            </TextView>  
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/chujiejushijian"
+                android:layout_below="@+id/chujieren_xingming_shenfenzheng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="借条出具时间 2017/10/03"
+                android:textSize="12sp"
+                android:textColor="@color/gray_color_6A6A6A"
+                >
+            </TextView>
+
+
+        </RelativeLayout>
+        
+        <ImageView
+            android:id="@+id/jietiao_gongzhang"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="79dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/jietiao_zhang"
+            />
+    </RelativeLayout>
+</LinearLayout>

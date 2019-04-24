@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title"></include>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="#fffffded"
+                >
+                <ImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="42dp"
+                    android:src="@drawable/hint_dengpao"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="收条由杭州互联网公证处予以存证"
+                    android:textColor="#ffe8722d"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    />
+            </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/bg_bottom_line_1px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/jingshouren"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/xieshoutiao_jingshouren_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="127dp"
+            android:background="@null"
+            android:textColor="@color/black_color_333333"
+            android:maxLines="1"
+            android:textSize="16sp"
+            android:text="张三"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/bg_bottom_line_1px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/dijiaoren"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/xieshouiao_dijiaoren_edit"
+            android:minWidth="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="127dp"
+            android:background="@null"
+            android:textColor="@color/black_color_333333"
+            android:maxLines="1"
+            android:textSize="16sp"
+            android:hint="必填"
+            android:maxLength="5"
+            android:textColorHint="@color/gray_color_B7B6B6" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/bg_bottom_line_1px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/dijiaojine"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/xieshoutiao_dijiaojine_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="127dp"
+            android:background="@null"
+            android:hint="@string/jiekuanjjine_str_hint"
+            android:maxLines="1"
+            android:textSize="15sp"
+            android:maxLength="8"
+            android:inputType="number"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/bg_bottom_line_1px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/jingshouriqi"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <RelativeLayout
+            android:id="@+id/choice_jingshouriqi_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="127dp">
+
+            <TextView
+                android:id="@+id/xieshoutiao_jingshouriqi_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:minWidth="200dp"
+                android:background="@null"
+                android:hint="@string/jiekuanriqi_str_hint"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/next_icon" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        >
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ff1e1e1e"
+            android:textSize="15sp"
+            android:text="备注(选填)"/>
+        <EditText
+            android:id="@+id/xieshoutiao_beizhu_edit"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/shoutiao_beizhu_bg"
+            android:inputType="textMultiLine"
+            android:gravity="left|top"
+            android:minLines="4"
+            android:textSize="16sp"
+            android:text=""
+            />
+    </LinearLayout>
+
+            <LinearLayout
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收条凭证（选填）"
+                    android:textColor="#ff1e1e1e"
+                    android:textSize="15sp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+            
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></View>
+
+    <TextView
+        android:id="@+id/xiejietiao_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/normal_btn_bg"
+        android:gravity="center"
+        android:text="生成收条"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</LinearLayout>

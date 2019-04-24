@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aigestudio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="207dp"
+    android:background="@color/white"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="207dp"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#fff2f2f2"
+            >
+            <ImageView
+                android:id="@+id/cancel"
+                android:padding="16dp"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/guanbi"
+                android:scaleType="centerInside"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/jiekuanriqi_str"
+                android:textSize="17sp"
+                android:textColor="#ff797979"
+                />
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:id="@+id/sure"
+                android:padding="16dp"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/gou"
+                android:scaleType="centerInside"/>
+
+
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="165dp"
+            android:layout_marginTop="48dp">
+            <com.pingtiao51.armsmodule.mvp.ui.custom.view.CycleDatePicker
+                android:id="@+id/wheeldatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.pingtiao51.armsmodule.mvp.ui.custom.view.CycleDatePicker>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

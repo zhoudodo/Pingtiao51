@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableScrollContentWhenLoaded="true"
+        app:srlEnableFooterFollowWhenLoadFinished="true"
+        >
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@color/white_ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.bigkoo.convenientbanner.ConvenientBanner
+                android:id="@+id/banner"
+                android:layout_width="345dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center_horizontal"
+                app:canLoop="true"></com.bigkoo.convenientbanner.ConvenientBanner>
+
+            <include layout="@layout/include_home_message_layout"></include>
+            <include layout="@layout/include_icons_layout"></include>
+            <include layout="@layout/include_home_money_layout"></include>
+
+            <ImageView
+                android:id="@+id/woyaoxiepingtiao"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/anniu" />
+
+            <include layout="@layout/include_pingtiao_style_layout"></include>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/click_more"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:text="@string/look_more"
+                android:gravity="center"
+                android:textColor="#ffff7e00"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/xinshouzhinan"
+        android:layout_marginTop="165dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_home_xinshouzhinan"/>
+</RelativeLayout>

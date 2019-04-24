@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/include_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="255dp"
+        android:layout_below="@id/title"
+        android:scaleType="centerCrop"
+        android:src="@drawable/xinjianjietiaobg" />
+
+    <RelativeLayout
+        android:id="@+id/dianzijietiao_xinjian"
+        android:layout_width="356dp"
+        android:layout_height="215dp"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="196dp"
+        android:background="@drawable/xinjianjietiao_bg2">
+
+        <TextView
+            android:id="@+id/woshijiekuanren"
+            android:layout_width="131dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/anniu_woshijiekuanren" />
+
+        <TextView
+            android:id="@+id/woshichujieren"
+            android:layout_width="131dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/anniu_woshichujieren" />
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/xinjian_hint1"
+        android:layout_marginTop="14dp"
+        android:layout_below="@id/dianzijietiao_xinjian"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/gray_color_969696"
+        android:text="@string/hint1"/>
+    <TextView
+
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/xinjian_hint1"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/gray_color_969696"
+        android:text="@string/hint2"/>
+
+
+</RelativeLayout>

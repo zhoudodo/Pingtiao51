@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/normal_zhifu_yzm_bg"
+    xmlns:ver="http://schemas.android.com/apk/res-auto">
+    <ImageView
+
+        android:id="@+id/close_btn"
+        android:paddingTop="18dp"
+        android:paddingRight="12dp"
+        android:paddingLeft="12dp"
+        android:paddingBottom="18dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bankpay_guanbi"/>
+    <TextView
+        android:id="@+id/zhifu_yzm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/default_margin"
+        android:text="支付验证码"
+        android:textColor="#ff303030"
+        android:textSize="17sp"
+        />
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/get_yzm"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/zhifu_yzm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="center"
+        android:text="获取验证码"
+        android:textSize="12sp"
+        android:textColor="#ffff931f"
+        />
+
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.VerificationCodeInput
+        android:id="@+id/input_yzm"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/get_yzm"
+        android:layout_marginLeft="38dp"
+        android:layout_marginRight="38dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ver:box="6"
+        ver:box_bg_normal="@drawable/verification_edit_bg_normal"
+        ver:box_bg_focus="@drawable/verification_edit_bg_focus1"
+        ver:child_h_padding="0dp"
+        ver:inputType="number"
+        android:layout_centerInParent="true"
+        />
+
+</RelativeLayout>

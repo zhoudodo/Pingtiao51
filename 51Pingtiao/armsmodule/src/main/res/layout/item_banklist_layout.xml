@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/bank_list_rl"
+    android:background="@drawable/toolbar_background">
+    <ImageView
+        android:id="@+id/bank_icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:src="@drawable/banklist_add"
+        />
+    <TextView
+        android:id="@+id/bank_name"
+        android:layout_toRightOf="@+id/bank_icon"
+        android:layout_marginLeft="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="添加银行卡付款"
+        android:textColor="#ff1e1e1e"
+        android:textSize="16sp"
+        />
+
+    <ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/bank_next"
+        android:layout_alignParentRight="true"
+        android:layout_width="7dp"
+        android:layout_height="13dp"
+        android:src="@drawable/bankpay_tiaozhuan"
+        />
+</RelativeLayout>

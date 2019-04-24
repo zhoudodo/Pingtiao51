@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/include_title"
+        >
+    </include>
+    <TextView
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="模板参考"
+        android:textColor="#ff060607"
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="凭条书写规范，预防风险必备"
+        android:textColor="#ffa1a1a1"
+        android:textSize="15sp"
+        />
+
+    <ImageView
+        android:id="@+id/jietiao_moban1_img"
+        android:layout_marginTop="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="335dp"
+        android:layout_height="141dp"
+        android:src="@drawable/zhizhishoutiaomoban1"
+
+        />
+    <ImageView
+        android:id="@+id/shoutiao_moban1_img"
+        android:layout_marginTop="42dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="335dp"
+        android:layout_height="141dp"
+        android:src="@drawable/zhizhijietiaomoban1"
+
+        />
+</LinearLayout>

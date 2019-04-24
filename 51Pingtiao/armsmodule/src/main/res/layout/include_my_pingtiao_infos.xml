@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/my_pingtiao_infos_bg"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/layout_1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/jietiaoshu_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jietiaoshu"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/jietiao_nums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="100"
+            android:textColor="@color/orange_color_FFA300"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_line1"
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/graye0e0e0"></View>
+
+    <LinearLayout
+        android:id="@+id/layout_2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/jiekuanzonge_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jiekuanzonge"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/jiekuanzonge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="10000"
+            android:textColor="@color/red_color_EB606A"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_line2"
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/graye0e0e0"></View>
+
+    <LinearLayout
+        android:id="@+id/layout_3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/daihuanzonge_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/daihuanzonge"
+            android:textColor="@color/black_color_1e1e1e"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/daihuanzonge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="10000"
+            android:textColor="@color/red_color_EB606A"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</LinearLayout>

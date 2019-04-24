@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/stick_layout"
+            android:layout_width="match_parent"
+            android:layout_height="667dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <include
+                android:id="@+id/pingtiaoxiangqing"
+                layout="@layout/include_pingtiao_style_layout"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_below="@+id/pingtiao_infos">
+            </include>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="625dp"
+                android:layout_below="@+id/pingtiaoxiangqing">
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/no_layout"
+                android:layout_width="match_parent"
+                android:layout_height="625dp"
+                android:layout_below="@+id/pingtiaoxiangqing"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_marginLeft="57dp"
+                    android:layout_width="254dp"
+                    android:layout_height="224dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/zanwuneirong" />
+            </LinearLayout>
+        </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout>
+</RelativeLayout>

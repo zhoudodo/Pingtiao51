@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/include_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="257dp"
+        android:layout_below="@id/title"
+        android:scaleType="centerCrop"
+        android:src="@drawable/xinjian_dianzishoutiao_bg" />
+
+    <RelativeLayout
+        android:id="@+id/dianzishoutiao_xinjian"
+        android:layout_width="356dp"
+        android:layout_height="215dp"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="196dp"
+        android:background="@drawable/dianzishoutiao_xinjian_bg2">
+
+        <TextView
+            android:id="@+id/quxiejietiao_btn"
+            android:layout_width="131dp"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="29dp"
+            android:background="@drawable/anniu_xinjian_xieshoutiao" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

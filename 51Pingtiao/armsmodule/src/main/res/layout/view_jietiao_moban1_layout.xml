@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#6389f6">
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/jietiao_suoluetu"
+        android:scaleType="fitXY"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="如果您习惯使用“纸质借条”，请参考以下模板书写"
+            android:textSize="15sp"
+            android:background="@color/blue_336389f6"
+            />
+
+</RelativeLayout>

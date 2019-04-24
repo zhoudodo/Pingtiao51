@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="juese">
+
+        <item>全部</item>
+        <item>我是借款人</item>
+        <item>我是出借人</item>
+
+    </string-array>
+    <string-array name="jietiao_status">
+
+        <item>全部</item>
+        <item>未到期</item>
+        <item>已逾期</item>
+        <item>未生效</item>
+        <item>已完结</item>
+
+    </string-array>
+
+    <string-array name="sort_fun">
+
+        <item>还款时间从晚到早</item>
+        <item>还款时间从早到晚</item>
+        <item>借款金额从少到多</item>
+        <item>借款金额从多到少</item>
+
+
+    </string-array>
+
+    <string-array name="jiekuanyongtu">
+
+        <item>个人经营</item>
+
+        <item>消费</item>
+
+
+        <item>助学</item>
+
+
+        <item>创业</item>
+
+
+        <item>租房</item>
+
+
+        <item>旅游</item>
+
+
+        <item>装修</item>
+
+
+        <item>医疗</item>
+
+
+        <item>其他</item>
+
+
+    </string-array>
+
+
+</resources>

@@ -1,0 +1,337 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'                //添加kotlin-kapt保证draggerXXXComponent的正常生成
+apply plugin: 'walle'
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+
+    useLibrary 'org.apache.http.legacy'
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.receipt.px"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        flavorDimensions "versionCode"
+        multiDexEnabled true
+        dexOptions {
+            javaMaxHeapSize "4g"
+            jumboMode = true
+            preDexLibraries = false
+            additionalParameters = [
+                    '--multi-dex',//多分包
+                    '--set-max-idx-number=60000'//每个包内方法数上限
+            ]
+        }
+    }
+
+    //签名
+    signingConfigs {
+        release {
+            storeFile file("pingtiao51.jks")
+            storePassword 'pingtiao51'
+            keyAlias 'pingtiao51'
+            keyPassword 'pingtiao51'
+        }
+
+        debug {
+            storeFile file("pingtiao51.jks")
+            storePassword 'pingtiao51'
+            keyAlias 'pingtiao51'
+            keyPassword 'pingtiao51'
+        }
+    }
+    buildTypes {
+        debug {
+            //versionName自定义后缀
+//            versionNameSuffix "-debug"
+
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' ,'-dontwarn com.zhy.autolayout.*'
+
+            buildConfigField "String", "TRACK_BASE_URL", "\"http://192.168.3.57:8080/\""
+//            buildConfigField "String", "BASE_URL", "\"http://192.168.3.55:8001/\""
+            buildConfigField "String", "BASE_URL", "\"http://115.236.176.90:8001/\""
+
+//            buildConfigField "String", "BASE_URL", "\"http://api.51pingtiao.com/\""
+//            buildConfigField "String", "BASE_H5_URL", "\"http://pt.51pingtiao.com/#/\""
+//            buildConfigField "String", "BASE_H5_URL", "\"http://app.51pingtiao.com/#/\""
+            buildConfigField "String", "BASE_H5_URL", "\"http://testapp.51pingtiao.com/#/\""
+//            buildConfigField "String", "MOXIE_API_KEY", "\"462efea018e746179eb81789e22d694d\""
+            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            minifyEnabled false
+//            shrinkResources true
+//            zipAlignEnabled true
+            signingConfig signingConfigs.release
+//            multiDexKeepProguard file('multidex-config.pro')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "TRACK_BASE_URL", "\"https://data.qulicai8.com/\""
+            buildConfigField "String", "BASE_URL", "\"http://api.51pingtiao.com/\""
+//            buildConfigField "String", "BASE_H5_URL", "\"http://pt.51pingtiao.com/#/\""
+            buildConfigField "String", "BASE_H5_URL", "\"http://app.51pingtiao.com/#/\""
+//            buildConfigField "String", "MOXIE_API_KEY", "\"462efea018e746179eb81789e22d694d\""
+            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
+        }
+
+    }
+
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
+    }
+    productFlavors {
+        // 不同马甲包的配置信息
+        ishou {
+            resValue "string", "app_name", "爱收"
+            applicationId 'com.ishou'
+            manifestPlaceholders = [
+                    package_name       : applicationId,
+                    UMENG_CHANNEL_VALUE: "offline",
+                    UMENG_APPKEY       : "5bbda940b465f5619b0001d9",
+                    JPUSH_PKGNAME      : applicationId,
+                    JPUSH_APPKEY       : "a17b2215fc2192222cc4cc2d",
+                    JPUSH_CHANNEL      : "developer-default",
+            ]
+            buildConfigField "String", "UMENG_PUSH_SECRET", "\"fe19dfe94c4042d65ebaa72d718847ac\""
+            buildConfigField "String", "ANDROID_BANNER_NID", "\"androidHomeBannerHuiShou2\""
+            buildConfigField "Integer", "APP_ID", "4"
+            buildConfigField "String", "APP_FLAG", "\"ISHOU\""
+            buildConfigField "String", "APP_NAME", "\"爱收\""
+            buildConfigField "String", "QIYU_APPKEY", "\"5d68d29bb8d235e4b0dde6edac7e32d1\""
+        }
+
+        xinyi {
+            resValue "string", "app_name", "信义贷"
+            applicationId 'com.xinyi'
+            manifestPlaceholders = [
+                    package_name       : applicationId,
+                    UMENG_CHANNEL_VALUE: "offline",
+                    UMENG_APPKEY       : "5bd66c8cb465f56d7600001c",
+                    JPUSH_PKGNAME      : applicationId,
+                    JPUSH_APPKEY       : "8f72ddd3680fc02b28811d16",
+                    JPUSH_CHANNEL      : "developer-default",
+            ]
+            buildConfigField "String", "UMENG_PUSH_SECRET", "\"1475d1586bd9c83606049ef0db4f2e4a\""
+            buildConfigField "String", "ANDROID_BANNER_NID", "\"androidHomeBannerXinYi\""
+            buildConfigField "Integer", "APP_ID", "101"
+            buildConfigField "String", "APP_FLAG", "\"XINYI\""
+            buildConfigField "String", "APP_NAME", "\"信义贷\""
+            buildConfigField "String", "QIYU_APPKEY", "\"5d68d29bb8d235e4b0dde6edac7e32d1\""
+        }
+
+        bangbangzu {
+            resValue "string", "app_name", "51凭条"
+            applicationId 'com.receipt.px'
+            manifestPlaceholders = [
+                    package_name       : applicationId,
+                    UMENG_CHANNEL_VALUE: "offline",
+                    UMENG_APPKEY       : "5bf769e6b465f5c0800000d4",
+                    JPUSH_PKGNAME      : applicationId,
+                    JPUSH_APPKEY       : "9d89c242e309727940fbbf96",
+                    JPUSH_CHANNEL      : "developer-default",
+            ]
+            buildConfigField "String", "UMENG_PUSH_SECRET", "\"1475d1586bd9c83606049ef0db4f2e4a\""
+            buildConfigField "String", "ANDROID_BANNER_NID", "\"androidHomeBannerBangBangZu\""
+            buildConfigField "Integer", "APP_ID", "102"
+            buildConfigField "String", "APP_FLAG", "\"51PINGTIAO\""
+            buildConfigField "String", "APP_NAME", "\"51凭条\""
+            buildConfigField "String", "QIYU_APPKEY", "\"5d68d29bb8d235e4b0dde6edac7e32d1\""
+        }
+
+        yijiebao {
+            resValue "string", "app_name", "易借宝"
+            applicationId 'com.pdl.yjb'
+            manifestPlaceholders = [
+                    package_name       : applicationId,
+                    UMENG_CHANNEL_VALUE: "offline",
+                    UMENG_APPKEY       : "5bf769e6b465f5c0800000d4",
+                    JPUSH_PKGNAME      : applicationId,
+                    JPUSH_APPKEY       : "9d89c242e309727940fbbf96",
+                    JPUSH_CHANNEL      : "developer-default",
+            ]
+            buildConfigField "String", "UMENG_PUSH_SECRET", "\"1475d1586bd9c83606049ef0db4f2e4a\""
+            buildConfigField "String", "ANDROID_BANNER_NID", "\"androidHomeBanner1\""
+            buildConfigField "Integer", "APP_ID", "1"
+            buildConfigField "String", "APP_FLAG", "\"YJB\""
+            buildConfigField "String", "APP_NAME", "\"易借宝\""
+            buildConfigField "String", "QIYU_APPKEY", "\"5d68d29bb8d235e4b0dde6edac7e32d1\""
+        }
+    }
+
+
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def apkFileName = name + "_v${versionName}_${versionCode}_${buildTime()}_release.apk"
+            def outFile = output.outputFile
+            if (outFile != null && outFile.name.endsWith(".apk")
+                    && 'release' == variant.buildType.name) {
+                outputFileName = apkFileName
+            }
+        }
+    }
+}
+
+static def buildTime() {
+    def date = new Date()
+    def formatDate = date.format('yyMMddhhmm')
+    return formatDate
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'me.jessyan:arms:2.5.0'
+    implementation 'me.jessyan:arms-imageloader-glide:2.5.0'
+
+    //view
+    implementation rootProject.ext.dependencies["autosize"]
+
+    //dagger2
+    implementation rootProject.ext.dependencies["dagger2"]
+    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+
+    //注意 Arms 核心库现在并不会依赖某个 EventBus, 要想使用 EventBus, 还请在项目中自行依赖对应的 EventBus
+
+    //现在支持两种 EventBus, greenrobot 的 EventBus 和畅销书 《Android源码设计模式解析与实战》的作者 何红辉 所作的 AndroidEventBus
+
+    //依赖后 Arms 会自动检测您依赖的 EventBus 并自动注册
+
+    //建议使用 AndroidEventBus, 特别是组件化项目, 原因请看 https://github.com/hehonghui/AndroidEventBus/issues/49
+
+    //这种做法可以让使用者有自行选择三方库的权利, 并且还可以减轻 Arms 的体积
+//    implementation rootProject.ext.dependencies["androideventbus"]
+
+    //    implementation rootProject.ext.dependencies["eventbus"]
+
+    //test
+    debugImplementation rootProject.ext.dependencies["canary-debug"]
+    releaseImplementation rootProject.ext.dependencies["canary-release"]
+    testImplementation rootProject.ext.dependencies["canary-release"]
+    testImplementation rootProject.ext.dependencies["junit"]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //依赖插件
+    kapt rootProject.ext.dependencies["dagger2-compiler"]
+    kapt rootProject.ext.dependencies["dagger2-android-processor"]
+
+
+    //🔥 a powerful & easy to use library for Android (https://github.com/Blankj/AndroidUtilCode)
+    implementation rootProject.ext.dependencies["android-utils-code"]
+
+    //greenrobot eventbus
+    implementation rootProject.ext.dependencies["eventbus"]
+    //picasso
+//    implementation rootProject.ext.dependencies["picasso"]
+    //autolayout
+    implementation rootProject.ext.dependencies["autolayout"]
+    //okhttp3
+    api rootProject.ext.dependencies["okhttp3"]
+//    //retrofit
+//    implementation rootProject.ext.dependencies["retrofit"]
+//    //retrofit-converter-gson
+//    implementation rootProject.ext.dependencies["retrofit-converter-gson"]
+//    //retrofit-adapter-rxjava
+//    implementation rootProject.ext.dependencies["retrofit-adapter-rxjava"]
+//    //retrofit-adapter-rxjava2
+//    implementation rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
+//    //okhttp-urlconnection
+//    implementation rootProject.ext.dependencies["okhttp-urlconnection"]
+//    //glide
+//    implementation rootProject.ext.dependencies["glide"]
+//    //glide-compiler
+//    implementation rootProject.ext.dependencies["glide-compiler"]
+//    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+//    //glide-loader-okhttp3
+//    implementation rootProject.ext.dependencies["glide-loader-okhttp3"]
+
+
+    //使用okhttp网络日志拦截器
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+
+    implementation rootProject.ext.dependencies["retrofit-url-manager"]
+
+
+    implementation rootProject.ext.dependencies["progressmanager"]
+    // 强大、可定制、易扩展的 ViewPager 指示器框架。
+
+    //https://github.com/hackware1993/MagicIndicator
+
+    //    api 'com.github.hackware1993:MagicIndicatorHelp:1.5.0'
+
+    //retrofit的log日志
+
+    //butterknife
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    kapt rootProject.ext.dependencies["butterknife-compiler"]
+
+    //仿ios加载框
+    implementation 'com.kaopiz:kprogresshud:1.1.0'
+    //广告banner
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    //BRVAH是一个强大的RecyclerAdapter框架
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
+    api 'com.makeramen:roundedimageview:2.3.0'
+
+    api 'com.android.support:multidex:1.0.3'
+
+
+    implementation 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
+
+    //aliyun  oss 图片上传
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
+
+    //一款针对android平台下的图片选择器，支持从相册或拍照选择图片或视频、音频，支持动态权限获取、裁剪(单图or多图裁剪)、压缩、主题自定义配置等功能、适配android 6.0+系统的开源图片选择框架。
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+
+
+    implementation 'com.bm.photoview:library:1.4.1'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    //https://github.com/scwang90/SmartRefreshLayout
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-21'
+    implementation 'com.meituan.android.walle:library:1.1.6'
+
+    //Umeng统计组件
+    implementation  'com.umeng.umsdk:analytics:8.0.2'
+    implementation  'com.umeng.umsdk:common:2.0.2'
+
+
+    //A beautiful, slim Android numberprogressbar.
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+
+    implementation project(':baselib')
+    implementation project(':magicindicator')
+}
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = "pingtiao51_"+'${channel}.apk'
+    // 渠道配置文件
+    channelFile = new File("${project.getProjectDir()}/channel")
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ImageView
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fanhui"/>
+    <TextView
+        android:id="@+id/welcome_hints"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black_color_222222"
+        android:text="@string/app_welcome_hint"
+        />
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView
+        android:layout_marginTop="50dp"
+        android:id="@+id/input_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView>
+    <TextView
+        android:id="@+id/service_hint"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/login_btn"
+        android:layout_marginTop="31dp"
+        android:layout_width="311dp"
+        android:layout_height="41dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/login_hint"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_login_normal"
+        />
+
+    <RelativeLayout
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/login_psd"
+            android:text="@string/psd_login_hint"
+            android:textColor="@color/orange_color_FFA135"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/login_code"
+            android:text="@string/code_login"
+            android:textColor="@color/orange_color_FFA135"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/forget_psd"
+            android:text="@string/forget_psd"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/orange_color_FFA135"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <include
+        layout="@layout/include_title"
+        ></include>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableScrollContentWhenLoaded="true"
+        app:srlEnableFooterFollowWhenLoadFinished="true"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/login_view"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <include layout="@layout/include_my_info_layout">
+
+    </include>
+
+    <include layout="@layout/include_my_money_layout">
+
+    </include>
+
+    <include layout="@layout/include_pingtiao_style_layout">
+
+    </include>
+
+    <include
+        android:id="@+id/xiaofeimingxi"
+        layout="@layout/include_my_setting_simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <include
+        android:id="@+id/helper"
+        layout="@layout/include_my_setting_simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <include
+        android:id="@+id/shezhi"
+        layout="@layout/include_my_setting_simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+    </LinearLayout>
+        </LinearLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

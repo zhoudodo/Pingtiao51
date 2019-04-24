@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="31dp"
+    android:background="@drawable/bg_search_myinfo"
+    >
+    <EditText
+        android:id="@+id/search_et"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:hint="可搜索姓名"
+        android:textColorHint="@color/gray_color_bdbdbd"
+        android:textSize="13sp"
+        android:paddingLeft="40dp"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        />
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/pingtiao_chazhao"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>

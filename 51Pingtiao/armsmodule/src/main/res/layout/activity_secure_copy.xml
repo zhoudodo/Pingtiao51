@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include
+        layout="@layout/include_title">
+    </include>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="安全备份"
+        android:textColor="@color/black_color_060607"
+        android:textSize="30sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="35dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重要凭证，永久保存"
+        android:textColor="@color/gray_color_A1A1A1"
+        android:textSize="15sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="25dp"
+        />
+
+    <ImageView
+        android:id="@+id/zhizhijietiao"
+        android:layout_width="335dp"
+        android:layout_height="141dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/zhizhijietiao_bg"/>
+
+    <ImageView
+        android:id="@+id/zhizhishoutiao"
+        android:layout_width="335dp"
+        android:layout_height="141dp"
+        android:layout_marginTop="42dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/zhizhishoutiao_bg"/>
+
+</LinearLayout>
