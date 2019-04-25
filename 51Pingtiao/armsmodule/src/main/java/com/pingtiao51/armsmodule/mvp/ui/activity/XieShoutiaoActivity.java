@@ -182,6 +182,7 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
                         }
                     }, 2000);
                     if (selectList.size() > 0) {
+                        showLoading();
                         upLoadFilesOss();
                     } else {
                         createShoutiao();
@@ -208,8 +209,25 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
         return true;
     }
 
+    /**
+     * 返回是否提醒
+     * @return
+     */
+    private boolean checkNotHint() {
+        boolean bo1 = TextUtils.isEmpty(xieshouiao_dijiaoren_edit.getText().toString());
+        boolean bo2 = TextUtils.isEmpty(xieshoutiao_dijiaojine_edit.getText().toString());
+        boolean bo3 = TextUtils.isEmpty(jingshouriqiReq);
+
+      if(bo1 && bo2 && bo3){
+          return true;
+      }else{
+          return false;
+      }
+    }
+
     private void upLoadFilesOss() {
         urls.clear();
+
         for (int i = 0; i < selectList.size(); i++) {
             uploadFile(selectList.get(i), i);
         }
@@ -232,7 +250,11 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
     @Override
     public void onBackPressed() {
         if (mDialogChooseNormal == null || !isShow) {
-            backDialog();
+            if(checkNotHint()){
+                super.onBackPressed();
+            }else {
+                backDialog();
+            }
         } else {
             super.onBackPressed();
         }

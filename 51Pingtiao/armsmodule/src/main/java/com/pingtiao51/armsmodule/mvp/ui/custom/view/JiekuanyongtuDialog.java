@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aigestudio.wheelpicker.WheelPicker;
+import com.itheima.wheelpicker.WheelPicker;
 import com.pingtiao51.armsmodule.R;
 import com.zls.baselib.custom.view.dialog.FrameDialog;
 

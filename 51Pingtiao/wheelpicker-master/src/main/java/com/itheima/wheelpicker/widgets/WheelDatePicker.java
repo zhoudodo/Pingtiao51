@@ -1,24 +1,16 @@
-package com.pingtiao51.armsmodule.mvp.ui.custom.view;
+package com.itheima.wheelpicker.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 import com.itheima.wheelpicker.IDebug;
 import com.itheima.wheelpicker.IWheelPicker;
+import com.itheima.wheelpicker.R;
 import com.itheima.wheelpicker.WheelPicker;
-import com.itheima.wheelpicker.widgets.IWheelDatePicker;
-import com.itheima.wheelpicker.widgets.IWheelDayPicker;
-import com.itheima.wheelpicker.widgets.IWheelMonthPicker;
-import com.itheima.wheelpicker.widgets.IWheelYearPicker;
-import com.itheima.wheelpicker.widgets.WheelDatePicker;
-import com.itheima.wheelpicker.widgets.WheelDayPicker;
-import com.itheima.wheelpicker.widgets.WheelMonthPicker;
-import com.itheima.wheelpicker.widgets.WheelYearPicker;
-import com.pingtiao51.armsmodule.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PingtiaoWheelDatePicker extends WheelDatePicker implements IDebug, IWheelPicker, IWheelDatePicker, IWheelYearPicker, IWheelMonthPicker,
+public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemSelectedListener,
+        IDebug, IWheelPicker, IWheelDatePicker, IWheelYearPicker, IWheelMonthPicker,
         IWheelDayPicker {
     private static final SimpleDateFormat SDF =
             new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
@@ -35,20 +28,20 @@ public class PingtiaoWheelDatePicker extends WheelDatePicker implements IDebug, 
     private WheelMonthPicker mPickerMonth;
     private WheelDayPicker mPickerDay;
 
-    private WheelDatePicker.OnDateSelectedListener mListener;
+    private OnDateSelectedListener mListener;
 
     private TextView mTVYear, mTVMonth, mTVDay;
 
     private int mYear, mMonth, mDay;
 
-    public PingtiaoWheelDatePicker(Context context) {
+    public WheelDatePicker(Context context) {
         this(context, null);
     }
 
-    public PingtiaoWheelDatePicker(Context context, AttributeSet attrs) {
+    public WheelDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        LayoutInflater.from(context).inflate(R.layout.date_picker_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_wheel_date_picker, this);
 
         mPickerYear = (WheelYearPicker) findViewById(R.id.wheel_date_picker_year);
         mPickerMonth = (WheelMonthPicker) findViewById(R.id.wheel_date_picker_month);
@@ -409,9 +402,8 @@ public class PingtiaoWheelDatePicker extends WheelDatePicker implements IDebug, 
         mPickerDay.setTypeface(tf);
     }
 
-
     @Override
-    public void setOnDateSelectedListener(WheelDatePicker.OnDateSelectedListener listener) {
+    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         mListener = listener;
     }
 
@@ -594,9 +586,7 @@ public class PingtiaoWheelDatePicker extends WheelDatePicker implements IDebug, 
         mPickerDay.setMonth(month);
     }
 
-
-
     public interface OnDateSelectedListener {
-        void onDateSelected(PingtiaoWheelDatePicker picker, Date date);
+        void onDateSelected(WheelDatePicker picker, Date date);
     }
 }

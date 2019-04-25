@@ -418,6 +418,22 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
         return true;
     }
 
+    /**
+     * 返回按钮是否提醒
+     * @return
+     */
+    private boolean checkNotHint() {
+        boolean num1 = TextUtils.isEmpty(xiejietiao_jiekuanjine_edit.getText().toString());
+        boolean num2 = TextUtils.isEmpty(xiejietiao_chujierenxingming.getText().toString());
+        boolean num3 = TextUtils.isEmpty(jiekuanyongtuStr);
+        boolean num4 = TextUtils.isEmpty(mLilv);
+        if(num1 && num2 && num3 && num4 && !hasJiekuanriqi && !hasHuankuanriqi){
+            return true;//不提醒
+        }else{
+            return false;
+        }
+    }
+
     BankPayDialog mBankPayDialog;
 
     private boolean checkPayStatus(String noteid) {
@@ -437,7 +453,8 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
 //                    ArmsUtils.snackbarText("请将二维码分享给借款人");
                     Bundle bundle1 = new Bundle();
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "二维码分享");
-                    bundle1.putInt(WebViewActivity.USER_TYPE, mType);
+                    bundle1.putInt(WebViewShareActivity.USER_TYPE, mType);
+                    bundle1.putInt(WebViewShareActivity.NOTE_ID,Integer.valueOf(mNoteid));
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + mNoteid + "&userType=" + mType);
                     startActBundle(bundle1, WebViewShareActivity.class);
                     finish();
@@ -655,7 +672,11 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     @Override
     public void onBackPressed() {
         if (mDialogChooseNormal == null || !isShow) {
-            backDialog();
+            if(checkNotHint()){
+                super.onBackPressed();
+            }else {
+                backDialog();
+            }
         } else {
             super.onBackPressed();
         }

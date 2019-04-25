@@ -91,6 +91,7 @@ public class WebViewShareActivity extends BaseWebViewActivity {
         });
     }
 
+
     TextView rightTv;
 
     private void initPageConfig() {
@@ -231,6 +232,14 @@ public class WebViewShareActivity extends BaseWebViewActivity {
         ClipData mClipData = ClipData.newPlainText("Label", lianjie);
         // 将ClipData内容放到系统剪贴板里。
         cm.setPrimaryClip(mClipData);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mShareDialog != null){
+            mShareDialog.dismiss();
+        }
     }
 
     @Override

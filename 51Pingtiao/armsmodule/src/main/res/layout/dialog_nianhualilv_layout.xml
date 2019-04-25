@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="165dp"
             android:layout_marginTop="48dp">
-            <com.aigestudio.wheelpicker.WheelPicker
+            <com.itheima.wheelpicker.WheelPicker
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/main_wheel"

@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.aigestudio.wheelpicker.WheelPicker;
+import com.itheima.wheelpicker.WheelPicker;
 import com.pingtiao51.armsmodule.R;
 
 import java.text.ParseException;

@@ -88,6 +88,11 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
                 helper.setText(R.id.huankuan_shijian, "还款时间：" + item.getRepaymentDate());
 
                 String yuqi_flag = getStatus(helper, item);
+                if("借款人完结".equals(yuqi_flag) || "LENDER_FINISHED".equals(yuqi_flag)){
+                    helper.setTextColor(R.id.yuqi_flag, mContext.getResources().getColor(R.color.blue_color_467BB6));
+                }else{
+                    helper.setTextColor(R.id.yuqi_flag, mContext.getResources().getColor(R.color.red_color_ED4641));
+                }
                 helper.setText(R.id.yuqi_flag, yuqi_flag);
 
                 setBtnType(helper, item);
