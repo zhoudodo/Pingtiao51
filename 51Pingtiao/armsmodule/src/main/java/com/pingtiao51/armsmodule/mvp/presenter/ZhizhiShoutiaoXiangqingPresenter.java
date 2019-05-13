@@ -100,18 +100,7 @@ public class ZhizhiShoutiaoXiangqingPresenter extends BasePresenter<ZhizhiShouti
 
     }
 
-    public void downLoadFile(String url,String filename){
-        mModel.downloadFile(url)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
-                .subscribe(new ErrorHandleSubscriber<ResponseBody>(mErrorHandler) {
-                    @Override
-                    public void onNext(ResponseBody body) {
-                        writeFile2Disk(body,filename);
-                    }
-                });
-    }
+
 
     public void closeElectronicNote(long id){
         mModel.closeElectronicNote(id)
@@ -131,6 +120,20 @@ public class ZhizhiShoutiaoXiangqingPresenter extends BasePresenter<ZhizhiShouti
 
 
 
+
+
+    public void downLoadFile(String url,String filename){
+        mModel.downloadFile(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<ResponseBody>(mErrorHandler) {
+                    @Override
+                    public void onNext(ResponseBody body) {
+                        writeFile2Disk(body,filename);
+                    }
+                });
+    }
 
     //将下载的文件写入本地存储
     private void writeFile2Disk(ResponseBody response, String fileName) {

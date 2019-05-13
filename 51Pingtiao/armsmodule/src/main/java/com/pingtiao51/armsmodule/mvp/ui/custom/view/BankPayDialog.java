@@ -13,11 +13,13 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jess.arms.base.App;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.di.component.DaggerBankPayDialogComponent;
+import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PayApi;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.AddBankSucTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.BankDismissTag;
@@ -27,13 +29,16 @@ import com.pingtiao51.armsmodule.mvp.model.entity.request.CreateDingdanRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PayDingdanRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ProductPriceRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseRep;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.CreateDingdanResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.ProductPriceResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.SupportPaymentsResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.UserBankListResponse;
 import com.pingtiao51.armsmodule.mvp.ui.activity.AddBankCardActivity;
+import com.pingtiao51.armsmodule.mvp.ui.activity.BaseArmsActivity;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.BankListAdapter;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
+import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.zls.baselib.custom.view.dialog.FrameDialog;
 
@@ -50,6 +55,7 @@ import javax.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.autosize.utils.AutoSizeUtils;
@@ -72,8 +78,10 @@ public class BankPayDialog extends FrameDialog {
         super(context);
     }
 
+    private Activity context;
     public BankPayDialog(Activity context, String noteid) {
         super(context);
+        this.context = context;
         this.noteid = noteid;
     }
 
@@ -389,6 +397,22 @@ public class BankPayDialog extends FrameDialog {
         ))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                            if(context instanceof BaseArmsActivity){
+                                ((BaseArmsActivity)context).showLoading();
+                            }
+                    }
+                })
+                .doAfterTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        if(context instanceof BaseArmsActivity){
+                            ((BaseArmsActivity)context).hideLoading();
+                        }
+                    }
+                })
                 .subscribe(new Observer<BaseJson<CreateDingdanResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -402,7 +426,22 @@ public class BankPayDialog extends FrameDialog {
                                 EventBus.getDefault().post(new PaySuccessTag(PaySuccessTag.PAY_SUCCESS));
                                 BankPayDialog.this.dismiss();
                             }else {
-                                payYzm();
+                                switch (mPayType){
+                                    case PAY_WECHAT:
+                                        WechatUtils.payWeChat(
+                                                getContext(),
+                                                Api.WECHAT_APPKEY,
+                                                mCreateDingdanResponse.getPartnerId(),
+                                                mCreateDingdanResponse.getPrepayId(),
+                                                mCreateDingdanResponse.getNonceStr(),
+                                                mCreateDingdanResponse.getTimeStamp(),
+                                                mCreateDingdanResponse.getPaySign()
+                                                );
+                                        break;
+                                    case PAY_BANK:
+                                        payYzm();
+                                        break;
+                                }
                             }
                         }
                     }
@@ -420,8 +459,10 @@ public class BankPayDialog extends FrameDialog {
     ZhifuYzmDialog mZhifuYzmDialog;
     private String mCode = "";
 
+    /**
+     * 银行卡支付流程
+     */
     private void payYzm() {
-        if (mZhifuYzmDialog == null) {
             mZhifuYzmDialog = new ZhifuYzmDialog(mActivity, new ZhifuYzmDialog.ZhifuComComplete() {
                 @Override
                 public void onSuccess(String s) {
@@ -430,7 +471,7 @@ public class BankPayDialog extends FrameDialog {
                     payBank();
                 }
             });
-        }
+
         mZhifuYzmDialog.show();
     }
 
@@ -446,6 +487,22 @@ public class BankPayDialog extends FrameDialog {
                 mCreateDingdanResponse.getOrderNo(),
                 "ANDRIOD"
         )).subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        if(context instanceof BaseArmsActivity){
+                            ((BaseArmsActivity)context).showLoading();
+                        }
+                    }
+                })
+                .doAfterTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        if(context instanceof BaseArmsActivity){
+                            ((BaseArmsActivity)context).hideLoading();
+                        }
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BaseJson<Object>>() {
                     @Override
@@ -479,5 +536,9 @@ public class BankPayDialog extends FrameDialog {
         getBankList();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        EventBus.getDefault().post(new BankDismissTag());
+    }
 }

@@ -31,6 +31,18 @@ android {
                     '--set-max-idx-number=60000'//每个包内方法数上限
             ]
         }
+
+//            ndk {
+//                //选择要添加的对应 cpu 类型的 .so 库。
+//                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//                // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+//            }
+
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : applicationId,
+                    JPUSH_APPKEY : "2f01a6d549fdc3c3431cca7e", //JPush 上注册的包名对应的 Appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+            ]
     }
 
     //签名
@@ -62,14 +74,14 @@ android {
 
             buildConfigField "String", "TRACK_BASE_URL", "\"http://192.168.3.57:8080/\""
 //            buildConfigField "String", "BASE_URL", "\"http://192.168.3.55:8001/\""
-            buildConfigField "String", "BASE_URL", "\"http://115.236.176.90:8001/\""
+
 
 //            buildConfigField "String", "BASE_URL", "\"http://api.51pingtiao.com/\""
 //            buildConfigField "String", "BASE_H5_URL", "\"http://pt.51pingtiao.com/#/\""
 //            buildConfigField "String", "BASE_H5_URL", "\"http://app.51pingtiao.com/#/\""
+            buildConfigField "String", "BASE_URL", "\"http://115.236.176.90:8001/\""
             buildConfigField "String", "BASE_H5_URL", "\"http://testapp.51pingtiao.com/#/\""
-//            buildConfigField "String", "MOXIE_API_KEY", "\"462efea018e746179eb81789e22d694d\""
-            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
+//            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
         }
 
         release {
@@ -82,12 +94,14 @@ android {
 //            multiDexKeepProguard file('multidex-config.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "TRACK_BASE_URL", "\"https://data.qulicai8.com/\""
-            buildConfigField "String", "BASE_URL", "\"http://api.51pingtiao.com/\""
+//            buildConfigField "String", "TRACK_BASE_URL", "\"https://data.qulicai8.com/\""
 //            buildConfigField "String", "BASE_H5_URL", "\"http://pt.51pingtiao.com/#/\""
+            buildConfigField "String", "BASE_URL", "\"http://api.51pingtiao.com/\""
             buildConfigField "String", "BASE_H5_URL", "\"http://app.51pingtiao.com/#/\""
 //            buildConfigField "String", "MOXIE_API_KEY", "\"462efea018e746179eb81789e22d694d\""
-            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
+//            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
+           /* buildConfigField "String", "BASE_URL", "\"http://115.236.176.90:8001/\""
+            buildConfigField "String", "BASE_H5_URL", "\"http://testapp.51pingtiao.com/#/\""*/
         }
 
     }
@@ -305,7 +319,7 @@ dependencies {
     kapt rootProject.ext.dependencies["butterknife-compiler"]
 
     //仿ios加载框
-    implementation 'com.kaopiz:kprogresshud:1.1.0'
+    implementation 'com.kaopiz:kprogresshud:1.2.0'
 
     //广告banner
     implementation 'com.bigkoo:convenientbanner:2.0.5'
@@ -336,6 +350,14 @@ dependencies {
 
     //A beautiful, slim Android numberprogressbar.
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+    //Jpush相关
+    implementation 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
+
+    //pdf加载器
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
+
     implementation project(':baselib')
     implementation project(':magicindicator')
     implementation project(':wheelpicker-master')

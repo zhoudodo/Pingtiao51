@@ -87,7 +87,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                     @Override
                     public void onNext(BaseJson<LoginResponse> responseBaseJson) {
                         if(responseBaseJson.isSuccess()){
-                            mRootView.loginSuc(responseBaseJson.getData());
+                            mRootView.loginSuc(responseBaseJson.getData(),phoneNum+"");
                         }else{
                             ArmsUtils.snackbarText(responseBaseJson.getMessage());
                         }

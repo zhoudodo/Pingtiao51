@@ -203,7 +203,11 @@ public class PingtiaoChoiceView extends LinearLayout {
                 break;
             }
         }
-        return choice+"";
+        if(choice == 0){
+            return null;
+        }else{
+            return (choice-1)+"";
+        }
     }
 
     private void choice(String name) {

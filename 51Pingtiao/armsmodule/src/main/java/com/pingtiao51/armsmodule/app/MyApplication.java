@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 
 import com.jess.arms.base.BaseApplication;
 import com.meituan.android.walle.WalleChannelReader;
@@ -20,6 +21,8 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class MyApplication extends BaseApplication {
 
@@ -58,6 +61,7 @@ public class MyApplication extends BaseApplication {
         AppCrashHandler.getInstance().init(this);
         initUmeng();
         initWeChat();
+        initJpush();
     }
 
     @Override
@@ -91,5 +95,14 @@ public class MyApplication extends BaseApplication {
         IWXAPI mWxApi = WXAPIFactory.createWXAPI(this, "wxcdf3efdd7570a44a", true);
         // 注册
         mWxApi.registerApp(Api.WECHAT_APPKEY);
+    }
+
+    /**
+     * 注册极光推送
+     */
+    private void initJpush(){
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
+
     }
 }

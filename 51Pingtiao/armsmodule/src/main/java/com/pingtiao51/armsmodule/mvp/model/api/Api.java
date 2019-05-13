@@ -31,9 +31,7 @@ public interface Api {
     String WECHAT_APPKEY = "wxcdf3efdd7570a44a";//微信appkey
     String RequestSuccess = "0";
     String tokenValid = "1001";
-    String TRACK_BASE_URL = BuildConfig.TRACK_BASE_URL;
     String BASE_URL = BuildConfig.BASE_URL;
-    String MOXIE_API_KEY = BuildConfig.MOXIE_API_KEY;
     String BASE_H5_URL = BuildConfig.BASE_H5_URL;
     String ANDROID_BANNER_NID = BuildConfig.ANDROID_BANNER_NID;
     String IMAGE_URL = BASE_URL + "common/homePage/article/baseImage";
@@ -50,6 +48,9 @@ public interface Api {
     String TRANSACTION_DETAIL = "transactionDetail";
     //    帮助与反馈
     String CONTACT = "contact";
+
+    //支持银行
+    String SUPPORT_BANK = "supportBanks";
     //    意见反馈
     String FEEDBACK = "feedback";
     //    分享

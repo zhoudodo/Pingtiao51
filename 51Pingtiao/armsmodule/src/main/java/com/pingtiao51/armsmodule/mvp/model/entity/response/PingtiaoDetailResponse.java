@@ -31,9 +31,20 @@ public class PingtiaoDetailResponse implements MultiItemEntity {
     private String overDueDays;
     private String repaymentDate;
     private String status;
+    private String signStatus;
     private String totalAmount;
     private String type;
     private String viewUrl;
+    private String hasApplyRepayRecord;
+
+
+    public String getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(String signStatus) {
+        this.signStatus = signStatus;
+    }
 
     public String getViewUrl() {
         return viewUrl;
@@ -129,6 +140,14 @@ public class PingtiaoDetailResponse implements MultiItemEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getHasApplyRepayRecord() {
+        return hasApplyRepayRecord;
+    }
+
+    public void setHasApplyRepayRecord(String hasApplyRepayRecord) {
+        this.hasApplyRepayRecord = hasApplyRepayRecord;
     }
 
     @Override

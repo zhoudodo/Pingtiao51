@@ -3,6 +3,7 @@ package com.pingtiao51.armsmodule.mvp.ui.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,6 +14,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.jess.arms.utils.UrlEncoderUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PingtiaoApi;
@@ -23,6 +25,9 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.zls.baselib.custom.view.dialog.DialogChooseNormal;
 import com.zls.baselib.custom.view.webview.ProgressWebView;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -69,28 +74,8 @@ public class WebViewSignActivity extends BaseWebViewActivity {
         JsInterface jsInterface = new JsInterface(
                 SavePreference.getStr(this, PingtiaoConst.KEY_TOKEN),
                 this,
-                new JsInterface.Js2JavaInterface() {
-                    @Override
-                    public void setTitle(String str) {
-                        mTitle.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTitle.setText(str);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void setRightTitle(String str) {
-
-                    }
-
-                    @Override
-                    public void showDialog() {
-                        //不需要操作
-                    }
-                });
+                this
+                );
 
         progressWebView.addJavascriptInterface(jsInterface, "Java2JS");
         progressWebView.setWebViewClient(new WebViewClient() {
@@ -190,5 +175,70 @@ public class WebViewSignActivity extends BaseWebViewActivity {
         ActivityUtils.finishActivity(CreateDianziJietiaoActivity.class);
         ActivityUtils.finishActivity(CreateJietiaoActivity.class);
         finish();
+    }
+
+
+    @Override
+    public void setTitle(String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mTitle != null) {
+                    mTitle.setText(str);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setRightTitle(String str) {
+
+    }
+
+
+
+
+    @Override
+    public void showDialog() {
+
+    }
+
+    @Override
+    public void loadUrl(String webviewUrl) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String loadurl = webviewUrl;
+                progressWebView = setProgressWebView();
+                if (UrlEncoderUtils.hasUrlEncoded(webviewUrl)) {
+                    try {
+                        loadurl = URLDecoder.decode(webviewUrl, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                progressWebView.loadUrl(loadurl);
+            }
+        });
+    }
+
+    @Override
+    public void reloadUrl(String webviewUrl) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String loadurl = webviewUrl;
+                progressWebView = setProgressWebView();
+                if (UrlEncoderUtils.hasUrlEncoded(webviewUrl)) {
+                    try {
+                        loadurl = URLDecoder.decode(webviewUrl, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                progressWebView.loadUrl(loadurl);
+            }
+        });
+
     }
 }

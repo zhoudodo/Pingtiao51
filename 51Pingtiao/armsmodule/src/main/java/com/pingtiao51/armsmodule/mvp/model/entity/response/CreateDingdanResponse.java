@@ -23,6 +23,15 @@ public class CreateDingdanResponse {
     private String prepayId;
     private String signType;
     private String timeStamp;
+    private String partnerId;
+
+    public String getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(String partnerId) {
+        this.partnerId = partnerId;
+    }
 
     public String getAppId() {
         return appId;

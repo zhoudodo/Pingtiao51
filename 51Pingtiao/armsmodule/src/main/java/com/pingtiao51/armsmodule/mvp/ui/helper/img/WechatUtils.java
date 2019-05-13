@@ -8,6 +8,7 @@ import com.jess.arms.utils.ArmsUtils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -52,6 +53,7 @@ public class WechatUtils {
         msg.title = title;
         msg.description = content;
         // 如果没有位图，可以传null，会显示默认的图片
+        //图片必须小于32KB
         msg.setThumbImage(cropShareImage(bitmap));
 
         // 构造一个Req
@@ -76,5 +78,34 @@ public class WechatUtils {
         return ImageUtils.getCompressImage(bp, 32,
                 AutoSizeUtils.dp2px(ActivityUtils.getTopActivity(), 40),
                 AutoSizeUtils.dp2px(ActivityUtils.getTopActivity(), 40));
+    }
+
+
+    /**
+     * 微信支付
+     */
+    public static void payWeChat(
+            Context context,
+            String appId,
+            String partnerId,
+            String prepayId,
+            String nonceStr,
+            String timeStamp,
+            String sign
+
+    ){
+        IWXAPI api= WXAPIFactory.createWXAPI(context, appId,false);//填写自己的APPID
+        api.registerApp(appId);//填写自己的APPID，注册本身APP
+        PayReq req = new PayReq();//PayReq就是订单信息对象
+//给req对象赋值
+        req.appId = appId;//APPID
+        req.partnerId = partnerId;//    商户号
+        req.prepayId = prepayId;//  预付款ID
+        req.nonceStr = nonceStr;//随机数
+        req.timeStamp = timeStamp;//时间戳
+        req.packageValue = "Sign=WXPay";//固定值Sign=WXPay
+        req.sign = sign;//签名
+
+        api.sendReq(req);//将订单信息对象发送给微信服务器，即发送支付请求
     }
 }

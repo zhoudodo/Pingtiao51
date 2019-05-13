@@ -286,7 +286,7 @@
                 android:text="保存"
                 android:textColor="#ffffffff"
                 android:textSize="18sp"
-                android:background="@drawable/zhizhijietiao_btn_bg"
+                android:background="@color/orange_color_ffa237"
                 />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

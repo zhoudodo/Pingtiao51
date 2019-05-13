@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -22,6 +23,9 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.UrlEncoderUtils;
+import com.pingtiao51.armsmodule.mvp.ui.helper.JsInterface;
+import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
+import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.zls.baselib.custom.view.webview.ProgressWebView;
 
 import java.io.File;
@@ -35,11 +39,13 @@ import java.util.Locale;
 
 import static android.os.Environment.DIRECTORY_DCIM;
 
-public abstract class BaseWebViewActivity extends FragmentActivity {
+public abstract class BaseWebViewActivity extends FragmentActivity implements JsInterface.Js2JavaInterface {
     public final static String WEBVIEW_URL = "WEBVIEW_URL";
     public final static String WEBVIEW_TITLE = "WEBVIEW_TITLE";
     private Intent recIntent;
     ProgressWebView progressWebView;
+    public final static String WEBVIEW_OTHERS = "webview_others";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +56,11 @@ public abstract class BaseWebViewActivity extends FragmentActivity {
         initWebViews();
     }
 
+
     public abstract int setRootView();
+
     public abstract ProgressWebView setProgressWebView();
+
     public abstract void setWebClient();
 
     private void initPageInfos() {
@@ -70,37 +79,36 @@ public abstract class BaseWebViewActivity extends FragmentActivity {
         progressWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                    final WebView.HitTestResult hitTestResult = progressWebView.getHitTestResult();
-                    // 如果是图片类型或者是带有图片链接的类型
-                    if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
-                            hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-                        // 弹出保存图片的对话框
-                        new AlertDialog.Builder(BaseWebViewActivity.this)
-                                .setItems(new String[]{"保存图片到本地"
+                final WebView.HitTestResult hitTestResult = progressWebView.getHitTestResult();
+                // 如果是图片类型或者是带有图片链接的类型
+                if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
+                        hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                    // 弹出保存图片的对话框
+                    new AlertDialog.Builder(BaseWebViewActivity.this)
+                            .setItems(new String[]{"保存图片到本地"
 //                                    , "分享图片"
-                                }, (dialog, which) -> {
-                                    String pic = hitTestResult.getExtra();//获取图片
-                                    switch (which) {
-                                        case 0:
-                                            //保存图片到相册
-                                            saveImage(pic);
-                                            break;
-                                        case 1:
-                                            // 分享图片，这里用RxJava处理异步
+                            }, (dialog, which) -> {
+                                String pic = hitTestResult.getExtra();//获取图片
+                                switch (which) {
+                                    case 0:
+                                        //保存图片到相册
+                                        saveImage(pic);
+                                        break;
+                                    case 1:
+                                        // 分享图片，这里用RxJava处理异步
 
-                                            break;
-                                    }
-                                })
-                                .show();
-                        return true;
-                    }
+                                        break;
+                                }
+                            })
+                            .show();
+                    return true;
+                }
                 return false;
             }
         });
 
 
     }
-
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -142,7 +150,7 @@ public abstract class BaseWebViewActivity extends FragmentActivity {
         if (progressWebView.canGoBack()) {
             progressWebView.goBack(); //goBack()表示返回webView的上一页面
             return;
-        } else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -178,13 +186,16 @@ public abstract class BaseWebViewActivity extends FragmentActivity {
 //        }
     }
 
+    private int mCount = 0;
     @Override
     protected void onResume() {
         super.onResume();
-//        if (webView != null) {
-//            webView.onResume();
-//            webView.resumeTimers();
-//        }
+        String json = mCount +"";
+        mCount++;
+        if(!TextUtils.isEmpty(SavePreference.getStr(this,PingtiaoConst.KEY_TOKEN)) && getIntent().getBooleanExtra(WEBVIEW_OTHERS,true)) {
+            progressWebView.loadUrl("javascript:reloadPage(" + "'" + json + "'" + ")");
+        }
+//        progressWebView.loadUrl("javascript:reloadPage()");
     }
 
     public void saveImage(String data) {
@@ -208,7 +219,6 @@ public abstract class BaseWebViewActivity extends FragmentActivity {
     }
 
 
-
     private void save2Album(Bitmap bitmap, String fileName) {
         File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM), fileName);
         FileOutputStream fos = null;
@@ -230,5 +240,30 @@ public abstract class BaseWebViewActivity extends FragmentActivity {
             } catch (Exception ignored) {
             }
         }
+    }
+
+    @Override
+    public void setTitle(String str) {
+
+    }
+
+    @Override
+    public void setRightTitle(String str) {
+
+    }
+
+    @Override
+    public void showDialog() {
+
+    }
+
+    @Override
+    public void loadUrl(String url) {
+
+    }
+
+    @Override
+    public void reloadUrl(String url) {
+
     }
 }

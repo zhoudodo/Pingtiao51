@@ -16,6 +16,7 @@ import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.di.component.DaggerAddBankCardComponent;
 import com.pingtiao51.armsmodule.mvp.contract.AddBankCardContract;
+import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.AddBankSucTag;
 import com.pingtiao51.armsmodule.mvp.presenter.AddBankCardPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.BankTextWatcher;
@@ -108,6 +109,10 @@ public class AddBankCardActivity extends BaseArmsActivity<AddBankCardPresenter> 
                 break;
             case R.id.get_support_banks:
                 //TODO 跳转至支持银行列表
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "支持银行卡");
+                bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + Api.SUPPORT_BANK);
+                startActBundle(bundle1, WebViewActivity.class);
                 break;
         }
     }

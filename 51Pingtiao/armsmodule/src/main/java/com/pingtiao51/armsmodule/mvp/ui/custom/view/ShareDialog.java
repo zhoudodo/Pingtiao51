@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.R;
@@ -45,6 +46,26 @@ public class ShareDialog extends FrameDialog {
         super(context);
         setCanceledOnTouchOutside(true);
     }
+
+    public ShareDialog(Activity context,String title,int[] ints) {
+        super(context);
+        setCanceledOnTouchOutside(true);
+        findViews(R.id.title).post(new Runnable() {
+            @Override
+            public void run() {
+                TextView titleTv = findViews(R.id.title);
+                titleTv.setText(title);
+                if(ints.length == 4){
+                    findViews(R.id.share_weixin).setVisibility(ints[0] == 1?View.VISIBLE:View.GONE);
+                    findViews(R.id.share_erweima).setVisibility(ints[1] == 1?View.VISIBLE:View.GONE);
+                    findViews(R.id.share_duanxin).setVisibility(ints[2] == 1?View.VISIBLE:View.GONE);
+                    findViews(R.id.share_lianjie).setVisibility(ints[3] == 1?View.VISIBLE:View.GONE);
+                }
+            }
+        });
+    }
+
+
 
 
     public ShareDialog(Activity context, int themeStyle) {

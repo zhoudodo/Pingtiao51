@@ -13,8 +13,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="#fffffded"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/hint_dengpao" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="收条由杭州互联网公证处存证"
+                    android:textColor="#ffe8722d"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="15dp"
@@ -24,7 +45,7 @@
                 <View
                     android:layout_width="2dp"
                     android:layout_height="17dp"
-                    android:background="#72AFF3"></View>
+                    android:background="#FF7F0D"></View>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -35,172 +56,201 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <RelativeLayout
+            <LinearLayout
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:background="@drawable/bg_shadow_radius_5b5b5b"
+                android:layout_margin="15dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="21dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="递交金额："
+                        android:textColor="#ff5c5c5c"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/shoutiao_xq_dijiaojine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="80dp"
+                        android:text="100.00元"
+                        android:textColor="#FF7F0D"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="经手人"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="经手人"
+                            android:textColor="#5c5c5c"
+                            android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/shoutiao_xq_jingshouren"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="170dp"
-                    android:text="张三"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+                        <TextView
+                            android:id="@+id/shoutiao_xq_jingshouren"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="70dp"
+                            android:text="张三"
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="21dp">
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="递交人"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="递交人"
+                            android:textColor="#5c5c5c"
+                            android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/shoutiao_xq_dijiaoren"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="170dp"
-                    android:text="李四"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+                        <TextView
+                            android:id="@+id/shoutiao_xq_dijiaoren"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="70dp"
+                            android:text="李四"
+                            android:textColor="#333333"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="21dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="经手时间："
+                        android:textColor="#ff5c5c5c"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="递交金额"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/shoutiao_xq_jingshoushijian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="80dp"
+                        android:text="2018-01-02"
+                        android:textColor="#ff5c5c5c"
+                        android:textSize="14sp" />
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/shoutiao_xq_dijiaojine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="170dp"
-                    android:text="100.00元"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="21dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="备注:"
+                        android:textColor="#5c5c5c"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="经手时间"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/shoutiao_xq_beizhu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
+                        android:text="2018-09-092018-09-092018-09-092018-09-092018-09-09"
+                        android:textColor="#5c5c5c"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
 
-                <TextView
-                    android:id="@+id/shoutiao_xq_jingshoushijian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="170dp"
-                    android:text="2018-01-02"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="电子收条："
+                        android:textColor="#5c5c5c"
+                        android:textSize="14sp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="21dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="备注"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/shoutiao_xq_beizhu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="170dp"
-                    android:text="2018-09-09"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="21dp">
+                    <TextView
+                        android:id="@+id/shoutiao_xq_xiazai"
+                        android:text="下载"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:background="@drawable/bg_shadow_radius_ff8048"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/white_ffffff"
+                        android:textSize="16sp"
+                        android:layout_alignParentRight="true"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="电子收条"
-                    android:textColor="#ff1e1e1e"
-                    android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/shoutiao_xq_chakan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="170dp"
-                    android:text="查看"
-                    android:textColor="#4F67DC"
-                    android:textSize="16sp" />
-                <View
-                    android:id="@+id/shu_line"
-                    android:layout_marginLeft="210dp"
-                    android:background="#ff9d9d9d"
-                    android:layout_width="1dp"
-                    android:layout_centerVertical="true"
-                    android:layout_height="14dp">
-                </View>
-                <TextView
-                    android:id="@+id/shoutiao_xq_xiazai"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="220dp"
-                    android:text="下载"
-                    android:textColor="#4F67DC"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/shoutiao_xq_chakan"
+                        android:text="查看"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:background="@drawable/bg_shadow_radius_ff8048"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/white_ffffff"
+                        android:textSize="16sp"
+                        android:layout_marginRight="115dp"
+                        android:layout_alignParentRight="true"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+
+
+
 
             <View
                 android:layout_width="match_parent"
@@ -218,7 +268,7 @@
                 <View
                     android:layout_width="2dp"
                     android:layout_height="17dp"
-                    android:background="#72AFF3"></View>
+                    android:background="#FF7F0D"></View>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -261,7 +311,7 @@
                 <View
                     android:layout_width="2dp"
                     android:layout_height="17dp"
-                    android:background="#72AFF3"></View>
+                    android:background="#FF7F0D"></View>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -344,7 +394,7 @@
                     <View
                         android:layout_width="2dp"
                         android:layout_height="17dp"
-                        android:background="#72AFF3"></View>
+                        android:background="#FF7F0D"></View>
 
 
                     <TextView
@@ -391,7 +441,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="公证编号"
+                        android:text="存证编号"
                         android:textColor="#ff1e1e1e"
                         android:textSize="16sp" />
 

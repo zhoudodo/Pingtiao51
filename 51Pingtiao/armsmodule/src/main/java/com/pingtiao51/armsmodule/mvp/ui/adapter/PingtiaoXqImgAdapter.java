@@ -26,9 +26,10 @@ public class PingtiaoXqImgAdapter extends BaseQuickAdapter<String,BaseViewHolder
     protected void convert(BaseViewHolder helper, String item) {
         ImageView img= helper.getView(R.id.pingtiao_xq_img);
         if(ADD_BTN.equals(item)) {
+            img.setBackground(null);
             GlideProxyHelper.loadImgForRes(img,R.drawable.tianjia_tupian);
         }else{
-
+            img.setBackground(mContext.getResources().getDrawable(R.drawable.tianjia_item_bg));
             if(UrlEncoderUtils.hasUrlEncoded(item)){
                 try {
                     item = URLDecoder.decode(item,"UTF-8");

@@ -2,22 +2,25 @@ package com.pingtiao51.armsmodule.mvp.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.luck.picture.lib.PictureSelector;
@@ -29,12 +32,14 @@ import com.pingtiao51.armsmodule.di.component.DaggerDianziJietiaoXiangqingCompon
 import com.pingtiao51.armsmodule.mvp.contract.DianziJietiaoXiangqingContract;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PingtiaoApi;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.CloseElectronicNoteRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.FinishElectronicNoteRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoDetailResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoXiangqingResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.DianziJietiaoXiangqingPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.PingtiaoXqImgAdapter;
+import com.pingtiao51.armsmodule.mvp.ui.custom.view.DownloadPingtiaoDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.DateUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.ImagePaizhaoHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
@@ -47,10 +52,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 /**
@@ -79,12 +84,33 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
                 .inject(this);
     }
 
+    @BindView(R.id.nsv)
+    NestedScrollView nsv;
+
+    @BindView(R.id.dianzijietiao_rootview_more)
+    LinearLayout dianzijietiao_rootview_more;
+    @BindView(R.id.jietiao_shousuolan)
+    LinearLayout jietiao_shousuolan;
+    @BindView(R.id.jietiao_shousuolan_mingcheng)
+    TextView jietiao_shousuolan_mingcheng;
+
+
+    @BindView(R.id.dianzijietiao_huankuan_jiantou)
+    ImageView dianzijietiao_huankuan_jiantou;
+
+
+    @BindView(R.id.yihuan_jine_layout)
+    RelativeLayout yihuan_jine_layout;
+
+    @BindView(R.id.jietiao_xq_history_yihuan)
+    TextView jietiao_xq_history_yihuan;
+
+
     @BindView(R.id.jietiao_xq_chakan)
     TextView jietiao_xq_chakan;
     @BindView(R.id.jietiao_xq_xiazai)
     TextView jietiao_xq_xiazai;
-    @BindView(R.id.shu_line)
-    View shu_line;
+
     @BindView(R.id.jietiao_xq_jiekuanren)
     TextView jietiao_xq_jiekuanren;
     @BindView(R.id.jietiao_xq_chujieren)
@@ -125,16 +151,112 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
     @BindView(R.id.cunzhengshijian)
     TextView cunzhengshijian;
 
+
+    @BindView(R.id.jietiao_xq_history_ququeren_layout)
+    RelativeLayout jietiao_xq_history_ququeren_layout;
+    @BindView(R.id.jietiao_xq_history_huankuan)
+    TextView jietiao_xq_history_huankuan;
+    @BindView(R.id.jietiao_xq_history_req_time)
+    TextView jietiao_xq_history_req_time;
+    @BindView(R.id.jietiao_xq_history_ququeren)
+    ImageView jietiao_xq_history_ququeren;
+
+    @BindView(R.id.huankuanjilu_layout)
+    LinearLayout huankuanjilu_layout;
+
+
+
+    private double historyYihuanjine;
+    private void initHuankuanLayout(PingtiaoXiangqingResponse rep) {
+        hintChujieren(false, "", "");
+        boolean isVisible = ("1".equals(rep.getHasApplyRepayRecord())) && "1".equals(rep.getBorrowAndLendState());
+        for (PingtiaoXiangqingResponse.RepayRecords records : rep.getRepayRecords()) {
+            if ("APPLY".equals(records.getStatus())) {
+                hintChujieren(isVisible, records.getAmount() + "", records.getCreateTime());
+            }else if("SUCCESS".equals(records.getStatus())){
+                historyYihuanjine = records.getAmount();
+            }
+        }
+    }
+
+    /**
+     * 还款之后提醒借款人layout
+     *
+     * @param isVisble
+     * @param huankuanAmount
+     * @param time
+     */
+
+    private void hintChujieren(boolean isVisble, String huankuanAmount, String time) {
+        jietiao_xq_history_ququeren_layout.setVisibility(isVisble ? View.VISIBLE : View.GONE);
+        if (!isVisble && mPingtiaoXiangqingResponse.getRepayRecords().size() <= 0) {
+            huankuanjilu_layout.setVisibility(View.GONE);
+        } else {
+            huankuanjilu_layout.setVisibility(View.VISIBLE);
+        }
+        SpannableStringBuilder ssb1 = new SpanUtils()
+                .append("还款").setForegroundColor(getResources().getColor(R.color.black_color_333333))
+                .append("¥" + huankuanAmount + "元").setForegroundColor(getResources().getColor(R.color.orange_color_FF6142))
+                .create();
+        jietiao_xq_history_huankuan.setText(ssb1);
+
+
+        SpannableStringBuilder ssb2 = new SpanUtils()
+                .append("申请时间 ")
+                .append(time)
+                .create();
+        jietiao_xq_history_req_time.setText(ssb2);
+
+    }
+
+
+    @BindView(R.id.jietiao_xq_chujieren1)
+    TextView jietiao_xq_chujieren1;
+    @BindView(R.id.chujiejiekuan)
+    TextView chujiejiekuan;
+    @BindView(R.id.jietiao_xq_daoqishijian)
+    TextView jietiao_xq_daoqishijian;
+    @BindView(R.id.daihuanshou)
+    TextView daihuanshou;
+    @BindView(R.id.jietiao_xq_daihuanjine)
+    TextView jietiao_xq_daihuanjine;
+
+    /**
+     * 借条简介
+     */
+    private void jietiaojianjie(PingtiaoXiangqingResponse rep) {
+        String borrowAndLendState = rep.getBorrowAndLendState();// 0：借款人 1：出借人
+        //显示对方信息
+        switch (borrowAndLendState) {
+            case "1":
+                daihuanshou.setText("待收：");
+                setDaihuanjine(rep.getTotalAmount());
+                chujiejiekuan.setText("借款人：");
+                jietiao_xq_chujieren1.setText(rep.getBorrower());
+                jietiao_xq_daoqishijian.setText(rep.getRepaymentDate());
+                break;
+            case "0":
+                daihuanshou.setText("待还：");
+                setDaihuanjine(rep.getTotalAmount());
+                chujiejiekuan.setText("出借人：");
+                jietiao_xq_chujieren1.setText(rep.getLender());
+                jietiao_xq_daoqishijian.setText(rep.getRepaymentDate());
+
+                break;
+        }
+    }
+
     /**
      * 法律保证
      */
-    private void falvbaozheng(){
-        if(mPingtiaoXiangqingResponse != null && mPingtiaoXiangqingResponse.getOwnershipRecordDto() != null){
+    private void falvbaozheng() {
+        if (mPingtiaoXiangqingResponse != null && mPingtiaoXiangqingResponse.getOwnershipRecordDto() != null
+                && mVisible && !"REJECTED".equals(mPingtiaoXiangqingResponse.getStatus())) {
             falv_layout.setVisibility(View.VISIBLE);
             gongzhengchu.setText(mPingtiaoXiangqingResponse.getOwnershipRecordDto().getCertificateStructure());
             gongzhengbianhao.setText(mPingtiaoXiangqingResponse.getOwnershipRecordDto().getOwnershipOrderNo());
             cunzhengshijian.setText(mPingtiaoXiangqingResponse.getOwnershipRecordDto().getCertificateDate());
-        }else{
+        } else {
             falv_layout.setVisibility(View.GONE);
         }
        /* @BindView(R.id.falv_layout)
@@ -164,7 +286,6 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
         if (intent != null) {
             id = intent.getIntExtra(PING_TIAO_XIANG_QING, 0);
         }
-        mPresenter.getPingtiaoById(id);
         mPingtiaoXqImgAdapter = new PingtiaoXqImgAdapter(R.layout.item_pingtiao_xq_img_layout, mDatas);
         jietiao_xq_rv.setLayoutManager(new GridLayoutManager(this, 3));
         jietiao_xq_rv.setAdapter(mPingtiaoXqImgAdapter);
@@ -199,6 +320,12 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.getPingtiaoById(id);
     }
 
     private List<LocalMedia> selectList = new ArrayList<>();
@@ -264,10 +391,11 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
     PingtiaoXiangqingResponse mPingtiaoXiangqingResponse;
 
 
-
     @Override
     public void onSucJietiaoXq(PingtiaoXiangqingResponse rep) {
         mPingtiaoXiangqingResponse = rep;
+        jietiaojianjie(rep);
+        initHuankuanLayout(rep);
         goneDown(rep);
         falvbaozheng();
         jietiao_xq_jiekuanren.setText(rep.getBorrower());
@@ -282,6 +410,7 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
         jietiao_xq_chuangjianshijian.setText(rep.getCreateTime());
         jietiao_xq_pingtiaozhuangtai.setText(getStatus(rep));
         setBtnType(rep);
+        setDaihuanjine(rep.getTotalAmount() + "");
         if (rep.getUrls() != null && rep.getUrls().size() > 0) {
             jietiao_xq_rv.setVisibility(View.VISIBLE);
         }
@@ -297,62 +426,146 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
             mDatas.addAll(rep.getUrls());
         }
         mPingtiaoXqImgAdapter.notifyDataSetChanged();
+        setHistoryLayout();
+        showJietiaoXiangqing(true);
     }
 
+    @BindView(R.id.xiaozhang_btn)
+    TextView xiaozhang_btn;
     @BindView(R.id.jietiao_xq_zaicifasong)
     TextView jietiao_xq_zaicifasong;
     @BindView(R.id.jietiao_xq_btn)
     TextView jietiao_xq_btn;
+    @BindView(R.id.shanchu_btn)
+    TextView shanchu_btn;
+    List<TextView> showTvs = new ArrayList<>();
 
     private void setBtnType(PingtiaoXiangqingResponse item) {
         String status = item.getStatus();
-        if (!"UNPAY_REJECT".equals(status) &&
-                !"PAY_REJECT".equals(status) &&
-                !"LENDER_FINISHED".equals(status) &&
-                !"BORROWER_FINISHED".equals(status)
-                ) {
-            if ("UNCLOUD_STORE".equals(item.getHasCloudStoreOrConfirm()) ||
-                    "UNCONFIRMED".equals(item.getHasCloudStoreOrConfirm())||
-                    "UNSIGNED".equals(item.getStatus())) {
-                jietiao_xq_zaicifasong.setVisibility(View.VISIBLE);
-            } else {
-                jietiao_xq_zaicifasong.setVisibility(View.GONE);
+        showTvs.clear();
+        //删除借条按钮显示
+        if ("UNHANDLED".equals(status) || "LENDER_FINISHED".equals(status) || "REJECTED".equals(status) || "UNSIGNED".equals(item.getSignStatus())) {
+            shanchu_btn.setVisibility(View.VISIBLE);
+            showTvs.add(shanchu_btn);
+        } else {
+            shanchu_btn.setVisibility(View.GONE);
+        }
+        //删除点击事件
+        shanchu_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog(item);
             }
-            if("UNSIGNED".equals(item.getStatus())) {
-                jietiao_xq_btn.setVisibility(View.GONE);
-            }else{
-                jietiao_xq_btn.setVisibility(View.VISIBLE);
+        });
+
+        if ("1".equals(item.getBorrowAndLendState())) {//出借人 才有还款 审批 和 销账
+            //0:待还  借款人  1:代收 出借人
+            //销账  按钮显示
+            if (("CONFIRMED".equals(status) || "OVERDUE".equals(status)) && "SIGNED".equals(item.getSignStatus())) {
+                xiaozhang_btn.setVisibility(View.VISIBLE);
+                showTvs.add(xiaozhang_btn);
+            } else {
+                xiaozhang_btn.setVisibility(View.GONE);
             }
         } else {
-            jietiao_xq_zaicifasong.setVisibility(View.GONE);
-            jietiao_xq_btn.setVisibility(View.GONE);
+            xiaozhang_btn.setVisibility(View.GONE);
         }
-        if ("DRAFT".equals(status) || "UNPAY_UNHANDLE".equals(status) || "PAY_UNHANDLE".equals(status)) {
+
+        //销账点击事件
+        xiaozhang_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                hintDialog(item);
+
+            }
+        });
+
+
+        //再次发送 按钮显示
+        if (("UNHANDLED".equals(status) || "UNSIGNED".equals(item.getSignStatus()))&& !"REJECTED".equals(status)) {
             jietiao_xq_zaicifasong.setVisibility(View.VISIBLE);
+            showTvs.add(jietiao_xq_zaicifasong);
+        } else {
+            jietiao_xq_zaicifasong.setVisibility(View.GONE);
+        }
+
+        //再次发送点击事件
+        jietiao_xq_zaicifasong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "二维码分享");
+                bundle1.putInt(WebViewShareActivity.NOTE_ID, (int) item.getId());
+                bundle1.putInt(WebViewShareActivity.USER_TYPE, Integer.parseInt(item.getBorrowAndLendState()));
+                bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + item.getId() + "&userType=" + item.getBorrowAndLendState());
+
+                ActivityUtils.startActivity(bundle1, WebViewShareActivity.class);
+            }
+        });
+
+        if ("0".equals(item.getBorrowAndLendState())) {
+            //还款状态 已还款 按钮显示
+            if (("CONFIRMED".equals(status) || "OVERDUE".equals(status)) && "0".equals(item.getHasApplyRepayRecord())&& "SIGNED".equals(item.getSignStatus())) {
+                jietiao_xq_btn.setVisibility(View.VISIBLE);
+                showTvs.add(jietiao_xq_btn);
+                jietiao_xq_btn.setText("已还款?");
+                jietiao_xq_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO 已还款
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString(XiaoZhangActivity.BORROW, item.getBorrower());
+                        bundle1.putString(XiaoZhangActivity.LENDER, item.getLender());
+                        bundle1.putDouble(XiaoZhangActivity.AMOUNT, Double.valueOf(item.getTotalAmount()));
+                        bundle1.putInt(XiaoZhangActivity.NOTEID, (int) item.getId());
+                        ActivityUtils.startActivity(bundle1, HuankuanFangshiActivity.class);
+                    }
+                });
+            } else if (("CONFIRMED".equals(status) || "OVERDUE".equals(status)) && "1".equals(item.getHasApplyRepayRecord()) && "SIGNED".equals(item.getSignStatus())) {
+                jietiao_xq_btn.setVisibility(View.VISIBLE);
+                showTvs.add(jietiao_xq_btn);
+                jietiao_xq_btn.setText("还款状态");
+                jietiao_xq_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO 还款状态
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putInt(HuankuanStatusActivity.NOTE_ID, (int) item.getId());
+                        bundle1.putInt(HuankuanStatusActivity.USER_TYPE, Integer.parseInt(item.getBorrowAndLendState()));
+                        ActivityUtils.startActivity(bundle1, HuankuanStatusActivity.class);
+
+                    }
+                });
+            } else {
+                jietiao_xq_btn.setVisibility(View.GONE);
+            }
+        } else {
             jietiao_xq_btn.setVisibility(View.GONE);
         }
+
+        if (showTvs.size() == 1) {
+            showTvs.get(0).setBackgroundColor(Color.parseColor("#cf986f"));
+            showTvs.get(0).setTextColor(Color.parseColor("#FFFFFF"));
+        } else if (showTvs.size() == 2) {
+            showTvs.get(0).setBackgroundColor(Color.parseColor("#FFD583"));
+            showTvs.get(0).setTextColor(Color.parseColor("#CFA16f"));
+            showTvs.get(1).setBackgroundColor(Color.parseColor("#cf986f"));
+            showTvs.get(1).setTextColor(Color.parseColor("#FFFFFF"));
+        }
+
     }
 
     private boolean mVisible = false;
 
     private void goneDown(PingtiaoXiangqingResponse rep) {
         mVisible = false;
-        String status = rep.getStatus();
-        switch (status) {
-            case "SIGNED":
-            case "OVERDUE":
-            case "BORROWER_FINISHED":
-            case "LENDER_FINISHED":
-                // 已签章
-                mVisible = true;
-                break;
-            default:
-                //未签章
-                mVisible = false;
-                break;
+        if("UNSIGNED".equals(rep.getSignStatus()) || "UNHANDLED".equals(rep.getStatus())){
+            mVisible = false;
+        }else{
+            mVisible = true;
         }
 
-        shu_line.setVisibility(mVisible ? View.VISIBLE : View.GONE);
         jietiao_xq_xiazai.setVisibility(mVisible ? View.VISIBLE : View.GONE);
         jietiao_xq_chakan.setText(mVisible ? "查看" : "预览");
 
@@ -368,7 +581,11 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
         ArmsUtils.snackbarText("文件保存位置:" + savePath);
     }
 
-    @OnClick({R.id.jietiao_xq_chakan, R.id.jietiao_xq_xiazai, R.id.jietiao_xq_btn, R.id.jietiao_xq_zaicifasong})
+
+    private DownloadPingtiaoDialog mDownloadPingtiaoDialog;
+
+    @OnClick({R.id.jietiao_xq_chakan, R.id.jietiao_xq_xiazai, R.id.jietiao_xq_btn, R.id.jietiao_xq_zaicifasong, R.id.jietiao_shousuolan
+            , R.id.jietiao_huankuan_shousuolan,R.id.cunzhengzhengming_btn,R.id.jietiao_xq_history_ququeren})
     public void onPageClick(View view) {
         switch (view.getId()) {
             case R.id.jietiao_xq_chakan:
@@ -390,7 +607,7 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
                 }
                 break;
             case R.id.jietiao_xq_xiazai:
-                String downUrl = mPingtiaoXiangqingResponse.getDownUrl();
+/*                String downUrl = mPingtiaoXiangqingResponse.getDownUrl();
                 downUrl = UrlDecoderHelper.decode(downUrl);
                 String filename = "pingtiao";
                 try {
@@ -403,21 +620,82 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
                 if (TextUtils.isEmpty(filename)) {
                     filename = "pingtiao";
                 }
-                mPresenter.downLoadFile(downUrl, filename);
+                mPresenter.downLoadFile(downUrl, filename);*/
+                if (mDownloadPingtiaoDialog == null) {
+                    mDownloadPingtiaoDialog = new DownloadPingtiaoDialog(this, "下载电子借条", (int) id);
+                }
+                mDownloadPingtiaoDialog.show();
                 break;
             case R.id.jietiao_xq_btn://已经还款
-                showDialog(findViewById(R.id.jietiao_xq_btn), mPingtiaoXiangqingResponse.getId());
+                //数据回调一并处理
+//                showDialog(findViewById(R.id.jietiao_xq_btn), mPingtiaoXiangqingResponse.getId());
                 break;
             case R.id.jietiao_xq_zaicifasong:
-                Bundle bundle1 = new Bundle();
-                bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "二维码分享");
-                bundle1.putInt(WebViewShareActivity.NOTE_ID, mPingtiaoXiangqingResponse.getId());
-                bundle1.putInt(WebViewShareActivity.USER_TYPE, Integer.parseInt(mPingtiaoXiangqingResponse.getInitiator()));
-                bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + mPingtiaoXiangqingResponse.getId() + "&userType=" + mPingtiaoXiangqingResponse.getInitiator());
-                startActBundle(bundle1, WebViewShareActivity.class);
+                //数据回调一并处理
+
+//                Bundle bundle1 = new Bundle();
+//                bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "二维码分享");
+//                bundle1.putInt(WebViewShareActivity.NOTE_ID, mPingtiaoXiangqingResponse.getId());
+//                bundle1.putInt(WebViewShareActivity.USER_TYPE, Integer.parseInt(mPingtiaoXiangqingResponse.getInitiator()));
+//                bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + mPingtiaoXiangqingResponse.getId() + "&userType=" + mPingtiaoXiangqingResponse.getInitiator());
+//                startActBundle(bundle1, WebViewShareActivity.class);
+                break;
+            case R.id.jietiao_shousuolan:
+                showJietiaoXiangqing(dianzijietiao_rootview_more.getVisibility() == View.VISIBLE);
+                break;
+            case R.id.jietiao_huankuan_shousuolan:
+                if (isGoneHistory) {
+                    isGoneHistory = !isGoneHistory;
+                    jietiao_huankuan_hint.setText("折叠全部");
+                    dianzijietiao_jiantou2.setRotation(0);
+                    setHuankuanHistoryLayout(mPingtiaoXiangqingResponse.getRepayRecords().size());//还款历史记录的N条
+                } else {
+                    isGoneHistory = !isGoneHistory;
+                    jietiao_huankuan_hint.setText("查看全部");
+                    dianzijietiao_jiantou2.setRotation(180);
+                    setHuankuanHistoryLayout(mPingtiaoXiangqingResponse.getRepayRecords().size()>2 ? 2:mPingtiaoXiangqingResponse.getRepayRecords().size());//默认显示的2条v
+                }
+                break;
+
+            case R.id.jietiao_xq_history_ququeren:
+                //还款记录 去审批按钮
+                huankuanshenpi();
+                break;
+
+            case R.id.cunzhengzhengming_btn:
+                //法律  存证证明查看
+                Bundle bundlex01  = new Bundle();
+                bundlex01.putString(WebViewZXActivity.WEBVIEW_TITLE, "存证证明");
+                bundlex01.putString(WebViewZXActivity.WEBVIEW_URL, UrlDecoderHelper.decode(mPingtiaoXiangqingResponse.getOwnershipRecordDto().getCertificateUrl()));
+                startActBundle(bundlex01, WebViewZXActivity.class);
+          /*      Uri uri = Uri.parse(UrlDecoderHelper.decode(mPingtiaoXiangqingResponse.getOwnershipRecordDto().getCertificateUrl()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);*/
                 break;
         }
     }
+
+
+    /**
+     * 展开关闭详情页面
+     *
+     * @param isShow
+     */
+    private void showJietiaoXiangqing(boolean isShow) {
+        if (isShow) {
+            dianzijietiao_rootview_more.setVisibility(View.GONE);
+            dianzijietiao_huankuan_jiantou.setRotation(180);
+            jietiao_shousuolan_mingcheng.setText("显示借条详情");
+            nsv.fling(0);
+            nsv.smoothScrollTo(0, 0);
+
+        } else {
+            dianzijietiao_rootview_more.setVisibility(View.VISIBLE);
+            dianzijietiao_huankuan_jiantou.setRotation(0);
+            jietiao_shousuolan_mingcheng.setText("折叠借条详情");
+        }
+    }
+
 
     DialogChooseNormal mDialogChooseNormal;
 
@@ -476,31 +754,39 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
                 }).isDisposed();
     }
 
-    public static String getStatus(PingtiaoXiangqingResponse item) {
+    @BindView(R.id.xq_chakan_xiazai)
+    RelativeLayout xq_chakan_xiazai;
+
+    public  String getStatus(PingtiaoXiangqingResponse item) {
+        xq_chakan_xiazai.setVisibility(View.VISIBLE);
         String value = item.getStatus();
+//        String overDueDays = item.getOv();
         switch (value) {
             case "DRAFT":
-                return "未生效";
-            case "UNPAY_REJECT":
-                return "被驳回";
-            case "PAY_REJECT":
-                return "被驳回";
-            case "UNPAY_UNHANDLE":
-                return "未生效";
-            case "PAY_UNHANDLE":
-                return "未生效";
-            case "UNSIGNED":
-                return "未生效";
-            case "SIGNED":
                 return "";
+            case "UNHANDLED":
+                return "待确认";
             case "OVERDUE":
                 return "已逾期";
+//                + overDueDays + "天";
+            case "LENDER_FINISHED":
+                return "已完结";
             case "BORROWER_FINISHED":
                 return "借款人完结";
-            case "LENDER_FINISHED":
-                return "出借人完结";
-            case "CLOSED":
-                return "作废";
+            case "CONFIRMED"://确认的
+                if("UNSIGNED".equals(item.getSignStatus())){
+                    return "待确认";
+                }
+                return "未到期";
+            case "REJECTED"://REJECTED
+                xq_chakan_xiazai.setVisibility(View.GONE);
+                return "被驳回";
+            case "BORROWER_CLOSED"://借款人删除
+                return "";
+            case "LENDER_CLOSED"://出借人删除
+                return "";
+            case "CLOSED"://CLOSED
+                return "";
         }
         return "";
     }
@@ -542,5 +828,248 @@ public class DianziJietiaoXiangqingActivity extends BaseArmsActivity<DianziJieti
         mBundle.putInt(XieJietiaoActivity.XieJietiaoActivity, type);
         intent.putExtras(mBundle);
         startActivity(intent);
+    }
+
+    /**
+     * 代还金额设置
+     *
+     * @param money
+     */
+    private void setDaihuanjine(String money) {
+        SpannableStringBuilder ssb = new SpanUtils()
+                .append(money).setFontSize(30, true)
+                .append("元").setFontSize(14, true)
+                .create();
+        jietiao_xq_daihuanjine.setText(ssb);
+    }
+
+    private void setHistoryYihuan(String money) {
+        SpannableStringBuilder ssb = new SpanUtils()
+                .append("已还  ").setFontSize(14, true).setForegroundColor(getResources().getColor(R.color.black_color_333333))
+                .append("¥" + money).setFontSize(24, true).setForegroundColor(getResources().getColor(R.color.green_64BC3D))
+                .append("元").setFontSize(14, true).setForegroundColor(getResources().getColor(R.color.green_64BC3D))
+                .create();
+        jietiao_xq_history_yihuan.setText(ssb);
+    }
+
+    @BindView(R.id.jietiao_huankuan_shousuolan)
+    LinearLayout jietiao_huankuan_shousuolan;
+
+    @BindView(R.id.jietiao_huankuan_hint)
+    TextView jietiao_huankuan_hint;
+
+    @BindView(R.id.dianzijietiao_jiantou2)
+    ImageView dianzijietiao_jiantou2;
+
+    @BindView(R.id.jietiao_huankuan_history_layout)
+    LinearLayout jietiao_huankuan_history_layout;
+
+    private boolean isGoneHistory = true;
+
+    //还款记录
+    private void setHistoryLayout() {
+        initYihuanLayout();
+        jietiao_huankuan_history_layout.removeAllViews();
+        int realsize = mPingtiaoXiangqingResponse.getRepayRecords().size();//还款记录真实条目
+        int size = realsize > 2 ? 2 : realsize;
+        setHuankuanHistoryLayout(size);
+        if (realsize > 2) {
+            jietiao_huankuan_shousuolan.setVisibility(View.VISIBLE);
+            jietiao_huankuan_hint.setText("查看全部");
+            dianzijietiao_jiantou2.setRotation(180);
+        } else {
+            jietiao_huankuan_shousuolan.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 初始化 已还XXX元 界面
+     */
+    private void initYihuanLayout(){
+        yihuan_jine_layout.setVisibility(View.GONE);
+        if("1".equals(mPingtiaoXiangqingResponse.getBorrowAndLendState())){
+            //出借人
+            if("1".equals(mPingtiaoXiangqingResponse.getHasApplyRepayRecord())){
+                //如果有还款提醒
+                yihuan_jine_layout.setVisibility(View.GONE);
+            }else{
+                yihuan_jine_layout.setVisibility(View.VISIBLE);
+                setHistoryYihuan(historyYihuanjine+"");
+            }
+        }else{
+            //借款人
+            int realsize = mPingtiaoXiangqingResponse.getRepayRecords().size();//还款记录真实条目
+            if(realsize > 0){
+                yihuan_jine_layout.setVisibility(View.VISIBLE);
+                setHistoryYihuan(historyYihuanjine+"");
+            }
+        }
+    }
+
+    private void setHuankuanHistoryLayout(int size) {
+        List<PingtiaoXiangqingResponse.RepayRecords> records = mPingtiaoXiangqingResponse.getRepayRecords();
+        jietiao_huankuan_history_layout.removeAllViews();
+        for (int i = 0; i < size; i++) {
+
+            PingtiaoXiangqingResponse.RepayRecords tempRecords = records.get(i);
+            View view = View.inflate(this, R.layout.layout_huankuan_history_layout, null);
+            if(i==0){
+                view.findViewById(R.id.top_line).setVisibility(View.VISIBLE);
+            }
+            TextView tv1 = view.findViewById(R.id.tv1);
+            TextView tv2 = view.findViewById(R.id.tv2);
+            TextView tv3 = view.findViewById(R.id.tv3);
+            TextView tv4 = view.findViewById(R.id.tv4);
+            tv1.setText("还款");
+            tv2.setText(tempRecords.getAmount() + "元");
+            tv3.setText(tempRecords.getCreateTime());
+            setHuankuanStatus(tempRecords, tv4);
+            jietiao_huankuan_history_layout.addView(view);
+        }
+    }
+
+    private void setHuankuanStatus(PingtiaoXiangqingResponse.RepayRecords repayRecords, TextView tv) {
+        //还款记录状态 SUCCESS FAIL APPLY
+        String ret = "";
+        switch (repayRecords.getStatus()) {
+            case "SUCCESS":
+                ret = "已成功";
+                tv.setText(ret);
+                tv.setTextColor(getResources().getColor(R.color.green68AD47));
+                break;
+            case "REJECTED":
+                ret = "已驳回";
+                tv.setText(ret);
+                tv.setTextColor(getResources().getColor(R.color.orange_color_E5591C));
+                break;
+            case "APPLY":
+                ret = "待审批";
+                tv.setText(ret);
+                tv.setTextColor(getResources().getColor(R.color.green68AD47));
+                break;
+            case "REVOKED":
+                ret = "已撤销";
+                tv.setText(ret);
+                tv.setTextColor(getResources().getColor(R.color.black_color_333333));
+                break;
+        }
+
+
+    }
+
+
+    private void shanchujietiao(PingtiaoXiangqingResponse item) {
+        ArmsUtils.obtainAppComponentFromContext(this).repositoryManager().obtainRetrofitService(PingtiaoApi.class)
+                .closeElectronicNote(new CloseElectronicNoteRequest(
+                        AppUtils.getAppVersionName(),
+                        Long.valueOf(item.getId()),
+                        "ANDRIOD",
+                        0L
+                )).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ErrorHandleSubscriber<BaseJson<Object>>(ArmsUtils.obtainAppComponentFromContext(this).rxErrorHandler()) {
+                    @Override
+                    public void onNext(BaseJson<Object> rep) {
+                        if (rep.isSuccess()) {
+                            finish();
+                            ArmsUtils.snackbarText("删除成功");
+                        } else {
+                            ArmsUtils.snackbarText(rep.getMessage());
+                        }
+                    }
+                });
+    }
+
+    DialogChooseNormal mXiaozhangDialog;
+    private void hintDialog(final PingtiaoXiangqingResponse item) {
+        String title = "提示：销账等同于借款人还款，一经发起，不能撤销！";
+        String btnHint = "继续发起";
+        if ("1".equals(item.getHasApplyRepayRecord())) {
+            //TODO 还款确认
+            title = "该借条有1笔还款审批需要您处理，请处理后再操作完结";
+            btnHint = "去处理";
+            mXiaozhangDialog = new DialogChooseNormal.ChooseBuilder()
+                    .setTitle("提示")
+                    .setContext(ActivityUtils.getTopActivity())
+                    .setContent(title)
+                    .setBtn1Content("取消").setOnClickListener1(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mXiaozhangDialog.dismiss();
+                        }
+                    })
+                    .setBtn1Colort(R.color.gray_color_7D7D7D)
+                    .setBtn3Content(btnHint)
+                    .setOnClickListener3(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mXiaozhangDialog.dismiss();
+                            if ("1".equals(item.getHasApplyRepayRecord())) {
+                                //TODO 还款审批
+                                huankuanshenpi();
+                            } else {
+                                //TODO 销账
+                                xiaozhang(item);
+                            }
+                        }
+                    }).build();
+            mXiaozhangDialog.show();
+        } else {
+            //TODO 销账
+            title = "提示：销账等同于借款人还款，一经发起，不能撤销！";
+            btnHint = "继续发起";
+            xiaozhang(item);
+        }
+
+    }
+
+    /**
+     * 销账
+     * @param item
+     */
+    private void xiaozhang(PingtiaoXiangqingResponse item){
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(XiaoZhangActivity.BORROW, item.getBorrower());
+        bundle1.putString(XiaoZhangActivity.LENDER, item.getLender());
+        bundle1.putDouble(XiaoZhangActivity.AMOUNT, Double.valueOf(item.getTotalAmount()));
+        bundle1.putInt(XiaoZhangActivity.NOTEID, (int) item.getId());
+        ActivityUtils.startActivity(bundle1, XiaoZhangActivity.class);
+    }
+
+    /**
+     * 还款审批
+     *
+     */
+    private void huankuanshenpi(){
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "还款审批");
+        bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "repaymentApproval?id=" + id);
+        ActivityUtils.startActivity(bundle1, WebViewActivity.class);
+    }
+
+
+    DialogChooseNormal mDeleteDialog;//删除借条弹框
+
+    private void deleteDialog(final PingtiaoXiangqingResponse item) {
+        mDeleteDialog = new DialogChooseNormal.ChooseBuilder()
+                .setTitle("提示")
+                .setContext(ActivityUtils.getTopActivity())
+                .setContent("确定删除该借条？")
+                .setBtn1Content("取消").setOnClickListener1(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDeleteDialog.dismiss();
+                    }
+                })
+                .setBtn1Colort(R.color.gray_color_7D7D7D)
+                .setBtn3Content("确定删除")
+                .setOnClickListener3(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDeleteDialog.dismiss();
+                        shanchujietiao(item);
+                    }
+                }).build();
+        mDeleteDialog.show();
     }
 }

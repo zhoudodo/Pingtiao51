@@ -18,12 +18,45 @@
     </string-array>
 
     <string-array name="sort_fun">
-
+        <item>创建时间从早到晚</item>
         <item>还款时间从晚到早</item>
         <item>还款时间从早到晚</item>
         <item>借款金额从少到多</item>
         <item>借款金额从多到少</item>
 
+
+    </string-array>
+    <string-array name="xiaozhang_yuanyin">
+
+        <item>借款人已经还款</item>
+        <item>出借人自愿免除债务</item>
+        <item>其他</item>
+
+    </string-array>
+    <!--销账原因：LENDER_VOLUNTARY_EXEMPTION 出借人自愿免除债务 BORROWER_HAS_REPAYMENT 借款人已经还款 OTHERS 其他-->
+    <string-array name="xiaozhang_yuanyin_send">
+
+        <item>BORROWER_HAS_REPAYMENT</item>
+        <item>LENDER_VOLUNTARY_EXEMPTION</item>
+        <item>OTHERS</item>
+
+    </string-array>
+    <string-array name="huankuan_fangshi">
+
+        <item>微信</item>
+        <item>支付宝</item>
+        <item>银行卡</item>
+        <item>现金</item>
+
+    </string-array>
+
+    <!--WECHAT, ALIPAY, BANK, CASH-->
+    <string-array name="huankuan_fangshi_send">
+
+        <item>WECHAT</item>
+        <item>ALIPAY</item>
+        <item>BANK</item>
+        <item>CASH</item>
 
     </string-array>
 

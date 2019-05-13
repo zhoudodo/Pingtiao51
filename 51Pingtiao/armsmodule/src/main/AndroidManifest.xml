@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pingtiao51.armsmodule">
 
+    <!-- 极光推送 Required  一些系统要求的权限，如访问网络等 -->
+    <uses-permission android:name="com.receipt.px.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- 极光推送Optional for location -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,16 +40,17 @@
     //通过GPS芯片接收卫星的定位信息，定位精度达10米以内
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     //通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/AppTheme1"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:theme">
         <activity android:name=".mvp.ui.activity.XieJietiaoActivity" />
         <activity android:name=".mvp.ui.activity.CreateDianziShoutiaoActivity" />
         <activity android:name=".mvp.ui.activity.CreateDianziJietiaoActivity" />
@@ -62,7 +89,9 @@
             android:name=".mvp.ui.activity.MyPingtiaoActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".mvp.ui.activity.YulanJietiaoActivity" />
-        <activity android:name=".mvp.ui.activity.XieShoutiaoActivity" />
+        <activity
+            android:name=".mvp.ui.activity.XieShoutiaoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".mvp.ui.activity.YulanShoutiaoActivity" />
         <activity android:name=".mvp.ui.activity.SecureCopyActivity" />
         <activity android:name=".mvp.ui.activity.ZhizhiJietiaoMainActivity" />
@@ -79,32 +108,76 @@
         <activity android:name=".mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity" />
         <activity android:name=".mvp.ui.activity.JietiaoMobanVpActivity" />
         <activity android:name=".mvp.ui.activity.ZhizhiMoban1Activity" />
-        <activity android:name=".mvp.ui.activity.ShoutiaoMobanVpActivityActivity"></activity>
-        <activity android:name=".mvp.ui.activity.WebViewActivity"></activity>
-        <activity android:name=".mvp.ui.activity.WebViewSignActivity"></activity>
-        <activity android:name=".mvp.ui.activity.WebViewShareActivity"></activity>
-        <!--下面三行代码必须要有-->
+        <activity android:name=".mvp.ui.activity.ShoutiaoMobanVpActivityActivity" />
+        <activity android:name=".mvp.ui.activity.WebViewActivity" />
+        <activity android:name=".mvp.ui.activity.WebViewSignActivity" />
+        <activity android:name=".mvp.ui.activity.WebViewShareActivity" />
+        <activity android:name=".mvp.ui.activity.XiaoZhangActivity" />
+        <activity android:name=".mvp.ui.activity.HuankuanStatusActivity" />
+        <!-- 下面三行代码必须要有 -->
         <activity
             android:name="com.receipt.px.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <!-- 微信支付 -->
+        <activity
+            android:name="com.receipt.px.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wxcdf3efdd7570a44a" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5ca4306861f564ab2a000a1e" />
         <!-- 解决apk安装失败的问题 -->
-         <provider
-             android:name="android.support.v4.content.FileProvider"
-              android:authorities="com.receipt.px.fileprovider"
-              android:exported="false"
-              android:grantUriPermissions="true">
-             <meta-data
-                 android:name="android.support.FILE_PROVIDER_PATHS"
-                  android:resource="@xml/pingtiao" />
-          </provider>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.receipt.px.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/pingtiao" />
+        </provider>
+
+        <!-- Jpush相关 -->
+        <!-- User defined.  For test only  用户自定义的广播接收器 -->
+        <receiver
+            android:name=".mvp.ui.broadcast.JPushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.receipt.px" />
+            </intent-filter>
+        </receiver>
+
+        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
+        <receiver android:name=".mvp.ui.broadcast.MyJPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
+                <category android:name="com.receipt.px" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".mvp.ui.activity.HuankuanFangshiActivity" />
+        <activity android:name=".mvp.ui.activity.MyBankCardsActivity"></activity>
+        <activity android:name=".mvp.ui.activity.WebViewZXActivity"></activity>
     </application>
-
-
 
 </manifest>

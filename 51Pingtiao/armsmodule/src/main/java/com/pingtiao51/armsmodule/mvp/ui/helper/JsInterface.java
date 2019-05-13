@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.blankj.utilcode.util.ActivityUtils;
-import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.mvp.ui.activity.DianziJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.DianziShoutiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.LoginActivity;
@@ -18,6 +16,8 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.MainActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.MyPingtiaoActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity;
+import com.pingtiao51.armsmodule.mvp.ui.custom.view.H5PayReportDialog;
+import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 
 import java.util.List;
 
@@ -31,6 +31,9 @@ public class JsInterface {
         public void setTitle(String str);
         public void setRightTitle(String str);
         public void showDialog();
+
+        public void loadUrl(String url);
+        public void reloadUrl(String url);
 
     }
 
@@ -61,7 +64,23 @@ public class JsInterface {
 
     @JavascriptInterface
     public String getToken() {
-        return token;
+        return SavePreference.getStr(this.activity,PingtiaoConst.KEY_TOKEN);
+    }
+
+
+
+   @JavascriptInterface
+    public void loadUrl(String url) {
+       if(js2JavaInterface != null){
+           js2JavaInterface.loadUrl(url);
+       }
+    }
+
+   @JavascriptInterface
+    public void reloadUrl(String url) {
+       if(js2JavaInterface != null){
+           js2JavaInterface.reloadUrl(url);
+       }
     }
 
 
@@ -92,6 +111,21 @@ public class JsInterface {
         if(js2JavaInterface != null){
             js2JavaInterface.showDialog();
         }
+    }
+
+    /**
+     * 互金支付弹窗
+     */
+    @JavascriptInterface
+    public void showPayReprotDialog(String title,String reportid,double payAmount) {
+        ActivityUtils.getTopActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                H5PayReportDialog  h5PayReportDialog = new H5PayReportDialog(ActivityUtils.getTopActivity(),title,reportid,payAmount);
+                h5PayReportDialog.show();
+            }
+        });
+
     }
 
     /**
@@ -136,19 +170,33 @@ public class JsInterface {
         bundle.putInt(PING_TIAO_XIANG_QING, (int)id);
         switch (type){
             case "OWE_NOTE":
+                ActivityUtils.finishActivity(DianziJietiaoXiangqingActivity.class);
                 ActivityUtils.startActivity(bundle,DianziJietiaoXiangqingActivity.class);
                 break;
             case "PAPER_OWE_NOTE":
+                ActivityUtils.finishActivity(ZhizhiJietiaoXiangqingActivity.class);
                 ActivityUtils.startActivity(bundle,ZhizhiJietiaoXiangqingActivity.class);
                 break;
             case "PAPER_RECEIPT_NOTE":
+                ActivityUtils.finishActivity(ZhizhiShoutiaoXiangqingActivity.class);
                 ActivityUtils.startActivity(bundle,ZhizhiShoutiaoXiangqingActivity.class);
                 break;
             case "RECEIPT_NOTE":
+                ActivityUtils.finishActivity(DianziShoutiaoXiangqingActivity.class);
                 ActivityUtils.startActivity(bundle,DianziShoutiaoXiangqingActivity.class);
                 break;
             default:
                 break;
         }
     }
+
+
+    /**
+     * 关闭当前页面
+     */
+    @JavascriptInterface
+    public void finishAct() {
+        activity.finish();
+    }
+
 }

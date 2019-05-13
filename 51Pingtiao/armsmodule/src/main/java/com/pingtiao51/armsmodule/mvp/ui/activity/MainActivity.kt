@@ -24,6 +24,7 @@ import com.pingtiao51.armsmodule.R
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.ExitAppTag
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.UnLoginBackTag
 import com.pingtiao51.armsmodule.mvp.model.entity.response.CheckUpdateResponse
+import com.pingtiao51.armsmodule.mvp.ui.broadcast.jpush.JpushManager
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.AppUpdateDialog
 import com.pingtiao51.armsmodule.mvp.ui.fragment.CreditFragment
 import com.pingtiao51.armsmodule.mvp.ui.fragment.HomeFragment
@@ -146,8 +147,19 @@ class MainActivity : BaseArmsActivity<MainPresenter>(), MainContract.View, View.
         tvs[0].isSelected = true
 
         mPresenter?.checkUpdate()
+        jpushRetry()
     }
 
+    /**
+     * 防止之前用户迭代版本未设置别名
+     */
+    fun jpushRetry(){
+        var phone = SavePreference.getStr(this,PingtiaoConst.USER_PHONE)
+        if(!TextUtils.isEmpty(phone)) {
+            JpushManager.setAlias(phone)
+        }
+
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun exitApp(tag: ExitAppTag) {

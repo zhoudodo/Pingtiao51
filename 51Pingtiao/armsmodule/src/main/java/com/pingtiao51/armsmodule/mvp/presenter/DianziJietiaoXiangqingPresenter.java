@@ -22,6 +22,7 @@ import retrofit2.Response;
 
 import javax.inject.Inject;
 
+import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.pingtiao51.armsmodule.mvp.contract.DianziJietiaoXiangqingContract;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
@@ -97,6 +98,8 @@ public class DianziJietiaoXiangqingPresenter extends BasePresenter<DianziJietiao
                     public void onNext(BaseJson<PingtiaoXiangqingResponse> rep) {
                         if(rep.isSuccess()) {
                             mRootView.onSucJietiaoXq(rep.getData());
+                        }else{
+                            ArmsUtils.snackbarText(rep.getMessage());
                         }
                     }
                 });

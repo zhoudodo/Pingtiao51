@@ -4,6 +4,7 @@
     android:layout_height="204dp"
     android:background="@drawable/share_bg_conner_20dp">
     <TextView
+        android:id="@+id/title"
         android:layout_marginLeft="28dp"
         android:layout_marginTop="17dp"
         android:layout_width="wrap_content"

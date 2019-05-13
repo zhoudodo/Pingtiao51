@@ -24,6 +24,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.UrlEncoderUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PingtiaoApi;
@@ -38,6 +39,9 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.share.ShareHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.zls.baselib.custom.view.webview.ProgressWebView;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -110,47 +114,93 @@ public class WebViewShareActivity extends BaseWebViewActivity {
         JsInterface jsInterface = new JsInterface(
                 SavePreference.getStr(this, PingtiaoConst.KEY_TOKEN),
                 this,
-                new JsInterface.Js2JavaInterface() {
-                    @Override
-                    public void setTitle(String str) {
-                        mTitle.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTitle.setText(str);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void setRightTitle(String str) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (TextUtils.isEmpty(str)) {
-                                    rightTv.setVisibility(View.GONE);
-                                } else {
-                                    rightTv.setVisibility(View.VISIBLE);
-                                    rightTv.setText(str);
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void showDialog() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showShareDialog();
-                            }
-                        });
-                    }
-                });
+                this);
 
         progressWebView.addJavascriptInterface(jsInterface, "Java2JS");
     }
 
+    @Override
+    public void setTitle(String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mTitle != null) {
+                    mTitle.setText(str);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void setRightTitle(String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(rightTv != null) {
+                    if (TextUtils.isEmpty(str)) {
+                        rightTv.setVisibility(View.GONE);
+                    } else {
+                        rightTv.setVisibility(View.VISIBLE);
+                        rightTv.setText(str);
+                    }
+                }
+            }
+        });
+    }
+
+
+
+
+    @Override
+    public void showDialog() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showShareDialog();
+            }
+        });
+    }
+
+    @Override
+    public void loadUrl(final String webviewUrl) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String loadurl = "";
+                progressWebView = setProgressWebView();
+                if (UrlEncoderUtils.hasUrlEncoded(webviewUrl)) {
+                    try {
+                        loadurl = URLDecoder.decode(webviewUrl, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                progressWebView.loadUrl(loadurl);
+            }
+        });
+
+    }
+
+    @Override
+    public void reloadUrl(final String webviewUrl) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String loadurl = webviewUrl;
+                progressWebView = setProgressWebView();
+                if (UrlEncoderUtils.hasUrlEncoded(webviewUrl)) {
+                    try {
+                        loadurl = URLDecoder.decode(webviewUrl, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                progressWebView.loadUrl(loadurl);
+            }
+        });
+
+    }
 
     private int mNoteId = 0;
     private int mUserType = 0;
@@ -237,7 +287,7 @@ public class WebViewShareActivity extends BaseWebViewActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(mShareDialog != null){
+        if (mShareDialog != null) {
             mShareDialog.dismiss();
         }
     }

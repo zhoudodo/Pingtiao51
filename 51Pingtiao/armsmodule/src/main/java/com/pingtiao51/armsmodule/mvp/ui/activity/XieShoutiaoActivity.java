@@ -9,12 +9,18 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.Layout;
+import android.text.Selection;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.luck.picture.lib.PictureSelector;
@@ -25,7 +31,13 @@ import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.app.utils.OssManager;
 import com.pingtiao51.armsmodule.di.component.DaggerXieShoutiaoComponent;
 import com.pingtiao51.armsmodule.mvp.contract.XieShoutiaoContract;
+import com.pingtiao51.armsmodule.mvp.model.api.service.PayApi;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.PaySuccessTag;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.CreateDingdanRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.ProductPriceRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.CreateDingdanResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.ProductPriceResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.XieShoutiaoPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.FullyGridLayoutManager;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.GridImageAdapter;
@@ -35,6 +47,7 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.zls.baselib.custom.view.dialog.DialogChooseNormal;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -47,8 +60,11 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -84,8 +100,10 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initTilte();
+        getPrice();
         initPage();
         initRecycler();
+        initMultiEditText();
     }
 
     private void initTilte() {
@@ -100,6 +118,57 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
         });
     }
 
+    private void initMultiEditText(){
+        xieshoutiao_beizhu_edit.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //触摸的是EditText并且当前EditText可以滚动则将事件交给EditText处理；否则将事件交由其父类处理
+                if ((v.getId() == R.id.xieshoutiao_beizhu_edit && canVerticalScroll(xieshoutiao_beizhu_edit))) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * EditText竖直方向是否可以滚动
+     * @param editText 需要判断的EditText
+     * @return true：可以滚动  false：不可以滚动
+     */
+    private boolean canVerticalScroll(EditText editText) {
+        //滚动的距离
+        int scrollY = editText.getScrollY();
+        //控件内容的总高度
+        int scrollRange = editText.getLayout().getHeight();
+        //控件实际显示的高度
+        int scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() -editText.getCompoundPaddingBottom();
+        //控件内容总高度与实际显示高度的差值
+        int scrollDifference = scrollRange - scrollExtent;
+
+        if(scrollDifference == 0) {
+            return false;
+        }
+
+        return (scrollY > 0) || (scrollY < scrollDifference - 1);
+    }
+
+
+
+ /*   private  int getCurrentCursorLine(EditText editText) {
+        int selectionStart = Selection.getSelectionStart(editText.getText());
+        Layout layout = editText.getLayout();
+
+        if (!(selectionStart == -1)) {
+            return layout.getLineForOffset(selectionStart);
+        }
+
+        return -1;
+    }
+*/
     private void yulanshoutiao() {
         Intent intent = new Intent(XieShoutiaoActivity.this, YulanShoutiaoActivity.class);
         Bundle bundle = new Bundle();
@@ -443,11 +512,9 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
     public void onSucAddDianziShoutiao(String noteid) {
         mNoteid = noteid;
         hideLoading();
-//            ArmsUtils.snackbarText("成功生成收条");
-//        if (mBankPayDialog == null) {
-            mBankPayDialog = new BankPayDialog(this, noteid);
-//        }
-        mBankPayDialog.show();
+        mBankPayDialog = new BankPayDialog(this, noteid);
+        beforePay();
+//        mBankPayDialog.show();
 
          /*   xieshoutiao_beizhu_edit.postDelayed(new Runnable() {
                 @Override
@@ -471,6 +538,9 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
     public void onPaySuc(PaySuccessTag tag) {
         switch (tag.getType()) {
             case PaySuccessTag.PAY_SUCCESS:
+                if(mBankPayDialog != null) {
+                    mBankPayDialog.dismiss();
+                }
 //                ArmsUtils.snackbarText("支付成功");
                 /*
                 Bundle bundleX = new Bundle();
@@ -498,5 +568,76 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
         }
     }
 
+    private double mMoney = 0;
+    private void getPrice() {
+        ArmsUtils.obtainAppComponentFromContext(this).repositoryManager().obtainRetrofitService(PayApi.class).productPrice(new ProductPriceRequest())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseJson<ProductPriceResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
+                    @Override
+                    public void onNext(BaseJson<ProductPriceResponse> rep) {
+                        if (rep.isSuccess()) {
+                            ProductPriceResponse pr = rep.getData();
+                            double money = pr.getDiscountPrice();
+                            mMoney = money;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+
+    /**
+     * 价格大于0 支付弹窗  其他情况 默认调用微信支付创建订单
+     */
+    private void  beforePay(){
+        if(mMoney > 0) {
+            mBankPayDialog.show();
+        }else{
+            ArmsUtils.obtainAppComponentFromContext(this).repositoryManager().obtainRetrofitService(PayApi.class).createDingdan(new CreateDingdanRequest(
+                    AppUtils.getAppVersionName(),
+                    Integer.valueOf(mNoteid),
+                    null,
+                    "ANDRIOD",
+                    mMoney+"",
+                    "WECHAT",//BANKCARD,WECHAT,ALIPAY
+                    "APP",
+                    null
+            ))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<BaseJson<CreateDingdanResponse>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onNext(BaseJson<CreateDingdanResponse> rep) {
+                            if (rep.isSuccess()) {
+                                EventBus.getDefault().post(new PaySuccessTag(PaySuccessTag.PAY_SUCCESS));
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }
+    }
 }

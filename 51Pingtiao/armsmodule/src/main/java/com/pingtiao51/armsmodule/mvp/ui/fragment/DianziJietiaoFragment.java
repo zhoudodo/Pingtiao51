@@ -47,7 +47,6 @@ import java.util.List;
 import butterknife.BindView;
 import me.jessyan.autosize.utils.AutoSizeUtils;
 
-import static android.content.ComponentCallbacks2.TRIM_MEMORY_BACKGROUND;
 import static com.pingtiao51.armsmodule.mvp.ui.activity.DianziJietiaoXiangqingActivity.PING_TIAO_XIANG_QING;
 
 
@@ -114,6 +113,7 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
     @Override
     public void onResume() {
         super.onResume();
+        mPage = 1;
         reqDatas(searchName, statusReq, sortReq, jueseReq);
     }
 

@@ -2,19 +2,24 @@ package com.pingtiao51.armsmodule.mvp.model.api.service;
 
 import com.pingtiao51.armsmodule.mvp.model.entity.request.AddDianziJietiaoRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.AddDianziShoutiaoRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.AddRepaymentRecordRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.AuthSignRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CloseElectronicNoteRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.EditRepaymentRecordRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.FinishElectronicNoteRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ModifyPingtiaoRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PingtiaoDetailListRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PingtiaoShareRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PingtiaoXiangqingRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.SendEmailRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.beifenZhizhiJietiaoRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.beifenZhizhiShoutiaoRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.RepaymentTipToLenderRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoDetailListResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoShareResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoXiangqingResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.RepaymentTipToLenderResponse;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -107,6 +112,21 @@ public interface PingtiaoApi {
      */
     @POST("pingtiao/note/auth/closeElectronicNote")
     Observable<BaseJson<Object>> closeElectronicNote(@Body CloseElectronicNoteRequest request);
+   /**
+     * 处理还款记录
+     *
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/repayment/auth/editRepaymentRecord")
+    Observable<BaseJson<Object>> editRepaymentRecord(@Body EditRepaymentRecordRequest request);
+   /**
+     * 添加还款记录
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/repayment/auth/addRepaymentRecord")
+    Observable<BaseJson<Object>> addRepaymentRecord(@Body AddRepaymentRecordRequest request);
 
     /**
      * 手动签章
@@ -125,6 +145,22 @@ public interface PingtiaoApi {
      */
     @POST("pingtiao/note/auth/noteShareInfo")
     Observable<BaseJson<PingtiaoShareResponse>> noteShareInfo(@Body PingtiaoShareRequest request);
+    /**
+     * 获取凭条分享内容
+     *
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/note/auth/sendEmailDownloadNote")
+    Observable<BaseJson<Object>> sendEmailDownloadNote(@Body SendEmailRequest request);
+    /**
+     * 提醒对方
+     *
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/repayment/auth/repaymentTipToLender")
+    Observable<BaseJson<RepaymentTipToLenderResponse>> repaymentTipToLender(@Body RepaymentTipToLenderRequest request);
 
     /**
      * 下载文件

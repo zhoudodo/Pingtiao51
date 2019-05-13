@@ -1,3 +1,5 @@
 <resources>
 
+    <dimen name="dp210">210dp</dimen>
+    <dimen name="dp200">200dp</dimen>
 </resources>

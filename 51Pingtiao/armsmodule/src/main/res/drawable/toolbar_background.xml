@@ -3,12 +3,12 @@
     <!-- 给边框 设置编边距   将边框的左、上、右 设置为负数，会将边框移除屏幕 ，只能看到底部的下划线 -->
     <item
         android:left="-2dp"
-        android:right="-1dp"
+        android:right="-2dp"
         android:top="-2dp">
 
         <!-- 绘制一个方形边框，填充色设置为透明 -->
         <shape android:shape="rectangle">
-            <solid android:color="@color/white_ffffff" />
+            <solid android:color="@color/transparent" />
 
             <!--设置边框的宽度和颜色 -->
 

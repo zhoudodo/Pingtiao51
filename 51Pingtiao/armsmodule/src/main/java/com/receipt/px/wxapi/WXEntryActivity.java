@@ -33,7 +33,7 @@ public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHand
         super.onNewIntent(intent);
         setIntent(intent);
         api.handleIntent(intent, this);
-        finish();
+//        finish();
     }
 
 
@@ -56,6 +56,7 @@ public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHand
                         default:
                             break;
                     }
+                    break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 switch (baseResp.getType()){
                     // ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX是微信分享，api自带

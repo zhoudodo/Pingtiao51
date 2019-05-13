@@ -75,5 +75,9 @@
     <string name="yishiming">已实名</string>
     <string name="look_more">-查看更多-</string>
     <string name="newplayerhelper">新手帮助</string>
-    <string name="ca_zhengshu_hint">本电子借条符合《中华人民共和国合同法》、《中华人民共和国电子签名法》，并自带防篡改安全CA证书，经过公证处公证后，电子借条法律效力获得国家仲裁/司法机构认可。</string>
+    <string name="ca_zhengshu_hint">借条出自51凭条，严格按照《中华人民共和国合同法》拟定。本平台每份电子借条皆有唯一专属编号。每份借条/收条PDF电子文件自带防篡改安全CA证书，遵照《中华人民共和国电子签名法》的相关规定。电子借条/收条法律效力获得国家仲裁/司法机关认可。</string>
+    <string name="feiyongzhifuren">费用支付人</string>
+    <string name="pingtaifuwufei">平台服务费</string>
+    <string name="shoutiao_jingshouren_hint">*经手人是指收取钱款或物品的人，也是出具收条的人。</string>
+    <string name="shoutiao_dijiaoren_hint">*递交人是指递交钱款或物品的人，也是收取收条的人。</string>
 </resources>

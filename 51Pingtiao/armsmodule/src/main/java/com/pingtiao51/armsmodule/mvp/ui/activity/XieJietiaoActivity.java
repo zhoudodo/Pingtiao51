@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.R;
@@ -26,8 +27,10 @@ import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PayApi;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.BankDismissTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.PaySuccessTag;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.CreateDingdanRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ProductPriceRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.CreateDingdanResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.ProductPriceResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.XieJietiaoPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.BankPayDialog;
@@ -35,9 +38,11 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.CycleDatePickerDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.JiekuanyongtuDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.NianhualilvDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
+import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.zls.baselib.custom.view.dialog.DialogChooseNormal;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -110,11 +115,12 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
                 jiekuanrenzhifu.setLayoutParams(rlp);
                 jiekuanrenzhifu.setImageDrawable(getResources().getDrawable(R.drawable.chujierenzhifu_cantselect));
                 hasJiekuanrenZhifu = true;
-
+                xiejietiao_feiyongzhifu_layout.setVisibility(View.GONE);
                 break;
             case CHUJIEREN://出借人
                 xiejietiao_chujieren_xingming.setText("借款人姓名");
                 xiejietiao_chujieren_shenfenzheng.setText("借款人身份证号");
+                xiejietiao_feiyongzhifu_layout.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -212,7 +218,7 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     @BindView(R.id.xiejietiao_jiekuanyongtu)
     TextView xiejietiao_jiekuanyongtu;
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
-//    private DatePickerDialog mDatePickerDialog1;
+    //    private DatePickerDialog mDatePickerDialog1;
 //    private DatePickerDialog mDatePickerDialog2;
     private CycleDatePickerDialog mDatePickerDialog1;
     private CycleDatePickerDialog mDatePickerDialog2;
@@ -243,18 +249,18 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
 
                     Calendar end = Calendar.getInstance();
                     end.setTime(new Date());//
-                    end.add(Calendar.DAY_OF_MONTH,6);
-                    mDatePickerDialog1 = new CycleDatePickerDialog(this,start,end);
+                    end.add(Calendar.DAY_OF_MONTH, 6);
+                    mDatePickerDialog1 = new CycleDatePickerDialog(this, start, end);
                 }
                 mDatePickerDialog1.setChoiceSureInterface(new CycleDatePickerDialog.ChoiceSureInterface() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void sure(Date date) {
-                        if(hasHuankuanriqi){
-                           if(date.getTime() >= huankuanriqi.getTime()){
-                               ArmsUtils.snackbarText("借款日期必须小于还款日期");
-                               return;
-                           }
+                        if (hasHuankuanriqi) {
+                            if (date.getTime() >= huankuanriqi.getTime()) {
+                                ArmsUtils.snackbarText("借款日期必须小于还款日期");
+                                return;
+                            }
                         }
                         hasJiekuanriqi = true;
                         mCalendar1.setTime(date);
@@ -274,18 +280,18 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
                 mDatePickerDialog1.show();
                 break;
             case R.id.choice_huankuanriqi_layout:
-                if(!hasJiekuanriqi){
+                if (!hasJiekuanriqi) {
                     ArmsUtils.snackbarText("请先选择借款日期");
                     return;
                 }
 //                if (mDatePickerDialog2 == null) {
-                    Calendar start = Calendar.getInstance();
-                    start.setTime(jiekuanriqi);//
-                    start.add(Calendar.DAY_OF_MONTH,1);
-                    Calendar end = Calendar.getInstance();
-                    end.setTime(jiekuanriqi);//
-                    end.add(Calendar.YEAR,10);
-                    mDatePickerDialog2 = new CycleDatePickerDialog(this,start,end);
+                Calendar start = Calendar.getInstance();
+                start.setTime(jiekuanriqi);//
+                start.add(Calendar.DAY_OF_MONTH, 1);
+                Calendar end = Calendar.getInstance();
+                end.setTime(jiekuanriqi);//
+                end.add(Calendar.YEAR, 10);
+                mDatePickerDialog2 = new CycleDatePickerDialog(this, start, end);
 //                }
                 mDatePickerDialog2.setChoiceSureInterface(new CycleDatePickerDialog.ChoiceSureInterface() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -420,6 +426,7 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
 
     /**
      * 返回按钮是否提醒
+     *
      * @return
      */
     private boolean checkNotHint() {
@@ -427,9 +434,9 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
         boolean num2 = TextUtils.isEmpty(xiejietiao_chujierenxingming.getText().toString());
         boolean num3 = TextUtils.isEmpty(jiekuanyongtuStr);
         boolean num4 = TextUtils.isEmpty(mLilv);
-        if(num1 && num2 && num3 && num4 && !hasJiekuanriqi && !hasHuankuanriqi){
+        if (num1 && num2 && num3 && num4 && !hasJiekuanriqi && !hasHuankuanriqi) {
             return true;//不提醒
-        }else{
+        } else {
             return false;
         }
     }
@@ -438,23 +445,22 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
 
     private boolean checkPayStatus(String noteid) {
         //留给支付 后再调用生成借条
-            mBankPayDialog = new BankPayDialog(this, noteid);
+        mBankPayDialog = new BankPayDialog(this, noteid);
         switch (mType) {
             case JIEKUANREN://借款人
                 //我是借款人  借款人支付
-                mBankPayDialog.show();
-
+                beforePay();
                 break;
             case CHUJIEREN://出借人
                 if (!hasJiekuanrenZhifu) {
                     //我是出借人  出借人支付
-                    mBankPayDialog.show();
+                    beforePay();
                 } else {
 //                    ArmsUtils.snackbarText("请将二维码分享给借款人");
                     Bundle bundle1 = new Bundle();
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "二维码分享");
                     bundle1.putInt(WebViewShareActivity.USER_TYPE, mType);
-                    bundle1.putInt(WebViewShareActivity.NOTE_ID,Integer.valueOf(mNoteid));
+                    bundle1.putInt(WebViewShareActivity.NOTE_ID, Integer.valueOf(mNoteid));
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + mNoteid + "&userType=" + mType);
                     startActBundle(bundle1, WebViewShareActivity.class);
                     finish();
@@ -464,15 +470,20 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
 
         return false;
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onBankDismiss(BankDismissTag tag){
+    public void onBankDismiss(BankDismissTag tag) {
         findViewById(R.id.xiejietiao_btn).setEnabled(true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPaySuc(PaySuccessTag tag) {
+        findViewById(R.id.xiejietiao_btn).setEnabled(true);
         switch (tag.getType()) {
             case PaySuccessTag.PAY_SUCCESS:
+                if (mBankPayDialog != null) {
+                    mBankPayDialog.dismiss();
+                }
 //                ArmsUtils.snackbarText("支付成功");
                 switch (mType) {
 
@@ -494,34 +505,35 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     /**
      * 我是借款人，然后支付.手动签章流程
      */
-    private void authSign(){
+    private void authSign() {
         //手动签章为了防止 过快后台文件未准备好
-        Observable.timer(2000,TimeUnit.MILLISECONDS)
+        showLoading("正在准备签章信息...");
+        Log.d("dodo", System.currentTimeMillis() + "");
+        Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        showLoading("正在准备签章信息...");
                     }
                 })
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
-                        mPresenter.authSign(mNoteid,SavePreference.getStr(XieJietiaoActivity.this, PingtiaoConst.USER_NAME),WebViewSignActivity.XIE_JIETIAO_RETURNURL);
+                        mPresenter.authSign(mNoteid, SavePreference.getStr(XieJietiaoActivity.this, PingtiaoConst.USER_NAME), WebViewSignActivity.XIE_JIETIAO_RETURNURL);
                     }
                 }).isDisposed();
     }
 
-    private void h5SharePage(){
+    private void h5SharePage() {
         Bundle bundle1 = new Bundle();
         bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "分享");
         bundle1.putInt(WebViewShareActivity.USER_TYPE, mType);
-        bundle1.putInt(WebViewShareActivity.NOTE_ID,Integer.valueOf(mNoteid));
+        bundle1.putInt(WebViewShareActivity.NOTE_ID, Integer.valueOf(mNoteid));
         bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + mNoteid + "&userType=" + mType);
         startActBundle(bundle1, WebViewShareActivity.class);
     }
 
 
-    private void createJietiao(){
+    private void createJietiao() {
         String amount = "";//
         String borrower = "";//X
         String lender = "";//X
@@ -580,6 +592,8 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     ImageView jiekuanrenzhifu;
     @BindView(R.id.chujierenzhifu)
     ImageView chujierenzhifu;
+    @BindView(R.id.xiejietiao_feiyongzhifu_layout)
+    RelativeLayout xiejietiao_feiyongzhifu_layout;
 
     /**
      * 获取利润
@@ -672,9 +686,9 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     @Override
     public void onBackPressed() {
         if (mDialogChooseNormal == null || !isShow) {
-            if(checkNotHint()){
+            if (checkNotHint()) {
                 super.onBackPressed();
-            }else {
+            } else {
                 backDialog();
             }
         } else {
@@ -717,7 +731,7 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     public void sucAddJietiao(String noteId) {
 //        ArmsUtils.snackbarText("成功生成借条");
         mNoteid = noteId;
-        Log.d("dodoJie","noteId = "+noteId);
+//        Log.d("dodoJie","noteId = "+noteId);
         checkPayStatus(noteId);
 //        finish();
     }
@@ -727,14 +741,19 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
         Bundle bundle1 = new Bundle();
         bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "手动签章");
         bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, url);
-        bundle1.putString(WebViewSignActivity.NOTE_ID,mNoteid);
-        bundle1.putInt(WebViewSignActivity.USER_TYPE,mType);
+        bundle1.putString(WebViewSignActivity.NOTE_ID, mNoteid);
+        bundle1.putInt(WebViewSignActivity.USER_TYPE, mType);
         startActBundle(bundle1, WebViewSignActivity.class);
         finish();
     }
 
     @BindView(R.id.xianshimianfei)
     TextView xianshimianfei;
+    @BindView(R.id.xiejietiao_jiage)
+    TextView xiejietiao_jiage;
+
+
+    private double mMoney = 0;
 
     private void getPrice() {
         ArmsUtils.obtainAppComponentFromContext(this).repositoryManager().obtainRetrofitService(PayApi.class).productPrice(new ProductPriceRequest())
@@ -750,8 +769,15 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
                         if (rep.isSuccess()) {
                             ProductPriceResponse pr = rep.getData();
                             double money = pr.getDiscountPrice();
+                            mMoney = money;
                             if (money <= 0) {
-                                xianshimianfei.setVisibility(View.VISIBLE);
+//                                xianshimianfei.setVisibility(View.VISIBLE);
+                                xiejietiao_jiage.setText("限时免费");
+                                xiejietiao_jiage.setTextColor(getResources().getColor(R.color.orange_color_F88750));
+                                xiejietiao_feiyongzhifu_layout.setVisibility(View.GONE);
+                            } else {
+                                xiejietiao_jiage.setText(decimalFormat.format(money) + "元");
+                                xiejietiao_jiage.setTextColor(getResources().getColor(R.color.black_color_1e1e1e));
                             }
                         }
                     }
@@ -764,5 +790,48 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
                     public void onComplete() {
                     }
                 });
+    }
+
+    /**
+     * 价格大于0 支付弹窗  其他情况 默认调用微信支付创建订单
+     */
+    private void beforePay() {
+        if (mMoney > 0) {
+            mBankPayDialog.show();
+        } else {
+            ArmsUtils.obtainAppComponentFromContext(this).repositoryManager().obtainRetrofitService(PayApi.class).createDingdan(new CreateDingdanRequest(
+                    AppUtils.getAppVersionName(),
+                    Integer.valueOf(mNoteid),
+                    null,
+                    "ANDRIOD",
+                    mMoney + "",
+                    "WECHAT",//BANKCARD,WECHAT,ALIPAY
+                    "APP",
+                    null
+            ))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<BaseJson<CreateDingdanResponse>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onNext(BaseJson<CreateDingdanResponse> rep) {
+                            if (rep.isSuccess()) {
+                                EventBus.getDefault().post(new PaySuccessTag(PaySuccessTag.PAY_SUCCESS));
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }
     }
 }

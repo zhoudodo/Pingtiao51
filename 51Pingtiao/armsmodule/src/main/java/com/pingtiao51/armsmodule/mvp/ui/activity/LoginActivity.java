@@ -28,6 +28,7 @@ import com.pingtiao51.armsmodule.mvp.model.entity.response.LoginResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.LoginPresenter;
 
 import com.pingtiao51.armsmodule.R;
+import com.pingtiao51.armsmodule.mvp.ui.broadcast.jpush.JpushManager;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView;
 import com.pingtiao51.armsmodule.mvp.ui.fragment.BaseArmFragment;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
@@ -224,11 +225,14 @@ public class LoginActivity extends BaseArmsActivity<LoginPresenter> implements L
     }
 
     @Override
-    public void loginSuc(LoginResponse loginResponse) {
+    public void loginSuc(LoginResponse loginResponse, String phoneNum) {
         SavePreference.save(PingtiaoConst.KEY_TOKEN, loginResponse.getToken());
         EventBus.getDefault().post(new LoginEventTag());
+        Log.d("loginSuc",phoneNum);
+        JpushManager.setAlias(phoneNum);
         finish();
     }
+
 
     @Override
     public void changePswSuc(Object object) {

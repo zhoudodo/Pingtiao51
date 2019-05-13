@@ -85,7 +85,7 @@ public class VerificationCodeInput extends ViewGroup {
                 int w = getMeasuredWidth();
                 int h = getMeasuredHeight();
                 float boxValue = w/(box*1.0f);
-                boxWidth = boxValue > boxWidth? boxWidth: (int) boxValue;
+                boxWidth = (int) boxValue;
                 boxHeight = boxWidth;
                 addCodeViews();
             }

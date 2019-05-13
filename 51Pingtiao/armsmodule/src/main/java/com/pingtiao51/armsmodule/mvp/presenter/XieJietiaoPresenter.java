@@ -1,12 +1,14 @@
 package com.pingtiao51.armsmodule.mvp.presenter;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -25,6 +27,7 @@ import com.pingtiao51.armsmodule.mvp.model.entity.response.PingTiaoSeachResponse
 import com.pingtiao51.armsmodule.mvp.ui.activity.BaseArmsActivity;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -123,7 +126,6 @@ public class XieJietiaoPresenter extends BasePresenter<XieJietiaoContract.Model,
                 .doAfterTerminate(new Action() {
                     @Override
                     public void run() throws Exception {
-                        mRootView.hideLoading();
                     }
                 })
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))

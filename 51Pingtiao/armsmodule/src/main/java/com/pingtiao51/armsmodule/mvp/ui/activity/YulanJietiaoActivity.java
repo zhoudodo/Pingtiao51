@@ -156,9 +156,10 @@ public class YulanJietiaoActivity extends BaseArmsActivity<YulanJietiaoPresenter
         calendar.setTime(date);
         DecimalFormat decimalFormat1 = new DecimalFormat("00");
         String day = decimalFormat1.format(calendar.get(Calendar.DAY_OF_MONTH));
+        String month = decimalFormat1.format((calendar.get(Calendar.MONTH) + 1));
         SpannableStringBuilder chujieshijian = new SpanUtils()
                 .append("借条出具时间").setFontSize(12, true).setForegroundColor(getResources().getColor(R.color.gray_color_969696))
-                .append(" " + calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + day).setFontSize(15, true).setForegroundColor(getResources().getColor(R.color.black_color_333333))
+                .append(" " + calendar.get(Calendar.YEAR) + "/" + month + "/" + day).setFontSize(15, true).setForegroundColor(getResources().getColor(R.color.black_color_333333))
                 .setUnderline()
                 .create();
 
@@ -172,7 +173,7 @@ public class YulanJietiaoActivity extends BaseArmsActivity<YulanJietiaoPresenter
                 .append("向").setFontSize(13, true).setForegroundColor(getResources().getColor(R.color.gray_color_969696))
 
                 .append(" " + chujierenmingziVal + " ").setFontSize(15, true).setForegroundColor(getResources().getColor(R.color.black_color_333333)).setUnderline()
-                .append("今借到（人民币）").setFontSize(15, true).setForegroundColor(getResources()
+                .append("今借到（人民币）").setFontSize(13, true).setForegroundColor(getResources()
 //                        .getColor(R.color.red_color_ED4641)
                         .getColor(R.color.black_color_333333)
                 )

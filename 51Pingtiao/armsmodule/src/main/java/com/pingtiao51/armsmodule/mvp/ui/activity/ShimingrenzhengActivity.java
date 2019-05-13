@@ -79,7 +79,7 @@ public class ShimingrenzhengActivity extends BaseArmsActivity<ShimingrenzhengPre
     @BindView(R.id.get_yzm)
     TextView get_yzm;
 
-    @OnClick({R.id.shimingrenzheng_commit_btn, R.id.cancel1, R.id.cancel2, R.id.cancel3, R.id.get_yzm})
+    @OnClick({R.id.shimingrenzheng_commit_btn, R.id.cancel1, R.id.cancel2, R.id.cancel3, R.id.get_yzm,R.id.back_btn})
     public void onPageClick(View v) {
         switch (v.getId()) {
             case R.id.shimingrenzheng_commit_btn:
@@ -99,6 +99,9 @@ public class ShimingrenzhengActivity extends BaseArmsActivity<ShimingrenzhengPre
                 break;
             case R.id.get_yzm:
                 mYzmRequest.getPhoneYzm();
+                break;
+            case R.id.back_btn:
+                finish();
                 break;
         }
     }

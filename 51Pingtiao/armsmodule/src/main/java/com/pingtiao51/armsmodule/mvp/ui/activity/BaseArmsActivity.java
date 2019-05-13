@@ -15,6 +15,7 @@ import com.jess.arms.mvp.IPresenter;
 import com.jess.arms.mvp.IView;
 import com.jess.arms.utils.ArmsUtils;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.pingtiao51.armsmodule.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -78,7 +79,7 @@ public abstract class BaseArmsActivity<P extends IPresenter> extends BaseActivit
 
     @Override
     public void hideLoading() {
-        Observable.timer(500, TimeUnit.MILLISECONDS)
+        Observable.timer(0, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     if (mProgressDialog != null) {

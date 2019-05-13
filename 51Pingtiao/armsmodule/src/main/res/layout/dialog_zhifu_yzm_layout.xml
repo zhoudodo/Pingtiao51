@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:background="@drawable/normal_zhifu_yzm_bg"
     xmlns:ver="http://schemas.android.com/apk/res-auto">
     <ImageView
-
         android:id="@+id/close_btn"
         android:paddingTop="18dp"
         android:paddingRight="12dp"
@@ -43,8 +42,8 @@
 
     <com.pingtiao51.armsmodule.mvp.ui.custom.view.VerificationCodeInput
         android:id="@+id/input_yzm"
-        android:layout_marginTop="20dp"
         android:layout_below="@+id/get_yzm"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginBottom="30dp"
@@ -55,7 +54,6 @@
         ver:box_bg_focus="@drawable/verification_edit_bg_focus1"
         ver:child_h_padding="0dp"
         ver:inputType="number"
-        android:layout_centerInParent="true"
         />
 
 </RelativeLayout>

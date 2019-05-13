@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -24,6 +26,7 @@ import com.pingtiao51.armsmodule.mvp.contract.DianziShoutiaoXiangqingContract;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoXiangqingResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.DianziShoutiaoXiangqingPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.PingtiaoXqImgAdapter;
+import com.pingtiao51.armsmodule.mvp.ui.custom.view.DownloadPingtiaoDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.ImagePaizhaoHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.UrlDecoderHelper;
 
@@ -63,8 +66,8 @@ public class DianziShoutiaoXiangqingActivity extends BaseArmsActivity<DianziShou
 
     @BindView(R.id.shoutiao_xq_xiazai)
     TextView jietiao_xq_xiazai;
-    @BindView(R.id.shu_line)
-    View shu_line;
+
+
 
     @BindView(R.id.shoutiao_xq_chakan)
     TextView shoutiao_xq_chakan;
@@ -242,9 +245,17 @@ public class DianziShoutiaoXiangqingActivity extends BaseArmsActivity<DianziShou
         falvbaozheng();
         shoutiao_xq_jingshouren.setText(rep.getBorrower());
         shoutiao_xq_dijiaoren.setText(rep.getLender());
-        shoutiao_xq_dijiaojine.setText(rep.getAmount() + "元");
+        SpannableStringBuilder ssb = new SpanUtils()
+                .append(rep.getAmount()+"").setFontSize(30,true)
+                .append("元").setFontSize(15,true)
+                .create();
+        shoutiao_xq_dijiaojine.setText(ssb);
         shoutiao_xq_jingshoushijian.setText(rep.getRepaymentDate());
-        shoutiao_xq_beizhu.setText(rep.getComment());
+        String beizhu = rep.getComment();
+        if(TextUtils.isEmpty(beizhu)){
+            beizhu = "无";
+        }
+        shoutiao_xq_beizhu.setText(beizhu);
         shoutiao_xq_pingtiaobianhao.setText(rep.getNoteNo());
         shoutiao_xq_chuangjianshijian.setText(rep.getCreateTime());
 
@@ -270,12 +281,12 @@ public class DianziShoutiaoXiangqingActivity extends BaseArmsActivity<DianziShou
 
     private void goneDown(PingtiaoXiangqingResponse rep) {
         mVisible = false;
-        String status = rep.getStatus();
+        String status = rep.getSignStatus();
+        if(TextUtils.isEmpty(status)){
+            status = "UNSIGNED";
+        }
         switch (status) {
             case "SIGNED":
-            case "OVERDUE":
-            case "BORROWER_FINISHED":
-            case "LENDER_FINISHED":
                 // 已签章
                 mVisible = true;
                 break;
@@ -284,7 +295,6 @@ public class DianziShoutiaoXiangqingActivity extends BaseArmsActivity<DianziShou
                 mVisible = false;
                 break;
         }
-        shu_line.setVisibility(mVisible ? View.VISIBLE : View.GONE);
         jietiao_xq_xiazai.setVisibility(mVisible ? View.VISIBLE : View.GONE);
         shoutiao_xq_chakan.setText(mVisible ? "查看" : "预览");
     }
@@ -299,6 +309,9 @@ public class DianziShoutiaoXiangqingActivity extends BaseArmsActivity<DianziShou
     public void onSucDownload(String savePath) {
         ArmsUtils.snackbarText("文件保存位置:" + savePath);
     }
+
+
+    private DownloadPingtiaoDialog  mDownloadPingtiaoDialog;
 
     @OnClick({R.id.shoutiao_xq_chakan, R.id.shoutiao_xq_xiazai})
     public void onPageClick(View view) {
@@ -320,23 +333,28 @@ public class DianziShoutiaoXiangqingActivity extends BaseArmsActivity<DianziShou
                 }
                 break;
             case R.id.shoutiao_xq_xiazai:
-                String downUrl = mPingtiaoXiangqingResponse.getDownUrl();
-                downUrl = UrlDecoderHelper.decode(downUrl);
-                String filename = "pingtiao";
-                try {
-                    String[] templist1 = downUrl.split("\\?");
-                    String[] templist2 = templist1[0].split("/");
-                    filename = templist2[templist2.length - 1];
-                } catch (Exception e) {
-                    e.printStackTrace();
+//                String downUrl = mPingtiaoXiangqingResponse.getDownUrl();
+//                downUrl = UrlDecoderHelper.decode(downUrl);
+//                String filename = "pingtiao";
+//                try {
+//                    String[] templist1 = downUrl.split("\\?");
+//                    String[] templist2 = templist1[0].split("/");
+//                    filename = templist2[templist2.length - 1];
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                if (TextUtils.isEmpty(filename)) {
+//                    filename = "pingtiao";
+//                }
+//                mPresenter.downLoadFile(downUrl, filename);
+                if(mDownloadPingtiaoDialog == null){
+                    mDownloadPingtiaoDialog = new DownloadPingtiaoDialog(this,"下载电子收条", (int) id);
                 }
-                if (TextUtils.isEmpty(filename)) {
-                    filename = "pingtiao";
-                }
-                mPresenter.downLoadFile(downUrl, filename);
+                mDownloadPingtiaoDialog.show();
                 break;
         }
     }
+
 
     private void yulanshoutiao() {
         Intent intent = new Intent(this, YulanShoutiaoActivity.class);

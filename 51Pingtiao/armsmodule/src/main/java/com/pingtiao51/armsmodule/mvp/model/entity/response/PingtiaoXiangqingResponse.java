@@ -38,12 +38,57 @@ public class PingtiaoXiangqingResponse {
     private String noteNo;
     private String repaymentDate;
     private String status;
+    private String totalAmount;
     private String totalInterest;
     private List<String> urls;
     private String viewPdfUrl;
     private String yearRate;
     private String initiator;
     private OwnershipRecordDto  ownershipRecordDto;
+    private String hasApplyRepayRecord;
+    private List<RepayRecords> repayRecords;
+    private String signStatus;
+    private String borrowAndLendState;
+
+    public String getBorrowAndLendState() {
+        return borrowAndLendState;
+    }
+
+    public void setBorrowAndLendState(String borrowAndLendState) {
+        this.borrowAndLendState = borrowAndLendState;
+    }
+
+    public String getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(String signStatus) {
+        this.signStatus = signStatus;
+    }
+
+    public List<RepayRecords> getRepayRecords() {
+        return repayRecords;
+    }
+
+    public void setRepayRecords(List<RepayRecords> repayRecords) {
+        this.repayRecords = repayRecords;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getHasApplyRepayRecord() {
+        return hasApplyRepayRecord;
+    }
+
+    public void setHasApplyRepayRecord(String hasApplyRepayRecord) {
+        this.hasApplyRepayRecord = hasApplyRepayRecord;
+    }
 
     public OwnershipRecordDto getOwnershipRecordDto() {
         return ownershipRecordDto;
@@ -210,6 +255,15 @@ public class PingtiaoXiangqingResponse {
         private String certificateDate;
         private String certificateStructure;
         private String ownershipOrderNo;
+        private String certificateUrl;
+
+        public String getCertificateUrl() {
+            return certificateUrl;
+        }
+
+        public void setCertificateUrl(String certificateUrl) {
+            this.certificateUrl = certificateUrl;
+        }
 
         public String getCertificateDate() {
             return certificateDate;
@@ -237,5 +291,71 @@ public class PingtiaoXiangqingResponse {
     }
 
 
+    public static class RepayRecords{
+
+        /**
+         * amount : 100
+         * createTime : 2019-10-01 18:00
+         * id : 1
+         * noteId : 1
+         * repaymentWay : BANK
+         * status : SUCCESS
+         */
+
+        private double amount;
+        private String createTime;
+        private int id;
+        private int noteId;
+        private String repaymentWay;
+        private String status;
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public void setAmount(double amount) {
+            this.amount = amount;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getNoteId() {
+            return noteId;
+        }
+
+        public void setNoteId(int noteId) {
+            this.noteId = noteId;
+        }
+
+        public String getRepaymentWay() {
+            return repaymentWay;
+        }
+
+        public void setRepaymentWay(String repaymentWay) {
+            this.repaymentWay = repaymentWay;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+    }
 
 }

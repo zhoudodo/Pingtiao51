@@ -3,6 +3,7 @@ package com.pingtiao51.armsmodule.mvp.model.api.service;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.AddBankCardRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CommonRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CreateDingdanRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.CreateReportRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PayDingdanRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ProductPriceRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
@@ -45,13 +46,21 @@ public interface PayApi {
     @POST("pingtiao/auth/bindBankCard")
     Observable<BaseJson<Object>> bindBankCard(@Body AddBankCardRequest request);
     /**
-     * 发起生成支付订单
+     * 发起生成支付订单  凭条
      *
      * @param request
      * @return
      */
     @POST("pingtiao/auth/pay/applyOrder")
     Observable<BaseJson<CreateDingdanResponse>> createDingdan(@Body CreateDingdanRequest request);
+    /**
+     * 发起生成支付订单  互金报告
+     *
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/auth/pay/applyReportOrder")
+    Observable<BaseJson<CreateDingdanResponse>> createApplyReportDingdan(@Body CreateReportRequest request);
     /**
      * 获取支持的支付方式
      *
