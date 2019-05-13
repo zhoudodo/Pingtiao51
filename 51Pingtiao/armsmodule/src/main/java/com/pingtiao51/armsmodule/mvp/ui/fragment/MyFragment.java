@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.WebViewActivity;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView;
 import com.pingtiao51.armsmodule.mvp.ui.helper.GlideProxyHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
+import com.pingtiao51.armsmodule.mvp.ui.helper.UrlDecoderHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -79,8 +81,10 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
         return inflater.inflate(R.layout.fragment_my, container, false);
     }
 
-    @OnClick({R.id.user_name, R.id.rengzhengstatus, R.id.wode_huan_layout, R.id.wode_shou_layout, R.id.xiaofeimingxi, R.id.helper, R.id.shezhi})
+    @OnClick({R.id.user_name, R.id.rengzhengstatus, R.id.wode_huan_layout, R.id.wode_shou_layout, R.id.xiaofeimingxi, R.id.helper, R.id.shezhi
+    ,R.id.my_dianzishoutiao,R.id.my_zhizhijietiao,R.id.my_zhizhishoutiao})
     public void onPageClick(View v) {
+        Bundle bundleAll = new Bundle();
         if (!isLoginFlag) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.LOGIN_MODE, InputLoginView.CODE_LOGIN);
@@ -130,7 +134,15 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
                 break;
             case R.id.shezhi:
                 //TODO 设置
-                startAct(SettingActivity.class);
+                bundleAll.putString(SettingActivity.AVATAR, mUserDetailInfoResponse.getHeadUrl());
+                startActBundle(bundleAll,SettingActivity.class);
+                break;
+
+            case R.id.my_dianzishoutiao:
+                break;
+            case R.id.my_zhizhijietiao:
+                break;
+            case R.id.my_zhizhishoutiao:
                 break;
         }
 
@@ -294,6 +306,11 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
         SavePreference.save(PingtiaoConst.USER_NAME, rep.getRealname());
         SavePreference.save(PingtiaoConst.USER_PHONE, rep.getPhone());
         SavePreference.save(PingtiaoConst.USER_ID_CARD, rep.getIdentityNo());
+
+        if(!TextUtils.isEmpty(rep.getHeadUrl())){
+            //不为null 则
+            GlideProxyHelper.loadImgForUrl(user_avatar,UrlDecoderHelper.decode(rep.getHeadUrl()));
+        }
 
         if (rep.getPhone() != null && rep.getPhone().length() >= 11) {
             String showPhone = rep.getPhone().substring(0, 3) + "****" + rep.getPhone().substring(7, rep.getPhone().length());

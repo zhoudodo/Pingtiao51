@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <include
         layout="@layout/include_title"
@@ -13,6 +14,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/touxiang"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="@string/avatar"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_color_1e1e1e"
+                android:textSize="16sp"
+                />
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/user_avatar2"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="17dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/wode_touxiang"
+                app:riv_oval="true"
+                app:riv_corner_radius="24dp"
+                />
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="7dp"
+                android:layout_height="13dp"
+                android:src="@drawable/next_icon"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/wodeyinhangka"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="@string/my_bankcards"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_color_1e1e1e"
+                android:textSize="16sp"
+                />
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="7dp"
+                android:layout_height="13dp"
+                android:src="@drawable/next_icon"
+                />
+        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/xiugaidenglumima"
             android:layout_width="match_parent"

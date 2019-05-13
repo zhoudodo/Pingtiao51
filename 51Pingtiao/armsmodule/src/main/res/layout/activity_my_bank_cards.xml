@@ -7,42 +7,18 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/include_title_transparent">
-    </include>
+        layout="@layout/include_title_transparent"
+        ></include>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="400dp"
+        android:overScrollMode="never"
+        android:scrollbars="none">
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/add_bank_layout"
-        android:layout_margin="15dp"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="33dp">
-        <ImageView
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/banklist_add"/>
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="添加银行卡"
-            android:textColor="#ffbebec2"
-            android:textSize="14sp"
-            />
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"></View>
-        <ImageView
-            android:layout_marginRight="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/next_icon"/>
-    </LinearLayout>
+    <include
+        layout="@layout/item_mybankcards_add_layout"
+        ></include>
 </LinearLayout>

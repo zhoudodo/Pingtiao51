@@ -14,6 +14,7 @@ import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
+import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.pingtiao51.armsmodule.mvp.contract.MyContract;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
@@ -72,6 +73,8 @@ public class MyPresenter extends BasePresenter<MyContract.Model, MyContract.View
                             mRootView.showUserVertifyDialog(userDetailInfoResponseBaseJson.getData());
                         }else if(userDetailInfoResponseBaseJson.isTokenValid()){
                             mRootView.tokenInvalid(userDetailInfoResponseBaseJson.getMessage());
+                        }else{
+                           ArmsUtils.snackbarText(userDetailInfoResponseBaseJson.getMessage());
                         }
                     }
                 });

@@ -80,4 +80,6 @@
     <string name="pingtaifuwufei">平台服务费</string>
     <string name="shoutiao_jingshouren_hint">*经手人是指收取钱款或物品的人，也是出具收条的人。</string>
     <string name="shoutiao_dijiaoren_hint">*递交人是指递交钱款或物品的人，也是收取收条的人。</string>
+    <string name="my_bankcards">我的银行卡</string>
+    <string name="avatar">头像</string>
 </resources>

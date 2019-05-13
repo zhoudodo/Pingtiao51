@@ -13,6 +13,7 @@
         android:layout_height="64dp"
         android:src="@drawable/wode_touxiang"
         app:riv_oval="true"
+        app:riv_corner_radius="32dp"
         />
     <RelativeLayout
         android:layout_marginLeft="28dp"

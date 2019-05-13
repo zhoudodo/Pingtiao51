@@ -11,6 +11,15 @@ import com.jess.arms.di.scope.ActivityScope;
 import javax.inject.Inject;
 
 import com.pingtiao51.armsmodule.mvp.contract.MyBankCardsContract;
+import com.pingtiao51.armsmodule.mvp.model.api.service.PayApi;
+import com.pingtiao51.armsmodule.mvp.model.api.service.UserService;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.CommonRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.UserBankListResponse;
+
+import java.util.List;
+
+import io.reactivex.Observable;
 
 
 /**
@@ -42,5 +51,12 @@ public class MyBankCardsModel extends BaseModel implements MyBankCardsContract.M
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseJson<List<UserBankListResponse>>> getBankList() {
+        return mRepositoryManager.obtainRetrofitService(PayApi.class).getUserBankList(
+                new CommonRequest()
+        );
     }
 }

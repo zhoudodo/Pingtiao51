@@ -8,6 +8,7 @@
         android:layout_height="117dp"
         android:background="@drawable/bg_card_num1">
         <ImageView
+            android:id="@+id/icon_bank"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="19dp"
             android:layout_width="35dp"
@@ -57,39 +58,5 @@
             android:textColor="#ffffffff"
             android:textSize="15sp"
             />
-        <LinearLayout
-            android:visibility="visible"
-            android:id="@+id/card_popu"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="5dp"
-            android:layout_width="91dp"
-            android:layout_height="70dp"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:paddingTop="11dp">
-            <TextView
-                android:id="@+id/card_cancel_relative"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="解除绑定"
-                android:textColor="#ff2c2c2c"
-                android:textSize="13sp"
-                />
-            <include
-                layout="@layout/include_divider_line"></include>
-            <TextView
-                android:id="@+id/card_cancel"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="取消"
-                android:textColor="#ff2c2c2c"
-                android:textSize="13sp"
-                />
-        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

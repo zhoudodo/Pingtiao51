@@ -7,11 +7,17 @@ import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
+import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.RxLifecycleUtils;
 import com.pingtiao51.armsmodule.mvp.contract.SettingContract;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 
 
 /**
@@ -49,5 +55,22 @@ public class SettingPresenter extends BasePresenter<SettingContract.Model, Setti
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void pushAvatar(String url){
+         mModel.pushAvatar(url)
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                 .subscribe(new ErrorHandleSubscriber<BaseJson<Object>>(mErrorHandler) {
+                     @Override
+                     public void onNext(BaseJson<Object> objectBaseJson) {
+                         if(objectBaseJson.isSuccess()){
+                             mRootView.onSuccessPushAvatar();
+                         }else{
+                             ArmsUtils.snackbarText(objectBaseJson.getMessage());
+                         }
+                     }
+                 });
     }
 }

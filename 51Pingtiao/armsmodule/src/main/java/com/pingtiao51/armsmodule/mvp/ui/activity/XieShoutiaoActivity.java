@@ -305,7 +305,6 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
 
     private void createShoutiao() {
 
-
         mPresenter.addDianziShoutiao(
                 xieshoutiao_dijiaojine_edit.getText().toString(),
                 SavePreference.getStr(this, PingtiaoConst.USER_NAME),

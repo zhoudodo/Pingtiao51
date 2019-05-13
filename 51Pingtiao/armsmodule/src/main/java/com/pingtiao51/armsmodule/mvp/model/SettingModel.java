@@ -2,6 +2,7 @@ package com.pingtiao51.armsmodule.mvp.model;
 
 import android.app.Application;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.google.gson.Gson;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
@@ -11,6 +12,13 @@ import com.jess.arms.di.scope.ActivityScope;
 import javax.inject.Inject;
 
 import com.pingtiao51.armsmodule.mvp.contract.SettingContract;
+import com.pingtiao51.armsmodule.mvp.model.api.service.UserService;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.UserHeaderSettingRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+
+import java.util.ArrayList;
+
+import io.reactivex.Observable;
 
 
 /**
@@ -42,5 +50,16 @@ public class SettingModel extends BaseModel implements SettingContract.Model {
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseJson<Object>> pushAvatar(String url) {
+        ArrayList<String> list = new ArrayList();
+        list.add(url);
+        return mRepositoryManager.obtainRetrofitService(UserService.class).userHeadSetting(new UserHeaderSettingRequest(
+                AppUtils.getAppVersionName(),
+                "ANDRIOD",
+                list
+        ));
     }
 }

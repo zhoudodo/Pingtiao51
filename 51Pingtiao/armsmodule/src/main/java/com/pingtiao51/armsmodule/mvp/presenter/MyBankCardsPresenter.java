@@ -1,17 +1,32 @@
 package com.pingtiao51.armsmodule.mvp.presenter;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
+import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.RxLifecycleUtils;
 import com.pingtiao51.armsmodule.mvp.contract.MyBankCardsContract;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.UserBankListResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.UserDetailInfoResponse;
+import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
+import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+
+import java.util.List;
 
 
 /**
@@ -49,5 +64,25 @@ public class MyBankCardsPresenter extends BasePresenter<MyBankCardsContract.Mode
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getBankList(){
+        mModel.getBankList()
+         .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseJson<List<UserBankListResponse>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseJson<List<UserBankListResponse>> baseJson) {
+                        if(baseJson.isSuccess()) {
+                            mRootView.onSuccessBanklist(baseJson.getData());
+                        }else{
+                            ArmsUtils.snackbarText(baseJson.getMessage());
+                        }
+                    }
+                });
+
     }
 }

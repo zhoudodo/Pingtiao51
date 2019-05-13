@@ -41,5 +41,7 @@ public interface ZhizhiJietiaoMainContract {
                 List<String> urls
 
         );
+
+
     }
 }

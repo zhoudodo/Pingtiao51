@@ -1,6 +1,7 @@
 package com.pingtiao51.armsmodule.mvp.model.entity.response
 
 data class UserDetailInfoResponse(
+        val headUrl: String?,
         val identityNo: String?,
         val isSignPasswordSet: Boolean?,
         val isVerified: Boolean?,
