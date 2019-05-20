@@ -4,6 +4,7 @@
     android:layout_height="128dp"
     android:background="#4C4C51">
     <RelativeLayout
+        android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="117dp"
         android:background="@drawable/bg_card_num1">

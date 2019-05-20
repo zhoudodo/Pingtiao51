@@ -87,7 +87,7 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".mvp.ui.activity.MyPingtiaoActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".mvp.ui.activity.YulanJietiaoActivity" />
         <activity
             android:name=".mvp.ui.activity.XieShoutiaoActivity"

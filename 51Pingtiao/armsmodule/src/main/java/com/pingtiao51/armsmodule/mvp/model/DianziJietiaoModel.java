@@ -52,18 +52,22 @@ public class DianziJietiaoModel extends BaseModel implements DianziJietiaoContra
     }
 
     @Override
-    public Observable<BaseJson<PingtiaoDetailListResponse>> getPingtiaoList( String enoteType, int page, String queryName, String queryScopeType, int size,String sortType, String userRoleType) {
+    public Observable<BaseJson<PingtiaoDetailListResponse>> getPingtiaoList(
+            String enoteType, int page, String queryName, String queryScopeType, int size, String sortType, String userRoleType,
+            String loanPeriodType, String remainderRepayDaysType) {
         return mRepositoryManager.obtainRetrofitService(PingtiaoApi.class)
                 .getPingtiaoListDetails(new PingtiaoDetailListRequest(
                         AppUtils.getAppVersionName(),
-                         enoteType,
-                         "ANDRIOD",
-                         page,
-                         queryName,
-                         queryScopeType,
-                         size,
-                         sortType,
-                         userRoleType
+                        enoteType,
+                        "ANDRIOD",
+                        page,
+                        queryName,
+                        queryScopeType,
+                        size,
+                        sortType,
+                        userRoleType,
+                        loanPeriodType,
+                        remainderRepayDaysType
                 ));
     }
 

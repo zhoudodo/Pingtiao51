@@ -65,9 +65,11 @@ public class ZhizhiShoutiaoPresenter extends BasePresenter<ZhizhiShoutiaoContrac
             String queryScopeType,
             int size,
             String sortType,
-            String userRoleType
+            String userRoleType,
+            String loanPeriodType,
+            String remainderRepayDaysType
     ){
-        mModel.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType)
+        mModel.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType,loanPeriodType,remainderRepayDaysType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))

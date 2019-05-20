@@ -6,13 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,14 +26,12 @@ import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoDetailRespons
 import com.pingtiao51.armsmodule.mvp.presenter.DianziJietiaoPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.activity.DianziJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.DianziShoutiaoXiangqingActivity;
-import com.pingtiao51.armsmodule.mvp.ui.activity.MyPingtiaoActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.PingtiaoMultiAdapter;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout;
-import com.pingtiao51.armsmodule.mvp.ui.custom.view.PingtiaoChoiceView;
-import com.pingtiao51.armsmodule.mvp.ui.helper.others.KeyBoardUtil;
 import com.pingtiao51.armsmodule.mvp.ui.helper.others.MoneyFormatUtils;
+import com.pingtiao51.armsmodule.mvp.ui.interfaces.SearchPingtiaoListInterface;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -63,14 +58,12 @@ import static com.pingtiao51.armsmodule.mvp.ui.activity.DianziJietiaoXiangqingAc
  * ================================================
  */
 public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresenter> implements DianziJietiaoContract.View
-        , SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+        , SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, SearchPingtiaoListInterface {
 
     public static DianziJietiaoFragment newInstance() {
         DianziJietiaoFragment fragment = new DianziJietiaoFragment();
         return fragment;
     }
-
-
 
 
     @Override
@@ -92,121 +85,34 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
     @BindView(R.id.pingtiao_infos)
     LinearLayout pingtiao_infos;
 
-    @BindView(R.id.search_et)
-    EditText search_et;
-
-    @BindView(R.id.choice_layout)
-    PingtiaoChoiceView choice_layout;
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        initSearchLayout();
-        initPingtiaoChoiceView();
 //        initInfos();
         initXiangqingLine();
         initRefresh();
         initRecyclerView();
-        initStick();
-
+        initPingtiaoInfo();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPage = 1;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq, loanPeriodType, remainderRepayDaysType);
     }
 
-    private void initSearchLayout() {
-        search_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH  ||(event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER)) {
-                    // 当按了搜索之后关闭软键盘
-                    KeyBoardUtil.hideKeyboard(search_et);
-                    searchName = search_et.getText().toString();
-                    mPage = 1;
-                    reqDatas(searchName, statusReq, sortReq, jueseReq);
-                    return true;
-                }
-
-                return false;
-            }
-        });
-//        search_et.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                //TODO 输入姓名查找
-//                searchName = s.toString();
-//                mPage = 1;
-//                reqDatas(searchName, statusReq, sortReq, jueseReq);
-//            }
-//        });
-    }
 
     String searchName = "";
     String jueseReq = "0";
     String statusReq = "0";
     String sortReq = null;
+    String loanPeriodType = "0";
+    String remainderRepayDaysType = "0";
 
-    private void initPingtiaoChoiceView() {
-        Bundle bundle =  getArguments();
-        int juse = bundle.getInt(MyPingtiaoActivity.JUESE,0);
-        choice_layout.setFirstNames(juse,0,0);
-        jueseReq = juse+"";
-        if(juse > 0){
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,AutoSizeUtils.dp2px(getActivity(),120));
-            lp.addRule(RelativeLayout.BELOW,R.id.search_layout);
-            lp.topMargin = AutoSizeUtils.dp2px(getActivity(),50);
-            lp.leftMargin = AutoSizeUtils.dp2px(getActivity(), 8);
-            lp.rightMargin = AutoSizeUtils.dp2px(getActivity(), 8);
-            pingtiao_infos.setLayoutParams(lp);
-            pingtiao_infos.requestLayout();
-            changeHints(jueseReq);
-        }
-        choice_layout.setChoiceListener(new PingtiaoChoiceView.ListenerChoice() {
-            @Override
-            public void choiceChanged(String juese, String status, String sort) {
-                //TODO 凭条选取状态变更
-                jueseReq = juese;
-                statusReq = status;
-                sortReq = sort;
-                mPage = 1;
-                if("0".equals(juese)){
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0);
-                    lp.addRule(RelativeLayout.BELOW,R.id.search_layout);
-                    lp.topMargin = AutoSizeUtils.dp2px(getActivity(),50);
-                    lp.leftMargin = AutoSizeUtils.dp2px(getActivity(), 8);
-                    lp.rightMargin = AutoSizeUtils.dp2px(getActivity(), 8);
-//                    lp.height = AutoSizeUtils.dp2px(getActivity(),120);
-                    pingtiao_infos.setLayoutParams(lp);
-                    pingtiao_infos.requestLayout();
-                    initStick();
-                }else {
-                    changeHints(juese);
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,AutoSizeUtils.dp2px(getActivity(),120));
-                    lp.addRule(RelativeLayout.BELOW,R.id.search_layout);
-                    lp.topMargin = AutoSizeUtils.dp2px(getActivity(),50);
-                    lp.leftMargin = AutoSizeUtils.dp2px(getActivity(), 8);
-                    lp.rightMargin = AutoSizeUtils.dp2px(getActivity(), 8);
-                    pingtiao_infos.setLayoutParams(lp);
-                    pingtiao_infos.requestLayout();
-                    initStick();
-                }
-                reqDatas(searchName, statusReq, sortReq, jueseReq);
-            }
-        });
-    }
-    private void changeHints(String juese){
-        switch (juese){
+
+    private void changeHints(String juese) {
+        switch (juese) {
             case "1":
                 jiekuanzonge_hint.setText(getResources().getString(R.string.jiekuanzonge));
                 daihuanzonge_hint.setText(getResources().getString(R.string.daihuanzonge));
@@ -215,8 +121,8 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
                 jiekuanzonge_hint.setText(getResources().getString(R.string.chujiezonge));
                 daihuanzonge_hint.setText(getResources().getString(R.string.daishouzonge));
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -239,7 +145,7 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
     TextView daihuanzonge;
 
     private void initInfos(PingtiaoDetailListResponse response) {
-        jietiao_nums.setText(response.getTotal()+"");
+        jietiao_nums.setText(response.getTotal() + "");
         jiekuanzonge.setText(MoneyFormatUtils.coverTenThousand(response.getBorrowAmount()));
         daihuanzonge.setText(MoneyFormatUtils.coverTenThousand(response.getRetAmount()));
     }
@@ -268,13 +174,12 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
 //                Log.d("dodo"," isFirstItemVisible = " + isFirstItemVisible);
                 if (isFirstItemVisible && isCanRefresh) {
                     return false;
-                }else {
+                } else {
                     return true;
                 }
             }
         });
     }
-
 
 
     @BindView(R.id.no_layout)
@@ -286,31 +191,20 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
     RelativeLayout pingtiaoxiangqing;
     private int height = 0;
     private int rvTop = 0;
-    private void initStick() {
-       /* pingtiao_infos.post(new Runnable() {
-            @Override
-            public void run() {
-                height = pingtiaoxiangqing.getHeight();
-//                Log.d("dodoDianzi","height =" + height
-//                +"\n rv top = "+recyclerView.getTop());
-                stick_layout.setMaxScrollTop(height);
-                stick_layout.setOriginBottom(recyclerView.getTop());
-                rvTop = recyclerView.getTop();
-            }
-        });*/
-    }
+
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     PingtiaoMultiAdapter mPingtiaoMultiAdapter;
     LinearLayoutManager linearLayoutManager;
+
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
         mPingtiaoMultiAdapter = new PingtiaoMultiAdapter(mDatas);
         recyclerView.setAdapter(mPingtiaoMultiAdapter);
 
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-         linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -323,18 +217,18 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
                 //凭条类型 OWE_NOTE 电子借条 PAPPER_OWE_NOTE纸质借条 PAPER_RECEIPT_NOTE 纸质收条 RECEIPT_NOTE电子收条
                 Bundle bundle = new Bundle();
                 bundle.putInt(PING_TIAO_XIANG_QING, (int) rep.getId());
-                switch (rep.getType()){
+                switch (rep.getType()) {
                     case "OWE_NOTE":
-                        startActBundle(bundle,DianziJietiaoXiangqingActivity.class);
+                        startActBundle(bundle, DianziJietiaoXiangqingActivity.class);
                         break;
                     case "PAPER_OWE_NOTE":
-                        startActBundle(bundle,ZhizhiJietiaoXiangqingActivity.class);
+                        startActBundle(bundle, ZhizhiJietiaoXiangqingActivity.class);
                         break;
                     case "PAPER_RECEIPT_NOTE":
-                        startActBundle(bundle,ZhizhiShoutiaoXiangqingActivity.class);
+                        startActBundle(bundle, ZhizhiShoutiaoXiangqingActivity.class);
                         break;
                     case "RECEIPT_NOTE":
-                        startActBundle(bundle,DianziShoutiaoXiangqingActivity.class);
+                        startActBundle(bundle, DianziShoutiaoXiangqingActivity.class);
                         break;
                     default:
                         break;
@@ -361,7 +255,7 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
         mPage = 1;
         isRefresh = true;
         isLoadMore = false;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq, loanPeriodType, remainderRepayDaysType);
     }
 
     boolean isLoadMore = false;
@@ -373,7 +267,7 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
         isLoadMore = true;
         isRefresh = false;
         mPage++;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq, loanPeriodType, remainderRepayDaysType);
 //        mPingtiaoMultiAdapter.notifyDataSetChanged();
 //        mPingtiaoMultiAdapter.loadMoreComplete();
 //        refresh_layout.setEnabled(false);
@@ -384,15 +278,15 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
         initInfos(rep);
         //数据返回
         List<PingtiaoDetailResponse> list = rep.getList();
-        for(PingtiaoDetailResponse response:list){
+        for (PingtiaoDetailResponse response : list) {
             response.itemType = PingtiaoDetailResponse.DIANZI_JIETIAO;
         }
-        if(list.size() <= 0 && !isLoadMore){
+        if (list.size() <= 0 && !isLoadMore) {
             no_layout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             refresh_layout.setRefreshing(false);
             return;
-        }else{
+        } else {
             no_layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
@@ -408,7 +302,7 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
             mPingtiaoMultiAdapter.notifyDataSetChanged();
             if (list.size() >= SIZE) {
                 mPingtiaoMultiAdapter.loadMoreComplete();
-            }else {
+            } else {
                 mPingtiaoMultiAdapter.loadMoreEnd();
             }
         } else {
@@ -421,7 +315,7 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
         isLoadMore = false;
         refresh_layout.setEnabled(true);
         mPingtiaoMultiAdapter.setEnableLoadMore(true);
-        if(isYihuankuan){
+        if (isYihuankuan) {
             isYihuankuan = false;
             recyclerView.smoothScrollToPosition(0);
         }
@@ -430,10 +324,10 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
     @Override
     public void onErrorPingtiaoList(String msg) {
         ArmsUtils.snackbarText(msg);
-        if(isRefresh){
+        if (isRefresh) {
             refresh_layout.setRefreshing(false);
         }
-        if(isLoadMore){
+        if (isLoadMore) {
             mPingtiaoMultiAdapter.loadMoreFail();
         }
         isRefresh = false;
@@ -449,7 +343,9 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
             String queryName,
             String queryScopeType,
             String sortType,
-            String userRoleType
+            String userRoleType,
+            String loanPeriodType,
+            String remainderRepayDaysType
     ) {
         mPresenter.getPingtiaoList(
                 "0",// "0:电子借条 1:电子收条2：纸质借条3：纸质收条",
@@ -458,16 +354,38 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
                 queryScopeType,//查询范围类型 0：全部 1：未到期 2：已逾期 3：未生效4：已完结
                 SIZE,
                 sortType,//0:还款时间从晚到早 1: 还款时间从早到晚 2:借款金额从少到多 3:借款金额从多到少
-                userRoleType//用户角色 0：全部 1:借款人 2：出借人
+                userRoleType,//用户角色 0：全部 1:借款人 2：出借人
+                loanPeriodType,
+                remainderRepayDaysType
         );
     }
 
 
     boolean isYihuankuan = false;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void yihuankuan(YiHuanKuanTag tag){
+    public void yihuankuan(YiHuanKuanTag tag) {
         onRefresh();
         isYihuankuan = true;
     }
 
+    private void initPingtiaoInfo() {
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, AutoSizeUtils.dp2px(getActivity(), 120));
+        lp.addRule(RelativeLayout.BELOW, R.id.search_layout);
+        lp.leftMargin = AutoSizeUtils.dp2px(getActivity(), 8);
+        lp.rightMargin = AutoSizeUtils.dp2px(getActivity(), 8);
+        pingtiao_infos.setLayoutParams(lp);
+        pingtiao_infos.requestLayout();
+    }
+
+    @Override
+    public void getPingtiaoList(String enoteType, int page, String queryName, String queryScopeType, int size, String sortType, String userRoleType, String loanPeriodType, String remainderRepayDaysType) {
+        searchName = queryName;
+        statusReq = queryScopeType;
+        sortReq = sortType;
+        jueseReq = userRoleType;
+        this.loanPeriodType = loanPeriodType;
+        this.remainderRepayDaysType = remainderRepayDaysType;
+        mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
+    }
 }

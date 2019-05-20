@@ -5,53 +5,40 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true">
-
+    <include
+        android:id="@+id/pingtiao_infos"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        layout="@layout/include_my_pingtiao_infos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        >
+    </include>
     <com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout
         android:id="@+id/refresh_layout"
+        android:layout_below="@id/pingtiao_infos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
         <RelativeLayout
             android:id="@+id/stick_layout"
             android:layout_width="match_parent"
-            android:layout_height="773dp"
+            android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true">
-            <include
-                android:id="@+id/search_layout"
-                layout="@layout/include_my_pingtiao_search"
-                android:layout_width="match_parent"
-                android:layout_height="31dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"></include>
-
-            <include
-                android:id="@+id/pingtiao_infos"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                layout="@layout/include_my_pingtiao_infos"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_below="@+id/search_layout"
-                android:layout_marginTop="50dp">
-            </include>
 
             <include
                 android:id="@+id/pingtiaoxiangqing"
-                android:layout_marginTop="15dp"
                 layout="@layout/include_pingtiao_style_layout"
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_below="@+id/pingtiao_infos"></include>
+                android:layout_height="42dp"></include>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
-                android:layout_height="625dp"
+                android:layout_height="wrap_content"
                 android:minHeight="625dp"
                 android:layout_below="@+id/pingtiaoxiangqing">
             </android.support.v7.widget.RecyclerView>
@@ -69,14 +56,6 @@
                     android:layout_width="254dp"
                     android:layout_height="224dp" />
             </LinearLayout>
-            <com.pingtiao51.armsmodule.mvp.ui.custom.view.PingtiaoChoiceView
-                android:id="@+id/choice_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/search_layout"
-                android:background="@color/transparent">
-            </com.pingtiao51.armsmodule.mvp.ui.custom.view.PingtiaoChoiceView>
-
         </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
     </com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout>

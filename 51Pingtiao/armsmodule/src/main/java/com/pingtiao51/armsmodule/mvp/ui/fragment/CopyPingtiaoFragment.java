@@ -37,6 +37,7 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoAnliMobanActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.HomeMultiAdapter;
+import com.pingtiao51.armsmodule.mvp.ui.custom.view.ChoicePingtiaoTypeDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.CtsScrollTextView;
 import com.pingtiao51.armsmodule.mvp.ui.helper.BannerHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
@@ -90,7 +91,10 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
     @BindView(R.id.woyaoxiepingtiao_beifen)
     ImageView woyaoxiepingtiao_beifen;
 
-    @OnClick({R.id.woyaoxiepingtiao_beifen, R.id.more_layout, R.id.click_more})
+
+    ChoicePingtiaoTypeDialog mChoicePingtiaoTypeDialog;
+
+    @OnClick({R.id.woyaoxiepingtiao_beifen, R.id.more_layout,R.id.more_relative, R.id.click_more})
     public void onPageClick(View v) {
         switch (v.getId()) {
             case R.id.woyaoxiepingtiao_beifen:
@@ -112,15 +116,47 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
                     startActBundle(bundle1, WebViewActivity.class);
 
                 }else {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI);
-                    startActBundle(bundle, MyPingtiaoActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI);
+//                    startActBundle(bundle, MyPingtiaoActivity.class);
                 }
                 break;
+            case R.id.more_relative:
             case R.id.click_more:
-                Bundle bundle1 = new Bundle();
-                bundle1.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI);
-                startActBundle(bundle1, MyPingtiaoActivity.class);
+                //TODO 选择凭条类型
+                if(mChoicePingtiaoTypeDialog == null){
+                    mChoicePingtiaoTypeDialog = new ChoicePingtiaoTypeDialog(getActivity(), new ChoicePingtiaoTypeDialog.ChoicePingtiaoTypeInterface() {
+                        @Override
+                        public void choicePingtiaoType(String choice) {
+//                            ArmsUtils.snackbarText(choice);
+                            Bundle bundle = new Bundle();
+                            switch (choice) {
+                                case "待还-电子借条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JIEKUANREN);
+                                    break;
+                                case "待收-电子借条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.CHUJIEREN);
+                                    break;
+                                case "电子收条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI_SHOU);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                                    break;
+                                case "纸质借条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                                    break;
+                                case "纸质收条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI_SHOU);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                                    break;
+                            }
+                            startActBundle(bundle, MyPingtiaoActivity.class);
+                        }
+                    });
+                }
+                mChoicePingtiaoTypeDialog.show();
                 break;
         }
 
@@ -193,7 +229,7 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
             } else {
                 click_more.setVisibility(View.GONE);
             }
-            more_tv.setText("全部");
+            more_tv.setText("");
         } else {
             getAnliData();
             more_tv.setText(getResources().getString(R.string.newplayerhelper));

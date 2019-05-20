@@ -89,6 +89,33 @@
 
 
     </string-array>
+    <!--选择凭条类型-->
+    <string-array name="xuanzepingtiaoleixing">
+        <item>待还-电子借条</item>
+        <item>待收-电子借条</item>
+        <item>电子收条</item>
+        <item>纸质借条</item>
+        <item>纸质收条</item>
+    </string-array>
+
+    <!--借款期限选择-->
+    <string-array name="jiekuanqixian">
+        <item>全部</item>
+        <item>7天以内</item>
+        <item>7-30天</item>
+        <item>30-90天</item>
+        <item>90-180天</item>
+        <item>180天以上</item>
+    </string-array>
+    <!--距离还款时间-->
+    <string-array name="julihuankuanshijian">
+        <item>全部</item>
+        <item>7天以内</item>
+        <item>7-30天</item>
+        <item>30-90天</item>
+        <item>90-180天</item>
+        <item>180天以上</item>
+    </string-array>
 
 
 </resources>

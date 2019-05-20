@@ -56,6 +56,17 @@ public class BankCardListAdapter extends BaseQuickAdapter<UserBankListResponse, 
                 closeBankPopu.showViewBottom(helper.getView(R.id.click_card_more));
             }
         });
+        switch (helper.getAdapterPosition()%3){
+            case 0:
+                helper.getView(R.id.relative_layout).setBackground(mContext.getResources().getDrawable(R.drawable.bg_card_num1));
+                break;
+            case 1:
+                helper.getView(R.id.relative_layout).setBackground(mContext.getResources().getDrawable(R.drawable.bg_card_num2));
+                break;
+            case 2:
+                helper.getView(R.id.relative_layout).setBackground(mContext.getResources().getDrawable(R.drawable.bg_card_num3));
+                break;
+        }
     }
 
 

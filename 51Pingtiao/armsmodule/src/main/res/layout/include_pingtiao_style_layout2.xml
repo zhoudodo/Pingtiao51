@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:orientation="horizontal">
+    <RelativeLayout
+        android:id="@+id/more_relative"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/icon1"
+        android:layout_centerVertical="true"
+        android:layout_width="2dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/bg_conner_1dp" />
+
+    <TextView
+        android:id="@+id/input_name"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/icon1"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/dianzipingtiao"
+        android:textStyle="bold"
+        android:textColor="@color/black_color_363636"/>
+
+    <ImageView
+        android:layout_toRightOf="@id/input_name"
+        android:layout_marginLeft="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_home_xiala"
+        />
+    </RelativeLayout>
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/more_layout"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:layout_marginRight="@dimen/default_right_margin_value"
+        >
+
+        <TextView
+            android:id="@+id/more_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_more_hint"
+            android:textColor="@color/gray_color_B3B3B3"
+            android:textSize="14sp" />
+        <ImageView
+            android:visibility="invisible"
+            android:layout_marginLeft="@dimen/default_left_margin_value"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/gengduo_icon"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

@@ -28,11 +28,13 @@ import com.pingtiao51.armsmodule.mvp.presenter.SettingPresenter;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView;
 import com.pingtiao51.armsmodule.mvp.ui.helper.GlideProxyHelper;
+import com.pingtiao51.armsmodule.mvp.ui.helper.UrlDecoderHelper;
 
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,7 +81,7 @@ public class SettingActivity extends BaseArmsActivity<SettingPresenter> implemen
             setTitle("设置");
           String avatarUrl =  getIntent().getStringExtra(AVATAR);
           if(!TextUtils.isEmpty(avatarUrl)){
-              GlideProxyHelper.loadImgByPlaceholder(user_avatar2,R.drawable.wode_touxiang,avatarUrl);
+              GlideProxyHelper.loadImgByPlaceholder(user_avatar2,R.drawable.wode_touxiang,UrlDecoderHelper.decode(avatarUrl));
           }
     }
 

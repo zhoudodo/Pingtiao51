@@ -2,23 +2,21 @@ package com.pingtiao51.armsmodule.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.FragmentScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxLifecycleUtils;
+import com.pingtiao51.armsmodule.mvp.contract.DianziJietiaoContract;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoDetailListResponse;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
-import com.jess.arms.utils.RxLifecycleUtils;
-import com.pingtiao51.armsmodule.mvp.contract.DianziJietiaoContract;
-import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
-import com.pingtiao51.armsmodule.mvp.model.entity.response.PingtiaoDetailListResponse;
-import com.pingtiao51.armsmodule.mvp.model.entity.response.UserDetailInfoResponse;
 
 
 /**
@@ -65,9 +63,11 @@ public class DianziJietiaoPresenter extends BasePresenter<DianziJietiaoContract.
             String queryScopeType,
             int size,
             String sortType,
-            String userRoleType
+            String userRoleType,
+            String loanPeriodType,
+            String remainderRepayDaysType
     ){
-        mModel.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType)
+        mModel.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType,loanPeriodType,remainderRepayDaysType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))

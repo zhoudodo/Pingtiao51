@@ -27,24 +27,28 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.jessyan.autosize.utils.AutoSizeUtils;
 
-public class PingtiaoChoiceView extends LinearLayout {
+public class PingtiaoChoiceView2 extends LinearLayout {
 
-    public interface ListenerChoice{
-        void choiceChanged(String juese,String status,String sort);
+    public interface ListenerChoice {
+        void choiceChanged(String status, String sort);
+        void shaixuan();
     }
+
     ListenerChoice mListenerChoice;
-    public void setChoiceListener(ListenerChoice lc){
+
+    public void setChoiceListener(ListenerChoice lc) {
         mListenerChoice = lc;
     }
-    public PingtiaoChoiceView(Context context) {
+
+    public PingtiaoChoiceView2(Context context) {
         this(context, null);
     }
 
-    public PingtiaoChoiceView(Context context, AttributeSet attrs) {
+    public PingtiaoChoiceView2(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PingtiaoChoiceView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PingtiaoChoiceView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
@@ -61,7 +65,7 @@ public class PingtiaoChoiceView extends LinearLayout {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public PingtiaoChoiceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public PingtiaoChoiceView2(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -72,7 +76,7 @@ public class PingtiaoChoiceView extends LinearLayout {
         this.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setLayoutParams(rlp);
-        rootView = View.inflate(getContext(), R.layout.include_pingtiao_choice, null);
+        rootView = View.inflate(getContext(), R.layout.include_pingtiao_choice2, null);
         this.addView(rootView);
         mUnbinder = ButterKnife.bind(this, rootView);
         initRecycler();
@@ -97,10 +101,9 @@ public class PingtiaoChoiceView extends LinearLayout {
         });
     }
 
-    private List<String> mJuese, mJieKuanStatus, mSort;
+    private List<String> mJieKuanStatus, mSort;
 
-    @BindView(R.id.juese_tv)
-    TextView juese_tv;
+
     @BindView(R.id.jietiaostatus_tv)
     TextView jietiaostatus_tv;
     @BindView(R.id.paixufangshi_tv)
@@ -123,28 +126,24 @@ public class PingtiaoChoiceView extends LinearLayout {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 show_layout.setVisibility(GONE);
-                img1.setRotation(0);
                 img2.setRotation(0);
                 img3.setRotation(0);
-                return false;
+                return true;
             }
         });
 
-        mJuese = Arrays.asList(getResources().getStringArray(R.array.juese));
         mJieKuanStatus = Arrays.asList(getResources().getStringArray(R.array.jietiao_status));
         mSort = Arrays.asList(getResources().getStringArray(R.array.sort_fun));
-        setFirstNames(0,0,0);
+        setFirstNames( 0, 0);
     }
 
 
     /**
-     *
-     * @param juese 1借款人 2是出借人
      * @param jiekuan
      * @param sort
      */
-    public void setFirstNames(int juese,int jiekuan,int sort){
-        juese_tv.setText(mJuese.get(juese));
+    public void setFirstNames(int jiekuan, int sort) {
+//        juese_tv.setText(mJuese.get(juese));
         jietiaostatus_tv.setText(mJieKuanStatus.get(jiekuan));
         //
 //        paixufangshi_tv.setText(mSort.get(sort));
@@ -160,20 +159,21 @@ public class PingtiaoChoiceView extends LinearLayout {
      * 角色选择结果
      * @return
      */
-    private String getJuese() {
-        int choice = 0;
-        String temp = juese_tv.getText().toString();
-        for(int i=0; i<mJuese.size(); i++){
-            if(mJuese.get(i).equals(temp)){
-                choice = i;
-                break;
-            }
-        }
-        return choice+"";
-    }
+//    private String getJuese() {
+//        int choice = 0;
+//        String temp = juese_tv.getText().toString();
+//        for(int i=0; i<mJuese.size(); i++){
+//            if(mJuese.get(i).equals(temp)){
+//                choice = i;
+//                break;
+//            }
+//        }
+//        return choice+"";
+//    }
 
     /**
      * 凭条状态
+     *
      * @return
      */
     public String getStatus() {
@@ -181,39 +181,40 @@ public class PingtiaoChoiceView extends LinearLayout {
 
         int choice = 0;
         String temp = jietiaostatus_tv.getText().toString();
-        for(int i=0; i<mJieKuanStatus.size(); i++){
-            if(mJieKuanStatus.get(i).equals(temp)){
+        for (int i = 0; i < mJieKuanStatus.size(); i++) {
+            if (mJieKuanStatus.get(i).equals(temp)) {
                 choice = i;
                 break;
             }
         }
-        return choice+"";
+        return choice + "";
     }
 
     /**
      * 排序方式
+     *
      * @return
      */
     public String getSort() {
         int choice = 0;
         String temp = paixufangshi_tv.getText().toString();
-        for(int i=0; i<mSort.size(); i++){
-            if(mSort.get(i).equals(temp)){
+        for (int i = 0; i < mSort.size(); i++) {
+            if (mSort.get(i).equals(temp)) {
                 choice = i;
                 break;
             }
         }
-        if(choice == 0){
+        if (choice == 0) {
             return null;
-        }else{
-            return (choice-1)+"";
+        } else {
+            return (choice - 1) + "";
         }
     }
 
     private void choice(String name) {
         switch (mType) {
             case ALL:
-                juese_tv.setText(name);
+//                juese_tv.setText(name);
                 break;
             case STATUS:
                 jietiaostatus_tv.setText(name);
@@ -226,11 +227,11 @@ public class PingtiaoChoiceView extends LinearLayout {
         mDatas.clear();
         normalAdapter.notifyDataSetChanged();
         show_layout.setVisibility(GONE);
-        img1.setRotation(0);
+//        img1.setRotation(0);
         img2.setRotation(0);
         img3.setRotation(0);
-        if(mListenerChoice != null){
-            mListenerChoice.choiceChanged(getJuese(),getStatus(),getSort());
+        if (mListenerChoice != null) {
+            mListenerChoice.choiceChanged(getStatus(), getSort());
         }
     }
 
@@ -238,7 +239,7 @@ public class PingtiaoChoiceView extends LinearLayout {
         switch (mType) {
             case ALL:
                 mDatas.clear();
-                mDatas.addAll(mJuese);
+//                mDatas.addAll(mJuese);
 
                 break;
             case STATUS:
@@ -258,7 +259,7 @@ public class PingtiaoChoiceView extends LinearLayout {
 //        normalAdapter.notifyDataSetChanged(); 重新设置LayoutParam之后adapter无法通过此方法更新UI只能重设adapter
     }
 
-    @OnClick({R.id.juese_layout, R.id.jietiaostatus_layout, R.id.paixufangshi_layout})
+    @OnClick({R.id.juese_layout, R.id.jietiaostatus_layout, R.id.paixufangshi_layout, R.id.shaixuan_layout})
     public void onPageClick(View v) {
         switch (v.getId()) {
             case R.id.juese_layout:
@@ -267,10 +268,18 @@ public class PingtiaoChoiceView extends LinearLayout {
                     img1.setRotation(180);
                     img2.setRotation(0);
                     img3.setRotation(0);
-                }else{
+                } else {
                     img1.setRotation(0);
                     img2.setRotation(0);
                     img3.setRotation(0);
+                }
+                if (show_layout.getVisibility() == View.GONE) {
+                    show_layout.setVisibility(View.VISIBLE);
+                    showRv();
+                } else {
+                    show_layout.setVisibility(View.GONE);
+                    mDatas.clear();
+                    normalAdapter.notifyDataSetChanged();
                 }
                 break;
             case R.id.jietiaostatus_layout:
@@ -279,10 +288,18 @@ public class PingtiaoChoiceView extends LinearLayout {
                     img1.setRotation(0);
                     img2.setRotation(180);
                     img3.setRotation(0);
-                }else{
+                } else {
                     img1.setRotation(0);
                     img2.setRotation(0);
                     img3.setRotation(0);
+                }
+                if (show_layout.getVisibility() == View.GONE) {
+                    show_layout.setVisibility(View.VISIBLE);
+                    showRv();
+                } else {
+                    show_layout.setVisibility(View.GONE);
+                    mDatas.clear();
+                    normalAdapter.notifyDataSetChanged();
                 }
                 break;
             case R.id.paixufangshi_layout:
@@ -291,26 +308,36 @@ public class PingtiaoChoiceView extends LinearLayout {
                     img1.setRotation(0);
                     img2.setRotation(0);
                     img3.setRotation(180);
-                }else{
+                } else {
                     img1.setRotation(0);
                     img2.setRotation(0);
                     img3.setRotation(0);
                 }
+                if (show_layout.getVisibility() == View.GONE) {
+                    show_layout.setVisibility(View.VISIBLE);
+                    showRv();
+                } else {
+                    show_layout.setVisibility(View.GONE);
+                    mDatas.clear();
+                    normalAdapter.notifyDataSetChanged();
+                }
                 break;
-        }
-
-//        ArmsUtils.snackbarText("width = " + recyclerView.getWidth() + "height =" + recyclerView.getHeight() + "top = " + recyclerView.getTop());
-//        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,1920);
-//        show_layout.setLayoutParams(llp);
-
-
-        if (show_layout.getVisibility() == View.GONE) {
-            show_layout.setVisibility(View.VISIBLE);
-            showRv();
-        } else {
-            show_layout.setVisibility(View.GONE);
-            mDatas.clear();
-            normalAdapter.notifyDataSetChanged();
+            case R.id.shaixuan_layout:
+                if(mListenerChoice != null){
+                    mListenerChoice.shaixuan();
+                }
+                if (show_layout.getVisibility() == View.GONE) {
+                  //无操作
+                } else {
+                    //如果有展开则关闭
+                    show_layout.setVisibility(View.GONE);
+                    mDatas.clear();
+                    normalAdapter.notifyDataSetChanged();
+                }
+                break;
         }
     }
 }
+
+
+

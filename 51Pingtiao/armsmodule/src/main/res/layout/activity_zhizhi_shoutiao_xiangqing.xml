@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="170dp"
-                    android:text="张三"
+                    android:text=""
                     android:textColor="#ff1e1e1e"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="170dp"
-                    android:text="李四"
+                    android:text=""
                     android:textColor="#ff1e1e1e"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="170dp"
-                    android:text="100.00元"
+                    android:text=""
                     android:textColor="#ff1e1e1e"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="170dp"
-                    android:text="2018-01-02"
+                    android:text=""
                     android:textColor="#ff1e1e1e"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="170dp"
-                    android:text="2018-09-09"
+                    android:text=""
                     android:textColor="#ff1e1e1e"
                     android:textSize="16sp" />
             </RelativeLayout>

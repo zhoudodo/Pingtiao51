@@ -43,7 +43,7 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/anniu_copy" />
 
-            <include layout="@layout/include_pingtiao_style_layout"></include>
+            <include layout="@layout/include_pingtiao_style_layout2"></include>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"

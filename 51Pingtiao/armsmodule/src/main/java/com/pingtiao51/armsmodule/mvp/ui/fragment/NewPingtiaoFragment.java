@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 
+import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.di.component.DaggerNewPingtiaoComponent;
 import com.pingtiao51.armsmodule.mvp.contract.NewPingtiaoContract;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
@@ -49,6 +50,7 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.WebViewActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.adapter.HomeMultiAdapter;
+import com.pingtiao51.armsmodule.mvp.ui.custom.view.ChoicePingtiaoTypeDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.CtsScrollTextView;
 import com.pingtiao51.armsmodule.mvp.ui.helper.BannerHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.ClassUtils;
@@ -118,7 +120,10 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
     @BindView(R.id.input_name)
     TextView input_name;
 
-    @OnClick({R.id.woyaoxiepingtiao, R.id.more_layout, R.id.click_more,
+    ChoicePingtiaoTypeDialog mChoicePingtiaoTypeDialog;
+
+
+    @OnClick({R.id.woyaoxiepingtiao, R.id.more_relative, R.id.more_layout,R.id.click_more,
             R.id.daihuan_layout, R.id.daishou_layout, R.id.home_haihuan,
             R.id.home_shoukuan, R.id.xinshouzhinan})
     public void onPageClick(View v) {
@@ -149,16 +154,49 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + Api.CONTACT);
                     startActBundle(bundle1, WebViewActivity.class);
                 } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
-                    startActBundle(bundle, MyPingtiaoActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
+//                    startActBundle(bundle, MyPingtiaoActivity.class);
                 }
                 break;
+            case R.id.more_relative:
             case R.id.click_more:
-                Bundle bundle1 = new Bundle();
-                bundle1.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
-                startActBundle(bundle1, MyPingtiaoActivity.class);
+                //TODO 选择凭条类型
+                if(mChoicePingtiaoTypeDialog == null){
+                    mChoicePingtiaoTypeDialog = new ChoicePingtiaoTypeDialog(getActivity(), new ChoicePingtiaoTypeDialog.ChoicePingtiaoTypeInterface() {
+                        @Override
+                        public void choicePingtiaoType(String choice) {
+//                            ArmsUtils.snackbarText(choice);
+                            Bundle bundle = new Bundle();
+                            switch (choice) {
+                                case "待还-电子借条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JIEKUANREN);
+                                    break;
+                                case "待收-电子借条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.CHUJIEREN);
+                                    break;
+                                case "电子收条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI_SHOU);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                                    break;
+                                case "纸质借条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                                    break;
+                                case "纸质收条":
+                                    bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI_SHOU);
+                                    bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                                    break;
+                            }
+                    startActBundle(bundle, MyPingtiaoActivity.class);
+                        }
+                    });
+                }
+                mChoicePingtiaoTypeDialog.show();
                 break;
+
             case R.id.home_haihuan:
                 //还款
                 Bundle bundleX = new Bundle();
@@ -285,7 +323,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
             } else {
                 click_more.setVisibility(View.GONE);
             }
-            more_tv.setText("全部");
+            more_tv.setText("");
         } else {
             getAnliData();
             more_tv.setText(getResources().getString(R.string.newplayerhelper));

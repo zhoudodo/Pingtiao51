@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="80dp"
-                        android:text="100.00元"
+                        android:text=""
                         android:textColor="#FF7F0D"
                         android:textSize="16sp" />
                 </RelativeLayout>
@@ -113,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="70dp"
-                            android:text="张三"
+                            android:text=""
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -138,7 +138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="70dp"
-                            android:text="李四"
+                            android:text=""
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="80dp"
-                        android:text="2018-01-02"
+                        android:text=""
                         android:textColor="#ff5c5c5c"
                         android:textSize="14sp" />
                 </RelativeLayout>
@@ -188,7 +188,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="50dp"
-                        android:text="2018-09-092018-09-092018-09-092018-09-092018-09-09"
+                        android:text=""
                         android:textColor="#5c5c5c"
                         android:textSize="14sp" />
                 </RelativeLayout>

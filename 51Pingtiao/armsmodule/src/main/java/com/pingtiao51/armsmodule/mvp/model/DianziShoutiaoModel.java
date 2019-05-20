@@ -52,7 +52,10 @@ public class DianziShoutiaoModel extends BaseModel implements DianziShoutiaoCont
     }
 
     @Override
-    public Observable<BaseJson<PingtiaoDetailListResponse>> getPingtiaoList( String enoteType, int page, String queryName, String queryScopeType, int size,String sortType, String userRoleType) {
+    public Observable<BaseJson<PingtiaoDetailListResponse>> getPingtiaoList(
+            String enoteType, int page, String queryName, String queryScopeType, int size,String sortType, String userRoleType,
+           String loanPeriodType,
+           String remainderRepayDaysType) {
         return mRepositoryManager.obtainRetrofitService(PingtiaoApi.class)
                 .getPingtiaoListDetails(new PingtiaoDetailListRequest(
                         AppUtils.getAppVersionName(),
@@ -64,6 +67,9 @@ public class DianziShoutiaoModel extends BaseModel implements DianziShoutiaoCont
                         size,
                         sortType,
                         userRoleType
+                        ,
+                        loanPeriodType,
+                        remainderRepayDaysType
                 ));
     }
 }

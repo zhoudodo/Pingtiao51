@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+     android:background="#f3f3f3">
+    <RelativeLayout
+        android:id="@+id/toolbar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:gravity="left">
+
+        <ImageView
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/create_new"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="新建"
+        android:textColor="#ff1e1e1e"
+        android:textSize="16sp"/>
+    <RelativeLayout
+        android:layout_toRightOf="@+id/toolbar_back"
+        android:layout_toLeftOf="@+id/create_new"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/search_et"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@drawable/bg_search_edite_bg"
+            android:hint="可搜索姓名"
+            android:textColorHint="@color/gray_color_bdbdbd"
+            android:textSize="12sp"
+            android:paddingLeft="13dp"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            />
+
+        <ImageView
+            android:id="@+id/search_img"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:src="@drawable/pingtiao_chazhao"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</RelativeLayout>

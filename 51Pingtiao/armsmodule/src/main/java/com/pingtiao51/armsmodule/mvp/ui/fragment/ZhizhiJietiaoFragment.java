@@ -33,6 +33,7 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity
 import com.pingtiao51.armsmodule.mvp.ui.adapter.PingtiaoZhizhiJieAdapter;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.NestedStickerHeaderView;
+import com.pingtiao51.armsmodule.mvp.ui.interfaces.SearchPingtiaoListInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ import static com.pingtiao51.armsmodule.mvp.ui.activity.DianziJietiaoXiangqingAc
  * ================================================
  */
 public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresenter> implements ZhizhiJietiaoContract.View
-        , SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener{
+        , SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener,SearchPingtiaoListInterface {
 
     public static ZhizhiJietiaoFragment newInstance() {
         ZhizhiJietiaoFragment fragment = new ZhizhiJietiaoFragment();
@@ -96,7 +97,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
     public void onResume() {
         super.onResume();
         mPage = 1;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq,loanPeriodType,remainderRepayDaysType);
     }
 
     @BindView(R.id.input_name)
@@ -199,6 +200,8 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
     String jueseReq = "0";
     String statusReq = "0";
     String sortReq = "0";
+    String loanPeriodType="0";
+    String remainderRepayDaysType="0";
 
     boolean isRefresh = false;
 
@@ -208,7 +211,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
         mPage = 1;
         isRefresh = true;
         isLoadMore = false;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq,loanPeriodType,remainderRepayDaysType);
     }
 
     boolean isLoadMore = false;
@@ -220,7 +223,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
         isLoadMore = true;
         isRefresh = false;
         mPage++;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq,loanPeriodType,remainderRepayDaysType);
 //        mPingtiaoMultiAdapter.notifyDataSetChanged();
 //        mPingtiaoMultiAdapter.loadMoreComplete();
 //        refresh_layout.setEnabled(false);
@@ -291,7 +294,9 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
             String queryName,
             String queryScopeType,
             String sortType,
-            String userRoleType
+            String userRoleType,
+            String loanPeriodType,
+            String remainderRepayDaysType
     ) {
         mPresenter.getPingtiaoList(
                 "2",// "0:电子借条 1:电子收条2：纸质借条3：纸质收条",
@@ -300,8 +305,15 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
                 queryScopeType,//查询范围类型 0：全部 1：未到期 2：已逾期 3：未生效4：已完结
                 SIZE,
                 sortType,//0:还款时间从晚到早 1: 还款时间从早到晚 2:借款金额从少到多 3:借款金额从多到少
-                userRoleType//用户角色 0：全部 1:借款人 2：出借人
+                userRoleType,//用户角色 0：全部 1:借款人 2：出借人
+                loanPeriodType,
+                remainderRepayDaysType
         );
     }
 
+    @Override
+    public void getPingtiaoList(String enoteType, int page, String queryName, String queryScopeType, int size, String sortType, String userRoleType, String loanPeriodType, String remainderRepayDaysType) {
+        mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
+
+    }
 }

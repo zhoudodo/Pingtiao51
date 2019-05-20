@@ -37,7 +37,9 @@ public interface ZhizhiShoutiaoContract {
                 String queryScopeType,
                 int size,
                 String sortType,
-                String userRoleType
+                String userRoleType,
+                String loanPeriodType,
+                String remainderRepayDaysType
         );
     }
 }

@@ -38,6 +38,7 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity
 import com.pingtiao51.armsmodule.mvp.ui.adapter.PingtiaoShouAdapter;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.NestedStickerHeaderView;
+import com.pingtiao51.armsmodule.mvp.ui.interfaces.SearchPingtiaoListInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ import static com.pingtiao51.armsmodule.mvp.ui.activity.DianziJietiaoXiangqingAc
  * ================================================
  */
 public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresenter> implements DianziShoutiaoContract.View
-        , SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener{
+        , SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, SearchPingtiaoListInterface {
 
     public static DianziShoutiaoFragment newInstance() {
         DianziShoutiaoFragment fragment = new DianziShoutiaoFragment();
@@ -83,43 +84,21 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
         return inflater.inflate(R.layout.fragment_dianzi_shoutiao2, container, false);
     }
 
-    @BindView(R.id.search_et)
-    EditText search_et;
 
     @BindView(R.id.no_layout)
     LinearLayout no_layout;
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        initSearchLayout();
 //        initPingtiaoChoiceView();
         initInfos();
         initXiangqingLine();
         initRefresh();
         initRecyclerView();
         initStick();
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq, loanPeriodType, remainderRepayDaysType);
     }
 
-    private void initSearchLayout() {
-        search_et.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //TODO 输入姓名查找
-                searchName = s.toString();
-                mPage = 1;
-                reqDatas(searchName, statusReq, sortReq, jueseReq);
-            }
-        });
-    }
 
     @BindView(R.id.divider_line1)
     View line1;
@@ -133,7 +112,6 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
     //借条数
     @BindView(R.id.jietiao_nums)
     TextView jietiao_nums;
-
 
 
     @BindView(R.id.daihuanzonge_hint)
@@ -150,9 +128,10 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
 //        jietiao_nums.setText("100");
 //        daihuanzonge.setText("10000");
     }
+
     private void initInfos(PingtiaoDetailListResponse response) {
-        jietiao_nums.setText(response.getTotal()+"");
-        daihuanzonge.setText(response.getBorrowAmount()+"");
+        jietiao_nums.setText(response.getTotal() + "");
+        daihuanzonge.setText(response.getBorrowAmount() + "");
     }
 
     @BindView(R.id.input_name)
@@ -180,13 +159,12 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
 //                Log.d("dodo"," isFirstItemVisible = " + isFirstItemVisible);
                 if (isFirstItemVisible && isCanRefresh) {
                     return false;
-                }else {
+                } else {
                     return true;
                 }
             }
         });
     }
-
 
 
     @BindView(R.id.stick_layout)
@@ -196,7 +174,8 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
     RelativeLayout pingtiaoxiangqing;
     private int height = 0;
     private int rvTop = 0;
-    private void initStick(){
+
+    private void initStick() {
        /* stick_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -212,18 +191,19 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
     RecyclerView recyclerView;
     PingtiaoShouAdapter mPingtiaoShouAdapter;
     LinearLayoutManager linearLayoutManager;
+
     private void initRecyclerView() {
 //        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         mPingtiaoShouAdapter = new PingtiaoShouAdapter(mDatas);
         recyclerView.setAdapter(mPingtiaoShouAdapter);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-         linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setAutoMeasureEnabled(true);
-        recyclerView.setLayoutManager( linearLayoutManager);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         mPingtiaoShouAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        mPingtiaoShouAdapter.setOnLoadMoreListener(this,recyclerView);
+        mPingtiaoShouAdapter.setOnLoadMoreListener(this, recyclerView);
         mPingtiaoShouAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -231,18 +211,18 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
                 //凭条类型 OWE_NOTE 电子借条 PAPPER_OWE_NOTE纸质借条 PAPER_RECEIPT_NOTE 纸质收条 RECEIPT_NOTE电子收条
                 Bundle bundle = new Bundle();
                 bundle.putInt(PING_TIAO_XIANG_QING, (int) rep.getId());
-                switch (rep.getType()){
+                switch (rep.getType()) {
                     case "OWE_NOTE":
-                        startActBundle(bundle,DianziJietiaoXiangqingActivity.class);
+                        startActBundle(bundle, DianziJietiaoXiangqingActivity.class);
                         break;
                     case "PAPER_OWE_NOTE":
-                        startActBundle(bundle,ZhizhiJietiaoXiangqingActivity.class);
+                        startActBundle(bundle, ZhizhiJietiaoXiangqingActivity.class);
                         break;
                     case "PAPER_RECEIPT_NOTE":
-                        startActBundle(bundle,ZhizhiShoutiaoXiangqingActivity.class);
+                        startActBundle(bundle, ZhizhiShoutiaoXiangqingActivity.class);
                         break;
                     case "RECEIPT_NOTE":
-                        startActBundle(bundle,DianziShoutiaoXiangqingActivity.class);
+                        startActBundle(bundle, DianziShoutiaoXiangqingActivity.class);
                         break;
                     default:
                         break;
@@ -265,7 +245,8 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
     String jueseReq = "0";
     String statusReq = "0";
     String sortReq = "0";
-
+    String loanPeriodType = "0";
+    String remainderRepayDaysType = "0";
     boolean isRefresh = false;
 
     @Override
@@ -274,7 +255,7 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
         mPage = 1;
         isRefresh = true;
         isLoadMore = false;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq, loanPeriodType, remainderRepayDaysType);
     }
 
     boolean isLoadMore = false;
@@ -286,7 +267,7 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
         isLoadMore = true;
         isRefresh = false;
         mPage++;
-        reqDatas(searchName, statusReq, sortReq, jueseReq);
+        reqDatas(searchName, statusReq, sortReq, jueseReq, loanPeriodType, remainderRepayDaysType);
 //        mPingtiaoMultiAdapter.notifyDataSetChanged();
 //        mPingtiaoMultiAdapter.loadMoreComplete();
 //        refresh_layout.setEnabled(false);
@@ -297,15 +278,15 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
         initInfos(rep);
         //数据返回
         List<PingtiaoDetailResponse> list = rep.getList();
-        for(PingtiaoDetailResponse response:list){
+        for (PingtiaoDetailResponse response : list) {
             response.itemType = PingtiaoDetailResponse.DIANZI_SHOUTIAO;
         }
-        if(list.size() <= 0 && !isLoadMore){
+        if (list.size() <= 0 && !isLoadMore) {
             no_layout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             refresh_layout.setRefreshing(false);
             return;
-        }else{
+        } else {
             no_layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
@@ -321,7 +302,7 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
             mPingtiaoShouAdapter.notifyDataSetChanged();
             if (list.size() >= SIZE) {
                 mPingtiaoShouAdapter.loadMoreComplete();
-            }else {
+            } else {
                 mPingtiaoShouAdapter.loadMoreEnd();
             }
         } else {
@@ -339,10 +320,10 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
     @Override
     public void onErrorPingtiaoList(String msg) {
         ArmsUtils.snackbarText(msg);
-        if(isRefresh){
+        if (isRefresh) {
             refresh_layout.setRefreshing(false);
         }
-        if(isLoadMore){
+        if (isLoadMore) {
             mPingtiaoShouAdapter.loadMoreFail();
         }
         isRefresh = false;
@@ -358,7 +339,10 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
             String queryName,
             String queryScopeType,
             String sortType,
-            String userRoleType
+            String userRoleType,
+            String loanPeriodType,
+            String remainderRepayDaysType
+
     ) {
         mPresenter.getPingtiaoList(
                 "1",// "0:电子借条 1:电子收条2：纸质借条3：纸质收条",
@@ -367,8 +351,14 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
                 queryScopeType,//查询范围类型 0：全部 1：未到期 2：已逾期 3：未生效4：已完结
                 SIZE,
                 sortType,//0:还款时间从晚到早 1: 还款时间从早到晚 2:借款金额从少到多 3:借款金额从多到少
-                userRoleType//用户角色 0：全部 1:借款人 2：出借人
+                userRoleType,//用户角色 0：全部 1:借款人 2：出借人
+                loanPeriodType,
+                remainderRepayDaysType
         );
     }
 
+    @Override
+    public void getPingtiaoList(String enoteType, int page, String queryName, String queryScopeType, int size, String sortType, String userRoleType, String loanPeriodType, String remainderRepayDaysType) {
+        mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
+    }
 }

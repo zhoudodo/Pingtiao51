@@ -9,5 +9,8 @@ data class PingtiaoDetailListRequest(
     val queryScopeType: String?,
     val size: Int?,
     val sortType: String?,
-    val userRoleType: String?
+    val userRoleType: String?,
+    val loanPeriodType: String?,//借款期限
+    val remainderRepayDaysType: String?//剩余还款时间
+
 )

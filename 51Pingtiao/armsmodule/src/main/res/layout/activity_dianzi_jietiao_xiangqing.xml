@@ -77,7 +77,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="70dp"
-                            android:text="100元"
+                            android:text="-"
                             android:textColor="#FF7F0D"
                             android:textSize="14sp" />
 
@@ -89,7 +89,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
                             android:layout_marginRight="5dp"
-                            android:text="待还款"
+                            android:text=""
                             android:textColor="#ffff6142"
                             android:textSize="16sp" />
 
@@ -114,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="70dp"
-                            android:text="李四"
+                            android:text=""
                             android:textColor="#5c5c5c"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -137,7 +137,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="70dp"
-                            android:text="2018-01-02"
+                            android:text=""
                             android:textColor="#5c5c5c"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -232,7 +232,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="张三"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -255,7 +255,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="李四"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -278,7 +278,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="100.00元"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -301,7 +301,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="2018-01-02"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -324,7 +324,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="2018-09-02"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -347,7 +347,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="到期还本付息"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -370,7 +370,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="12%"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -393,7 +393,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="100.02元"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -416,7 +416,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="经营周转"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -440,7 +440,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="111111"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>
@@ -464,7 +464,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="170dp"
-                            android:text="2018-01-02 18:00:00"
+                            android:text=""
                             android:textColor="#ff1e1e1e"
                             android:textSize="16sp" />
                     </RelativeLayout>

@@ -20,6 +20,7 @@
     <color name="gray_color_969696">#969696</color>
     <color name="gray_color_B7B6B6">#B7B6B6</color>
     <color name="gray_color_E9E9E9">#E9E9E9</color>
+    <color name="gray_color_E3E3E3">#E3E3E3</color>
     <color name="gray_color_BABABA">#BABABA</color>
     <color name="gray_color_7C7C7C">#7C7C7C</color>
     <color name="gray_color_A4A4A4">#A4A4A4</color>
@@ -33,6 +34,7 @@
     <color name="gray_color_F2F2F2">#F2F2F2</color>
     <color name="blue_color_467BB6">#467BB6</color>
     <color name="tv_main_color_FF814D">#FF814D</color>
+    <color name="orange_color_ffffe7d7">#ffffe7d7</color>
     <color name="orange_color_FF7057">#FF7057</color>
     <color name="orange_color_FF6142">#FF6142</color>
     <color name="orange_color_FF7F0D">#FF7F0D</color>
