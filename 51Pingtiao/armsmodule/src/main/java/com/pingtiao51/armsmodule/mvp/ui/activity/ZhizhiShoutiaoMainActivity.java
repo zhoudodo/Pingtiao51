@@ -239,7 +239,7 @@ public class ZhizhiShoutiaoMainActivity extends BaseArmsActivity<ZhizhiShoutiaoM
                     // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
                     for (LocalMedia media : selectList) {
                         Log.i("图片-----》", media.getPath());
-                        GlideProxyHelper.loadImgForUrl(paizhao, media.getPath());
+                        GlideProxyHelper.loadImgForLocal(paizhao, media.getPath());
                     }
                     break;
                 case ZHIZHI_JIETIAO:
@@ -250,7 +250,7 @@ public class ZhizhiShoutiaoMainActivity extends BaseArmsActivity<ZhizhiShoutiaoM
                     if (selectList.size() <= 0) {
                         paizhao.setImageDrawable(getResources().getDrawable(R.drawable.zhizhijiejiao_paizhao_bg));
                     } else {
-                        GlideProxyHelper.loadImgForUrl(paizhao, selectList.get(0).getPath());
+                        GlideProxyHelper.loadImgForLocal(paizhao, selectList.get(0).getPath());
                     }
                     break;
             }

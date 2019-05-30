@@ -91,6 +91,18 @@
         <item name="android:backgroundDimAmount">0.4</item><!--背景灰度  默认 0.5-->
     </style>
 
+    <style name="custom_dialog_top" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/dialog_animation_top</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimAmount">0.4</item><!--背景灰度  默认 0.5-->
+    </style>
+
     <style name="gift_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/dialog_animation</item>
@@ -107,6 +119,10 @@
     <style name="dialog_animation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+    <style name="dialog_animation_top" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/push_top_in</item>
+        <item name="android:windowExitAnimation">@anim/push_top_out</item>
     </style>
 
 

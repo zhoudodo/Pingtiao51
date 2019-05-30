@@ -55,7 +55,8 @@
             android:textColor="@color/gray_color_B3B3B3"
             android:textSize="14sp" />
         <ImageView
-            android:visibility="invisible"
+            android:id="@+id/home_img_more"
+            android:visibility="visible"
             android:layout_marginLeft="@dimen/default_left_margin_value"
             android:layout_width="8dp"
             android:layout_height="8dp"

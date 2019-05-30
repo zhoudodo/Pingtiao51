@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.ArmsUtils;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.di.component.DaggerMyComponent;
@@ -22,6 +20,7 @@ import com.pingtiao51.armsmodule.mvp.contract.MyContract;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.ExitAppTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.LoginEventTag;
+import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.UserAvatarChangeTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.UserDetailInfoResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.MyPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.activity.BaseWebViewActivity;
@@ -82,7 +81,7 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
     }
 
     @OnClick({R.id.user_name, R.id.rengzhengstatus, R.id.wode_huan_layout, R.id.wode_shou_layout, R.id.xiaofeimingxi, R.id.helper, R.id.shezhi
-    ,R.id.my_dianzishoutiao,R.id.my_zhizhijietiao,R.id.my_zhizhishoutiao})
+    ,R.id.my_dianzishoutiao,R.id.my_zhizhijietiao,R.id.my_zhizhishoutiao,R.id.user_avatar})
     public void onPageClick(View v) {
         Bundle bundleAll = new Bundle();
         if (!isLoginFlag) {
@@ -132,6 +131,7 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
                 bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + Api.CONTACT);
                 startActBundle(bundle1, WebViewActivity.class);
                 break;
+            case R.id.user_avatar:
             case R.id.shezhi:
                 //TODO 设置
                 bundleAll.putString(SettingActivity.AVATAR, mUserDetailInfoResponse.getHeadUrl());
@@ -139,10 +139,19 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
                 break;
 
             case R.id.my_dianzishoutiao:
+                bundleAll.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI_SHOU);
+                bundleAll.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                startActBundle(bundleAll, MyPingtiaoActivity.class);
                 break;
             case R.id.my_zhizhijietiao:
+                bundleAll.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI);
+                bundleAll.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                startActBundle(bundleAll, MyPingtiaoActivity.class);
                 break;
             case R.id.my_zhizhishoutiao:
+                bundleAll.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.ZHI_ZHI_SHOU);
+                bundleAll.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
+                startActBundle(bundleAll, MyPingtiaoActivity.class);
                 break;
         }
 
@@ -306,11 +315,10 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
         SavePreference.save(PingtiaoConst.USER_NAME, rep.getRealname());
         SavePreference.save(PingtiaoConst.USER_PHONE, rep.getPhone());
         SavePreference.save(PingtiaoConst.USER_ID_CARD, rep.getIdentityNo());
-
-        if(!TextUtils.isEmpty(rep.getHeadUrl())){
+//        if(!TextUtils.isEmpty(rep.getHeadUrl())){
             //不为null 则
-            GlideProxyHelper.loadImgForUrl(user_avatar,UrlDecoderHelper.decode(rep.getHeadUrl()));
-        }
+            GlideProxyHelper.loadImgByPlaceholder(user_avatar,R.drawable.wode_touxiang,UrlDecoderHelper.decode(rep.getHeadUrl()));
+//        }
 
         if (rep.getPhone() != null && rep.getPhone().length() >= 11) {
             String showPhone = rep.getPhone().substring(0, 3) + "****" + rep.getPhone().substring(7, rep.getPhone().length());
@@ -360,7 +368,11 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
         double shou = 0;
         wode_huan_money.setText(decimalFormat.format(huan) + "元");
         wode_shou_money.setText(decimalFormat.format(shou) + "元");
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void userAvatarChangeAction(UserAvatarChangeTag tag) {
+        mRefreshLayout.autoRefresh();
     }
 
 }

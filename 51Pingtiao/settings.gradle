@@ -1,1 +1,1 @@
-include ':armsmodule', ':baselib', ':magicindicator', ':zxinglibrary', ':wheelpicker-master'
+include ':armsmodule', ':baselib', ':magicindicator', ':zxinglibrary', ':wheelpicker-master', ':picture_library', ':ucrop'

@@ -230,9 +230,11 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
                 click_more.setVisibility(View.GONE);
             }
             more_tv.setText("");
+            home_img_more.setVisibility(View.INVISIBLE);
         } else {
             getAnliData();
             more_tv.setText(getResources().getString(R.string.newplayerhelper));
+            home_img_more.setVisibility(View.VISIBLE);
         }
         mHomeMultiAdapter.notifyDataSetChanged();
         mRefreshLayout.finishRefresh();
@@ -253,7 +255,8 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
         PingTiaoSeachResponse repShou = new PingTiaoSeachResponse();
         repShou.setAmount("3000");
         repShou.setTotalAmount("3000");
-        repShou.setLender("李四");
+        repShou.setLender("王五");//递交人
+        repShou.setBorrower("李四");//经手人
         repShou.setType("PAPER_RECEIPT_NOTE");//纸质收条
         repShou.setRepaymentDate("2019-01-01");
         repShou.setHasAnli(true);
@@ -270,6 +273,9 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
 
     @BindView(R.id.more_tv)
     TextView more_tv;
+
+    @BindView(R.id.home_img_more)
+    ImageView home_img_more;
     private void initRv() {
         getAnliData();
         more_tv.setText(getResources().getString(R.string.newplayerhelper));

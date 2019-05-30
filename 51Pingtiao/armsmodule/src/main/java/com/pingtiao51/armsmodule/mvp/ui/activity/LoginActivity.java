@@ -1,24 +1,21 @@
 package com.pingtiao51.armsmodule.mvp.ui.activity;
 
-import android.content.Intent;
-import android.graphics.Color;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SpanUtils;
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-
 import com.pingtiao51.armsmodule.BuildConfig;
-import com.pingtiao51.armsmodule.app.MyApplication;
+import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.di.component.DaggerLoginComponent;
 import com.pingtiao51.armsmodule.mvp.contract.LoginContract;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
@@ -26,25 +23,15 @@ import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.LoginEventTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.UnLoginBackTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.LoginResponse;
 import com.pingtiao51.armsmodule.mvp.presenter.LoginPresenter;
-
-import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.ui.broadcast.jpush.JpushManager;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView;
-import com.pingtiao51.armsmodule.mvp.ui.fragment.BaseArmFragment;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
-import okhttp3.OkHttpClient;
-
-import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 /**
@@ -109,8 +96,7 @@ public class LoginActivity extends BaseArmsActivity<LoginPresenter> implements L
                                 loginCode();
                                 break;
                             case InputLoginView.CODE_LOGIN:
-                                finish();
-                                EventBus.getDefault().post(new UnLoginBackTag());
+                                onBackPressed();
                                 break;
                         }
                         break;
@@ -137,6 +123,17 @@ public class LoginActivity extends BaseArmsActivity<LoginPresenter> implements L
 
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        EventBus.getDefault().post(new UnLoginBackTag());
+        for (Activity act: ActivityUtils.getActivityList()) {
+            if(!(act instanceof MainActivity)){
+                act.finish();
+            }
         }
     }
 

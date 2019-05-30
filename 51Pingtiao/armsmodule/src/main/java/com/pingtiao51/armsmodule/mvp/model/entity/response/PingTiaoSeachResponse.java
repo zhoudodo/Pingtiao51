@@ -29,8 +29,26 @@ public class PingTiaoSeachResponse implements MultiItemEntity {
     private String status;
     private String totalAmount;
     private String type;
+    private String signStatus;
+    private String viewUrl;
 
     private boolean hasAnli;
+
+    public String getViewUrl() {
+        return viewUrl;
+    }
+
+    public void setViewUrl(String viewUrl) {
+        this.viewUrl = viewUrl;
+    }
+
+    public String getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(String signStatus) {
+        this.signStatus = signStatus;
+    }
 
     public boolean isHasAnli() {
         return hasAnli;

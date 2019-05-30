@@ -36,6 +36,12 @@ public class CycleDatePickerDialog extends FrameDialog {
         this.endCalender = endCalender;
         mWheelDatePicker.setCalenderRange(startCalender, endCalender,isLast);
     }
+    public CycleDatePickerDialog(Activity context, Calendar startCalender, Calendar endCalender,int type) {
+        super(context);
+        this.startCalender = startCalender;
+        this.endCalender = endCalender;
+        mWheelDatePicker.setCalenderRange(startCalender, endCalender,type);
+    }
 
     @Override
     protected int getViewIds() {

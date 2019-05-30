@@ -1,6 +1,5 @@
 package com.pingtiao51.armsmodule.mvp.ui.fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +23,6 @@ import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 
-import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.di.component.DaggerNewPingtiaoComponent;
 import com.pingtiao51.armsmodule.mvp.contract.NewPingtiaoContract;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
@@ -52,13 +49,13 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity
 import com.pingtiao51.armsmodule.mvp.ui.adapter.HomeMultiAdapter;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.ChoicePingtiaoTypeDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.CtsScrollTextView;
+import com.pingtiao51.armsmodule.mvp.ui.custom.view.MoveView;
 import com.pingtiao51.armsmodule.mvp.ui.helper.BannerHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.ClassUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.GlideProxyHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -116,6 +113,8 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
     CtsScrollTextView message_content;
     @BindView(R.id.rv)
     RecyclerView rv;
+    @BindView(R.id.xinshouzhinan)
+    MoveView xinshouzhinan;
 
     @BindView(R.id.input_name)
     TextView input_name;
@@ -125,7 +124,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
 
     @OnClick({R.id.woyaoxiepingtiao, R.id.more_relative, R.id.more_layout,R.id.click_more,
             R.id.daihuan_layout, R.id.daishou_layout, R.id.home_haihuan,
-            R.id.home_shoukuan, R.id.xinshouzhinan})
+            R.id.home_shoukuan,R.id.xinshouzhinan})
     public void onPageClick(View v) {
         switch (v.getId()) {
             case R.id.xinshouzhinan:
@@ -231,6 +230,18 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+//        xinshouzhinan.setMoveOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO  跳转新手指南
+//                SavePreference.save(PingtiaoConst.XINSHOU_ZHINAN, true);
+//                xinshouzhinan.setVisibility(View.GONE);//未点击显示
+//                Bundle bundlex1 = new Bundle();
+//                bundlex1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "新手指南");
+//                bundlex1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + Api.XINSHOU_GUIDE);
+//                startActBundle(bundlex1, WebViewActivity.class);
+//            }
+//        });
         initRv();
 //        initHomeData();
         initHomeTimerTask();
@@ -239,8 +250,8 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
         initXinshouzhinan();
     }
 
-    @BindView(R.id.xinshouzhinan)
-    ImageView xinshouzhinan;
+//    @BindView(R.id.xinshouzhinan)
+//    ImageView xinshouzhinan;
 
     private void initXinshouzhinan() {
         boolean hasClick = SavePreference.getBoolean(getActivity(), PingtiaoConst.XINSHOU_ZHINAN);
@@ -324,9 +335,11 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                 click_more.setVisibility(View.GONE);
             }
             more_tv.setText("");
+            home_img_more.setVisibility(View.INVISIBLE);
         } else {
             getAnliData();
             more_tv.setText(getResources().getString(R.string.newplayerhelper));
+            home_img_more.setVisibility(View.VISIBLE);
         }
         mHomeMultiAdapter.notifyDataSetChanged();
         mRefreshLayout.finishRefresh();
@@ -428,7 +441,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                 switch (i) {
                     case 0:
                         jietiaomoban_first.setVisibility(View.VISIBLE);
-                        GlideProxyHelper.loadImgByPlaceholder(jietiaomoban, R.drawable.home_page_functions_bg, datas.get(0).getIconUrl());
+                        GlideProxyHelper.loadImgByPlaceholder(jietiaomoban, R.drawable.home_page_functions_bg,datas.get(0).getIconUrl());
                         jietiaomoban_tv.setText(datas.get(0).getName());
                         jietiaomoban_first.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -507,7 +520,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
     private void getAnliData() {
         PingTiaoSeachResponse repJie = new PingTiaoSeachResponse();
         repJie.setAmount("2000");
-        repJie.setTotalAmount("2000");
+        repJie.setTotalAmount("2019.73");
         repJie.setType("OWE_NOTE");//电子借条
         repJie.setLender("李四");//出借人
         repJie.setBorrower("张三");//借款人
@@ -560,6 +573,8 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
 
     @BindView(R.id.more_tv)
     TextView more_tv;
+    @BindView(R.id.home_img_more)
+    ImageView home_img_more;
 
     private void initRv() {
         getAnliData();

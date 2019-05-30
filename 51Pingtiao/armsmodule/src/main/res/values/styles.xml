@@ -252,7 +252,7 @@
         <!--预览界面标题栏背景色-->
         <item name="picture.ac_preview.title.bg">@color/white</item>
         <!--预览界面底部背景色-->
-        <item name="picture.ac_preview.bottom.bg">@color/color_fa</item>
+        <item name="picture.ac_preview.bottom.bg">@color/black_color_404040</item>
         <!--预览界面返回箭头-->
         <item name="picture.preview.leftBack.icon">@drawable/picture_back</item>
         <!--裁剪页面标题背景色-->

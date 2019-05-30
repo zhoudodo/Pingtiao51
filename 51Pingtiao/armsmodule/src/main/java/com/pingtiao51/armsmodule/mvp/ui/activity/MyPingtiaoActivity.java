@@ -102,6 +102,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
         if (mBackType == BACK_FINISH_CREATE) {
             ActivityUtils.finishActivity(CreateJietiaoActivity.class);
             ActivityUtils.finishActivity(CreateDianziJietiaoActivity.class);
+            ActivityUtils.finishActivity(CreateDianziShoutiaoActivity.class);
         }
     }
 
@@ -155,6 +156,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
         mJiekuanqixianList = Arrays.asList(getResources().getStringArray(R.array.jiekuanqixian));
         mChoiceJiekuanqixian = mJiekuanqixianList.get(0);
         mJiekuanqixianAdapter = new ChoicePingtiaoPageAdapter(R.layout.item_jiekuanqixian_item_layout, mJiekuanqixianList);
+        mJiekuanqixianAdapter.setCheckPosition(0);
         recycler_view_jiekuanqixian.setLayoutManager(new GridLayoutManager(this, 3));
         recycler_view_jiekuanqixian.setAdapter(mJiekuanqixianAdapter);
         mJiekuanqixianAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -171,6 +173,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
         mJulihuankuanriqiList = Arrays.asList(getResources().getStringArray(R.array.julihuankuanshijian));
         mChoiceJulihuankuanriqi = mJulihuankuanriqiList.get(0);
         mHuankuanriqiAdapter = new ChoicePingtiaoPageAdapter(R.layout.item_jiekuanqixian_item_layout, mJulihuankuanriqiList);
+        mHuankuanriqiAdapter.setCheckPosition(0);
         recycler_view_huankuanriqi.setLayoutManager(new GridLayoutManager(this, 3));
         recycler_view_huankuanriqi.setAdapter(mHuankuanriqiAdapter);
         mHuankuanriqiAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -284,7 +287,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
         mFragment.add(DianziShoutiaoFragment.newInstance());
         mFragment.add(ZhizhiJietiaoFragment.newInstance());
         mFragment.add(ZhizhiShoutiaoFragment.newInstance());
-        mFragment.get(0).setArguments(recBundle);
+//        mFragment.get(0).setArguments(recBundle);
 
             switch (mEnoteType){
                 case DIAN_ZI:
@@ -294,6 +297,9 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                             break;
                         case CHUJIEREN:
                             beforeChangePageFirst(mTitles.get(1));
+                            break;
+                        default:
+                            beforeChangePageFirst(mTitles.get(0));
                             break;
                     }
                     break;
@@ -306,9 +312,13 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                 case ZHI_ZHI_SHOU:
                     beforeChangePageFirst(mTitles.get(4));
                     break;
+                default:
+                    beforeChangePageFirst(mTitles.get(0));
+                    break;
             }
-        showPingtiaoShaixuanLayout(true);
+//        showPingtiaoShaixuanLayout(true);
     }
+
 
     ChoicePingtiaoPageDialog mChoicePingtiaoPageDialog;
 
@@ -367,7 +377,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
 
     @BindView(R.id.pingtiao_type_tv)
     TextView pingtiao_type_tv;
-
+    private int mPos = 0;
     private void showChoiceDialog() {
         if (mChoicePingtiaoPageDialog == null) {
             mChoicePingtiaoPageDialog = new ChoicePingtiaoPageDialog(this, new ChoicePingtiaoPageDialog.ChoicePingtiaoPageInterface() {
@@ -376,6 +386,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                     beforeChangePageNotFirst(choice);
                 }
             });
+            mChoicePingtiaoPageDialog.setPosition(mPos);
         }
         mChoicePingtiaoPageDialog.show();
     }
@@ -401,8 +412,10 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
             case "待还-电子借条":
                 mEnoteType = 0;
                 mUserRoleType = 1;
+                mPos = 0;
                 if(isFirst){
                     currentTabIndex = 0;
+                    showPingtiaoShaixuanLayout(currentTabIndex==0);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.framelayout, mFragment.get(0))
                             .add(R.id.framelayout, mFragment.get(1))
@@ -410,6 +423,8 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                             .add(R.id.framelayout, mFragment.get(3))
                             .hide(mFragment.get(3)).hide(mFragment.get(2)).hide(mFragment.get(1))
                             .show(mFragment.get(0)).commit();
+
+                    refreshFragment();
                 }else {
                     fragmentChange(0);
                 }
@@ -417,8 +432,10 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
             case "待收-电子借条":
                 mEnoteType = 0;
                 mUserRoleType = 2;
+                mPos = 1;
                 if(isFirst){
                     currentTabIndex = 0;
+                    showPingtiaoShaixuanLayout(currentTabIndex==0);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.framelayout, mFragment.get(0))
                             .add(R.id.framelayout, mFragment.get(1))
@@ -426,6 +443,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                             .add(R.id.framelayout, mFragment.get(3))
                             .hide(mFragment.get(3)).hide(mFragment.get(2)).hide(mFragment.get(1))
                             .show(mFragment.get(0)).commit();
+                    refreshFragment();
                 }else {
                     fragmentChange(0);
                 }
@@ -433,8 +451,10 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
             case "电子收条":
                 mEnoteType = 1;
                 mUserRoleType = 0;
+                mPos = 2;
                 if(isFirst){
                     currentTabIndex =1;
+                    showPingtiaoShaixuanLayout(currentTabIndex==0);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.framelayout, mFragment.get(0))
                             .add(R.id.framelayout, mFragment.get(1))
@@ -442,6 +462,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                             .add(R.id.framelayout, mFragment.get(3))
                             .hide(mFragment.get(3)).hide(mFragment.get(2)).hide(mFragment.get(0))
                             .show(mFragment.get(1)).commit();
+                    refreshFragment();
                 }else {
                     fragmentChange(1);
                 }
@@ -449,8 +470,10 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
             case "纸质借条":
                 mEnoteType = 2;
                 mUserRoleType = 0;
+                mPos = 3;
                 if(isFirst){
                     currentTabIndex = 2;
+                    showPingtiaoShaixuanLayout(currentTabIndex==0);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.framelayout, mFragment.get(0))
                             .add(R.id.framelayout, mFragment.get(1))
@@ -458,6 +481,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                             .add(R.id.framelayout, mFragment.get(3))
                             .hide(mFragment.get(3)).hide(mFragment.get(0)).hide(mFragment.get(1))
                             .show(mFragment.get(2)).commit();
+                    refreshFragment();
                 }else {
                     fragmentChange(2);
                 }
@@ -465,8 +489,10 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
             case "纸质收条":
                 mEnoteType = 3;
                 mUserRoleType = 0;
+                mPos = 4;
                 if(isFirst){
                     currentTabIndex = 3;
+                    showPingtiaoShaixuanLayout(currentTabIndex==0);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.framelayout, mFragment.get(0))
                             .add(R.id.framelayout, mFragment.get(1))
@@ -474,6 +500,7 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
                             .add(R.id.framelayout, mFragment.get(3))
                             .hide(mFragment.get(0)).hide(mFragment.get(2)).hide(mFragment.get(1))
                             .show(mFragment.get(3)).commit();
+                    refreshFragment();
                 }else {
                     fragmentChange(3);
                 }

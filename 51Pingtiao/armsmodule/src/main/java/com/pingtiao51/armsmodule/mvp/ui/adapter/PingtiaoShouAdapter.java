@@ -33,7 +33,7 @@ public class PingtiaoShouAdapter extends BaseMultiItemQuickAdapter<PingtiaoDetai
         switch (item.getItemType()) {
             case DIANZI_SHOUTIAO:
                 ImageView imgage1 = helper.getView(R.id.jianluetu);
-                GlideProxyHelper.loadImgForRes(imgage1, R.drawable.shoutiao_shuoluetu2);
+                GlideProxyHelper.loadImgForRes(imgage1, R.drawable.icon_shoutiao_bg);
                 SpannableStringBuilder sp2 = new SpanUtils()
                         .append("收到 ").setForegroundColor(mContext.getResources().getColor(R.color.black_color_404040)).setFontSize(18, true)
                         .append("¥" + item.getAmount()).setForegroundColor(mContext.getResources().getColor(R.color.orange_color_FF7057)).setFontSize(18, true)

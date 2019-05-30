@@ -4,74 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlEnableScrollContentWhenLoaded="true"
-        app:srlEnableFooterFollowWhenLoadFinished="true"
-        >
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:descendantFocusability="blocksDescendants"
+    >
 
-        <LinearLayout
-            android:background="@color/white_ffffff"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:srlEnableFooterFollowWhenLoadFinished="true"
+            app:srlEnableScrollContentWhenLoaded="true">
 
-            <com.bigkoo.convenientbanner.ConvenientBanner
-                android:id="@+id/banner"
-                android:layout_width="345dp"
-                android:layout_height="160dp"
-                android:layout_gravity="center_horizontal"
-                app:canLoop="true"></com.bigkoo.convenientbanner.ConvenientBanner>
-
-            <include layout="@layout/include_home_message_layout"></include>
-            <include layout="@layout/include_icons_layout"></include>
-            <include layout="@layout/include_home_money_layout"></include>
-
-            <ImageView
-                android:id="@+id/woyaoxiepingtiao"
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginRight="6dp"
-                android:src="@drawable/anniu" />
+                android:layout_height="match_parent">
 
-            <include layout="@layout/include_pingtiao_style_layout2"></include>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_ffffff"
+                    android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/click_more"
-                android:layout_width="match_parent"
-                android:layout_height="22dp"
-                android:text="@string/look_more"
-                android:gravity="center"
-                android:textColor="#ffff7e00"
-                android:textSize="12sp"
-                />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                    <com.bigkoo.convenientbanner.ConvenientBanner
+                        android:id="@+id/banner"
+                        android:layout_width="345dp"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center_horizontal"
+                        app:canLoop="true"></com.bigkoo.convenientbanner.ConvenientBanner>
+
+                    <include layout="@layout/include_home_message_layout"></include>
+
+                    <include layout="@layout/include_icons_layout"></include>
+
+                    <include layout="@layout/include_home_money_layout"></include>
+
+                    <ImageView
+                        android:id="@+id/woyaoxiepingtiao"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginRight="6dp"
+                        android:src="@drawable/anniu" />
+
+                    <include layout="@layout/include_pingtiao_style_layout2"></include>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/click_more"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:gravity="center"
+                        android:text="@string/look_more"
+                        android:textColor="#ffff7e00"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
-    <ImageView
+
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.MoveView
         android:id="@+id/xinshouzhinan"
-        android:layout_marginTop="165dp"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_home_xinshouzhinan"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/icon_home_xinshouzhinan"
+        android:layout_marginLeft="325dp"
+        android:layout_marginTop="250dp" />
 </RelativeLayout>

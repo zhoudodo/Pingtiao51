@@ -26,6 +26,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.UrlEncoderUtils;
 import com.pingtiao51.armsmodule.R;
+import com.pingtiao51.armsmodule.app.utils.webview.InterceptWebViewClient;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PingtiaoApi;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PingtiaoShareRequest;
@@ -74,15 +75,13 @@ public class WebViewShareActivity extends BaseWebViewActivity {
         return findViewById(R.id.progress_webview);
     }
 
-    TextView mTitle;
 
     @Override
     public void setWebClient() {
         ActivityUtils.finishActivity(CreateDianziJietiaoActivity.class);
-        initPageConfig();
         initJs2Java();
         getShareInfos();
-        progressWebView.setWebViewClient(new WebViewClient() {
+        progressWebView.setWebViewClient(new InterceptWebViewClient(this) {
         });
     }
 
@@ -96,19 +95,9 @@ public class WebViewShareActivity extends BaseWebViewActivity {
     }
 
 
-    TextView rightTv;
 
-    private void initPageConfig() {
-        mTitle = findViewById(R.id.toolbar_title);
-        rightTv = findViewById(R.id.right_tv);
-        rightTv.setText("发送");
-        rightTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showShareDialog();
-            }
-        });
-    }
+
+
 
     private void initJs2Java() {
         JsInterface jsInterface = new JsInterface(
@@ -132,21 +121,26 @@ public class WebViewShareActivity extends BaseWebViewActivity {
 
     }
 
-    @Override
-    public void setRightTitle(String str) {
-        runOnUiThread(new Runnable() {
+    protected void initPageConfig() {
+        super.initPageConfig();
+        mTitle = findViewById(R.id.toolbar_title);
+        rightTv = findViewById(R.id.right_tv);
+        rightTv.setText("发送");
+        rightTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                if(rightTv != null) {
-                    if (TextUtils.isEmpty(str)) {
-                        rightTv.setVisibility(View.GONE);
-                    } else {
-                        rightTv.setVisibility(View.VISIBLE);
-                        rightTv.setText(str);
-                    }
-                }
+            public void onClick(View v) {
+                showShareDialog();
             }
         });
+    }
+
+    @Override
+    public void setRightTitle(String str) {
+     super.setRightTitle(str);
+    }
+    @Override
+    public void setRightClick(String str,String jscode) {
+        super.setRightClick(str,jscode);
     }
 
 

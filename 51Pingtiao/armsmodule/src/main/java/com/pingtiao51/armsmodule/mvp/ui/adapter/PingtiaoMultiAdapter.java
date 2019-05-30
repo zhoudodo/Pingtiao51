@@ -3,6 +3,7 @@ package com.pingtiao51.armsmodule.mvp.ui.adapter;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -47,14 +48,14 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
         addItemType(PingtiaoDetailResponse.DIANZI_JIETIAO, R.layout.item_jietiao_layout);
     }
 
-    String userType = "0";//二维码分享专用
+//    String userType = "0";//二维码分享专用
 
     @Override
     protected void convert(BaseViewHolder helper, PingtiaoDetailResponse item) {
         switch (item.getItemType()) {
             case DIANZI_JIETIAO:
                 ImageView imgage = helper.getView(R.id.jianluetu);
-                GlideProxyHelper.loadImgForRes(imgage, R.drawable.jietiao_shuoluetu2);
+                GlideProxyHelper.loadImgForRes(imgage, R.drawable.icon_jietiao_bg);
                 String borrowAndLendState = "待还";
                 String type = "出借人";
                 String name = "";
@@ -63,7 +64,7 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
 
                 if (item.getBorrowAndLendState().equals("0")) {
                     borrowAndLendState = "待还";
-                    userType = "0";
+//                    userType = "0";
                     name = item.getLender();
                     type = "出借人";
                     jineType = "借款金额";
@@ -74,7 +75,7 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
                     name = item.getBorrower();
                     jineType = "出借金额";
                     queryRequestType = "2";//借出
-                    userType = "1";
+//                    userType = "1";
                 }
                 SpannableStringBuilder sp1 = new SpanUtils()
                         .append(borrowAndLendState + " ").setForegroundColor(mContext.getResources().getColor(R.color.black_color_404040)).setFontSize(18, true)
@@ -87,10 +88,16 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
                 helper.setText(R.id.huankuan_shijian, "还款时间：" + item.getRepaymentDate());
 
                 String yuqi_flag = getStatus(helper, item);
-                if ("借款人完结".equals(yuqi_flag) || "出借人完结".equals(yuqi_flag)) {
+                if (yuqi_flag.contains("完结")) {
                     helper.setTextColor(R.id.yuqi_flag, mContext.getResources().getColor(R.color.blue_color_467BB6));
+                    helper.getView(R.id.yuqi_flag).setBackground(mContext.getResources().getDrawable(R.drawable.yuqi_bg2));
                 } else {
                     helper.setTextColor(R.id.yuqi_flag, mContext.getResources().getColor(R.color.red_color_ED4641));
+                    if(TextUtils.isEmpty(yuqi_flag)){
+                        helper.getView(R.id.yuqi_flag).setBackground(null);
+                    }else {
+                        helper.getView(R.id.yuqi_flag).setBackground(mContext.getResources().getDrawable(R.drawable.yuqi_bg));
+                    }
                 }
                 helper.setText(R.id.yuqi_flag, yuqi_flag);
 
@@ -104,8 +111,8 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
                         Bundle bundle1 = new Bundle();
                         bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "二维码分享");
                         bundle1.putInt(WebViewShareActivity.NOTE_ID, (int) item.getId());
-                        bundle1.putInt(WebViewShareActivity.USER_TYPE, Integer.parseInt(userType));
-                        bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + item.getId() + "&userType=" + userType);
+                        bundle1.putInt(WebViewShareActivity.USER_TYPE, Integer.parseInt(item.getBorrowAndLendState()));
+                        bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + item.getId() + "&userType=" + item.getBorrowAndLendState());
 
                         ActivityUtils.startActivity(bundle1, WebViewShareActivity.class);
                     }
@@ -376,7 +383,7 @@ public class PingtiaoMultiAdapter extends BaseMultiItemQuickAdapter<PingtiaoDeta
                         bundle1.putString(HuankuanStatusActivity.LENDER, item.getLender());
                         bundle1.putDouble(HuankuanStatusActivity.AMOUNT, Double.valueOf(item.getTotalAmount()));
                         bundle1.putInt(HuankuanStatusActivity.NOTE_ID, (int) item.getId());
-                        bundle1.putInt(HuankuanStatusActivity.USER_TYPE, Integer.parseInt(userType));
+                        bundle1.putInt(HuankuanStatusActivity.USER_TYPE, Integer.parseInt(item.getBorrowAndLendState()));
                         ActivityUtils.startActivity(bundle1, HuankuanStatusActivity.class);
                     }
                 });

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.presenter.LoginPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.helper.EditCheckHelper;
@@ -63,7 +64,17 @@ public class InputLoginView extends FrameLayout {
     void clickView(View v) {
         switch (v.getId()) {
             case R.id.get_yzm:
-                getPhoneYzm();
+                if (!EditCheckHelper.checkInputPhoneToast(editViews[0])) {
+                    return;
+                }
+                mSwipeYzmDialog = new SwipeYzmDialog(ActivityUtils.getTopActivity());
+                mSwipeYzmDialog.setListener(new SwipeYzmDialog.SwipeYzmInterface() {
+                    @Override
+                    public void onSuccess() {
+                        getPhoneYzm();
+                    }
+                });
+                mSwipeYzmDialog.show();
                 break;
             case R.id.login_cancel:
                 login_cancel.setVisibility(View.GONE);
@@ -226,7 +237,7 @@ public class InputLoginView extends FrameLayout {
         authTimer.start();
     }
 
-
+    SwipeYzmDialog mSwipeYzmDialog;
     /* 定义一个倒计时的内部类 */
     private class AuthCodeTimer extends CountDownTimer {
         private boolean isGetAuth = false; //是否已经发送请求
@@ -252,6 +263,7 @@ public class InputLoginView extends FrameLayout {
             if (mGetYzm == null) {
                 return;
             }
+
             if (!isGetAuth) {
                 isGetAuth = true;
                 getAuthCode();
@@ -282,8 +294,8 @@ public class InputLoginView extends FrameLayout {
                 type = CodeType.RESET_PASSWORD.getType();
                 break;
         }
+        //获取验证码
         mLoginPresenter.sendCode(phoneNumber,type);
-
     }
 
 

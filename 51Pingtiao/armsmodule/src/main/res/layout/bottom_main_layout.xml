@@ -54,6 +54,29 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_main_page4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/act_main_iv_page4"
+            android:layout_width="27dp"
+            android:layout_height="25dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/act_main_tv_page4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_page4"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ll_main_page3"
         android:layout_width="0dp"
         android:layout_height="match_parent"

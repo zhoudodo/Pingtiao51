@@ -9,13 +9,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +31,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.UrlEncoderUtils;
+import com.pingtiao51.armsmodule.R;
+import com.pingtiao51.armsmodule.app.utils.webview.ShouldInterceptRequestCallback;
 import com.pingtiao51.armsmodule.mvp.ui.helper.JsInterface;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
@@ -39,7 +49,7 @@ import java.util.Locale;
 
 import static android.os.Environment.DIRECTORY_DCIM;
 
-public abstract class BaseWebViewActivity extends FragmentActivity implements JsInterface.Js2JavaInterface {
+public abstract class BaseWebViewActivity extends FragmentActivity implements JsInterface.Js2JavaInterface,ShouldInterceptRequestCallback {
     public final static String WEBVIEW_URL = "WEBVIEW_URL";
     public final static String WEBVIEW_TITLE = "WEBVIEW_TITLE";
     private Intent recIntent;
@@ -54,6 +64,7 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
         recIntent = getIntent();
         initPageInfos();
         initWebViews();
+        initPageConfig();
     }
 
 
@@ -118,6 +129,8 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
 //        settings.setUserAgentString(settings.getUserAgentString());
         String userAgent = settings.getUserAgentString();
         settings.setJavaScriptEnabled(true);
+        // 设置允许JS弹窗
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         // 设置可以支持缩放
@@ -142,6 +155,21 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
                 e.printStackTrace();
             }
         }
+        progressWebView.setWebViewClient(
+                new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        Log.d("dodo","url = " + url);
+                        return super.shouldOverrideUrlLoading(view, url);
+                    }
+
+                    @Override
+                    public void onLoadResource(WebView view, String url) {
+                        Log.d("dodo","url2 = " + url);
+                        super.onLoadResource(view, url);
+                    }
+                }
+        );
         setWebClient();
     }
 
@@ -187,12 +215,13 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
     }
 
     private int mCount = 0;
+
     @Override
     protected void onResume() {
         super.onResume();
-        String json = mCount +"";
+        String json = mCount + "";
         mCount++;
-        if(!TextUtils.isEmpty(SavePreference.getStr(this,PingtiaoConst.KEY_TOKEN)) && getIntent().getBooleanExtra(WEBVIEW_OTHERS,true)) {
+        if (!TextUtils.isEmpty(SavePreference.getStr(this, PingtiaoConst.KEY_TOKEN)) && getIntent().getBooleanExtra(WEBVIEW_OTHERS, true)) {
             progressWebView.loadUrl("javascript:reloadPage(" + "'" + json + "'" + ")");
         }
 //        progressWebView.loadUrl("javascript:reloadPage()");
@@ -247,10 +276,6 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
 
     }
 
-    @Override
-    public void setRightTitle(String str) {
-
-    }
 
     @Override
     public void showDialog() {
@@ -265,5 +290,80 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
     @Override
     public void reloadUrl(String url) {
 
+    }
+
+
+    protected TextView rightTv;
+    protected TextView mTitle;
+
+    protected void initPageConfig() {
+        mTitle = findViewById(R.id.toolbar_title);
+        rightTv = findViewById(R.id.right_tv);
+        rightTv.setText("");
+        rightTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+
+    @Override
+    public void setRightTitle(String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (rightTv != null) {
+                    if (TextUtils.isEmpty(str)) {
+                        rightTv.setVisibility(View.GONE);
+                    } else {
+                        rightTv.setVisibility(View.VISIBLE);
+                        rightTv.setText(str);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setRightClick(String str, String jscode) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (rightTv != null) {
+                    if (TextUtils.isEmpty(str)) {
+                        rightTv.setVisibility(View.GONE);
+                    } else {
+                        rightTv.setVisibility(View.VISIBLE);
+                        rightTv.setText(str);
+                    }
+                    rightTv.setOnClickListener(new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onClick(View v) {
+                            if (progressWebView != null) {
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                    // 如果当前版本小于 JELLY_BEAN_MR2 版本，即4.4版本
+                                    progressWebView.loadUrl(jscode);
+                                } else {
+                                    //因为该方法在 Android 4.4 版本才可使用，所以使用时需进行版本判断
+                                    progressWebView.evaluateJavascript(jscode, new ValueCallback<String>() {
+                                        @Override
+                                        public void onReceiveValue(String value) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    //监听到Url发生变化就隐藏右边标题
+    @Override
+    public void interceptRequestUrl(String url){
+        //由于时序问题暂时搁置
     }
 }

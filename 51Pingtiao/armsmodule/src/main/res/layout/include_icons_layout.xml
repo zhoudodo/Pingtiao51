@@ -6,15 +6,16 @@
 
     <LinearLayout
         android:id="@+id/jietiaomoban_first"
-        android:layout_marginLeft="15dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/jietiaomoban"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/home_page_functions_bg" />
         <TextView
             android:id="@+id/jietiaomoban_tv"
@@ -28,15 +29,16 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/shoutiaomoban_second"
-        android:layout_marginLeft="53dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/shoutiaomoban"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/home_page_functions_bg" />
         <TextView
             android:id="@+id/shoutiaomoban_tv"
@@ -50,15 +52,16 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/jietiaozhenduan_third"
-        android:layout_marginLeft="53dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/jietiaozhenduan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/home_page_functions_bg" />
         <TextView
             android:id="@+id/jietiaozhenduan_tv"
@@ -72,15 +75,16 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/chazhengxin_fourth"
-        android:layout_marginLeft="53dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/chazhengxin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/home_page_functions_bg" />
         <TextView
             android:id="@+id/chazhengxin_tv"

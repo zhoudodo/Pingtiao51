@@ -14,7 +14,7 @@
         android:id="@+id/jianluetu"
         android:layout_width="89dp"
         android:layout_height="111dp"
-        android:layout_marginLeft="28dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="12dp"
         android:scaleType="fitXY" />
 
@@ -71,19 +71,21 @@
         android:layout_height="29dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="9dp"
+        android:layout_marginRight="21dp"
         android:scaleType="centerCrop"
         android:src="@drawable/dianzipingtiao_jie_icon" />
 
     <TextView
         android:id="@+id/yuqi_flag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="17dp"
         android:layout_below="@+id/dianzipingtiao_icon_status"
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
         android:layout_marginRight="9dp"
         android:textSize="12sp"
+        android:gravity="center"
+        android:background="@drawable/yuqi_bg"
         android:text="已逾期"
         android:textColor="@color/red_color_ED4641" />
     <LinearLayout

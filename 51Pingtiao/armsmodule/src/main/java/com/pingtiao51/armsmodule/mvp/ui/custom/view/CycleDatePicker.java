@@ -23,12 +23,13 @@ import butterknife.Unbinder;
 
 public class CycleDatePicker extends LinearLayout {
 
-    public interface CycleDatePickerSelect{
-         void selectDate(Date date);
+    public interface CycleDatePickerSelect {
+        void selectDate(Date date);
     }
+
     CycleDatePickerSelect mCycleDatePickerSelect;
 
-    public void setCycleDatePickerSelect(CycleDatePickerSelect cycleDatePickerSelect){
+    public void setCycleDatePickerSelect(CycleDatePickerSelect cycleDatePickerSelect) {
         mCycleDatePickerSelect = cycleDatePickerSelect;
     }
 
@@ -49,9 +50,12 @@ public class CycleDatePicker extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.date_picker_cycle_layout, this);
         mUnbinder = ButterKnife.bind(this);
         startCalender.setTime(new Date());
-        startCalender.add(Calendar.YEAR,-20);
+        startCalender.add(Calendar.YEAR, -20);
         endCalender.setTime(new Date());
-        endCalender.add(Calendar.YEAR,20);
+        endCalender.add(Calendar.YEAR, 20);
+
+        currentCalender.setTime(new Date());
+
         initFirst();
         initConfigs();
     }
@@ -63,8 +67,6 @@ public class CycleDatePicker extends LinearLayout {
     }
 
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CycleDatePicker(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -72,6 +74,7 @@ public class CycleDatePicker extends LinearLayout {
 
     private Calendar startCalender = Calendar.getInstance();
     private Calendar endCalender = Calendar.getInstance();
+    private Calendar currentCalender = Calendar.getInstance();
 
     @BindView(R.id.wheel_date_picker_year)
     WheelPicker wheel_date_picker_year;
@@ -91,7 +94,7 @@ public class CycleDatePicker extends LinearLayout {
         wheel_date_picker_month.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
             @Override
             public void onItemSelected(WheelPicker picker, Object data, int position) {
-                    monthChange(picker, data, position);
+                monthChange(picker, data, position);
             }
         });
 
@@ -115,8 +118,10 @@ public class CycleDatePicker extends LinearLayout {
         endYear = this.endCalender.get(Calendar.YEAR);
         initFirst();//
     }
+
     private boolean isFirstLast = false;
-    public void setCalenderRange(Calendar startCalender, Calendar endCalender,boolean isFirstLast) {
+
+    public void setCalenderRange(Calendar startCalender, Calendar endCalender, boolean isFirstLast) {
         this.isFirstLast = isFirstLast;
         this.startCalender = startCalender;
         this.endCalender = endCalender;
@@ -125,25 +130,50 @@ public class CycleDatePicker extends LinearLayout {
         initLast();//
     }
 
+
+    /**
+     * 特殊定制需求扩展
+     *
+     * @param startCalender
+     * @param endCalender
+     * @param specialType 定制类型
+     */
+    public final static int CHECK_TODAY = 0;
+
+    public void setCalenderRange(Calendar startCalender, Calendar endCalender, int specialType) {
+        this.startCalender = startCalender;
+        this.endCalender = endCalender;
+        startYear = this.startCalender.get(Calendar.YEAR);
+        endYear = this.endCalender.get(Calendar.YEAR);
+        if (CHECK_TODAY == specialType) {
+            //TODO 默认选择今天 今年至前后年份皆大于1的时候 例如 2019年  输入起始范围 （0，2018】 结束范围【2020，+）
+            initCurrentDay();
+        }
+
+    }
+
+
     private Calendar localCalendar = Calendar.getInstance();
     private int selectDay;
-    private void dayChange(WheelPicker picker, Object data, int position){
+
+    private void dayChange(WheelPicker picker, Object data, int position) {
         selectDay = (int) data;
         callback();
     }
 
     private int selectMonth;
-    private void monthChange(WheelPicker picker, Object data, int position){
+
+    private void monthChange(WheelPicker picker, Object data, int position) {
         selectMonth = (int) data;
         mDayList.clear();
-        if(selectYear == oneYear && selectMonth == oneMonth){
+        if (selectYear == oneYear && selectMonth == oneMonth) {
             mDayList.addAll(oneDays);
-        }else if(selectYear == twoYear && selectMonth == twoMonth){
+        } else if (selectYear == twoYear && selectMonth == twoMonth) {
             mDayList.addAll(twoDays);
-        }else{
+        } else {
             int startDay = 1;
-            int endDay = getDaysByYearMonth(selectYear,selectMonth);
-            for(int i=startDay;i<= endDay ;i++){
+            int endDay = getDaysByYearMonth(selectYear, selectMonth);
+            for (int i = startDay; i <= endDay; i++) {
                 mDayList.add(i);
             }
         }
@@ -152,13 +182,15 @@ public class CycleDatePicker extends LinearLayout {
         wheel_date_picker_day.setSelectedItemPosition(0);
         callback();
     }
+
     private int selectYear;
-    private void yearChange(WheelPicker picker, Object data, int position){
+
+    private void yearChange(WheelPicker picker, Object data, int position) {
         selectYear = (int) data;
         mMonthList.clear();
         mDayList.clear();
         //能改变年份说明年份大于1
-        if(selectYear == mYearList.get(0)){
+        if (selectYear == mYearList.get(0)) {
 //            mMonthList.clear();
             int startMonth = this.startCalender.get(Calendar.MONTH) + 1;
             int endMonth = 12;
@@ -173,21 +205,21 @@ public class CycleDatePicker extends LinearLayout {
             }
 
 
-        }else if(selectYear == mYearList.get(mYearList.size() - 1)){
+        } else if (selectYear == mYearList.get(mYearList.size() - 1)) {
 //            mMonthList.clear();
             int startMonth = 1;
-            int endMonth = this.endCalender.get(Calendar.MONTH)+1;
+            int endMonth = this.endCalender.get(Calendar.MONTH) + 1;
             for (int i = startMonth; i <= endMonth; i++) {
                 mMonthList.add(i);
             }
 //            mDayList.clear();
-            if(endMonth > startMonth) {
+            if (endMonth > startMonth) {
                 int startDay = 1;
                 int endDay = 31;
                 for (int i = startDay; i <= endDay; i++) {
                     mDayList.add(i);
                 }
-            }else{
+            } else {
                 int startDay = 1;
                 int endDay = this.endCalender.get(Calendar.DAY_OF_MONTH);
                 for (int i = startDay; i <= endDay; i++) {
@@ -195,15 +227,15 @@ public class CycleDatePicker extends LinearLayout {
                 }
             }
 
-        }else{
+        } else {
 //            mMonthList.clear();
-            for(int i=1; i<=12; i++){
+            for (int i = 1; i <= 12; i++) {
                 mMonthList.add(i);
             }
 //            wheel_date_picker_month.setData(mMonthList);
 
             mDayList.clear();
-            for(int i=1; i<=31; i++){
+            for (int i = 1; i <= 31; i++) {
                 mDayList.add(i);
             }
 
@@ -222,35 +254,100 @@ public class CycleDatePicker extends LinearLayout {
      * 初始化初始值
      */
 
-    private int oneYear,oneMonth;//第一个年月 对应的天数
-    private int twoYear,twoMonth;//最后一个年月 对应的天数
+    private int oneYear, oneMonth;//第一个年月 对应的天数
+    private int twoYear, twoMonth;//最后一个年月 对应的天数
     private List<Integer> oneDays = new ArrayList<>();//第一个年月 对应的天数
     private List<Integer> twoDays = new ArrayList<>();//最后一个年月 对应的天数
 
-
-
-    private void initFirst(){
+    private void initCurrentDay() {
         oneYear = startCalender.get(Calendar.YEAR);
         twoYear = endCalender.get(Calendar.YEAR);
-        oneMonth = startCalender.get(Calendar.MONTH)+1;
-        twoMonth = endCalender.get(Calendar.MONTH)+1;
-        int oneStartDay  = startCalender.get(Calendar.DAY_OF_MONTH);
+        oneMonth = startCalender.get(Calendar.MONTH) + 1;
+        twoMonth = endCalender.get(Calendar.MONTH) + 1;
+        int oneStartDay = startCalender.get(Calendar.DAY_OF_MONTH);
         int oneEndDay = startCalender.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int twoStartDay  = 1;
+        int twoStartDay = 1;
         int twoEndDay = endCalender.get(Calendar.DAY_OF_MONTH);
-            selectYear = oneYear;
-            selectMonth = oneMonth;
-            selectDay = oneStartDay;
 
-            callback();
+        //今天的时间
+        selectYear = currentCalender.get(Calendar.YEAR);
+        selectMonth = currentCalender.get(Calendar.MONTH) + 1;
+        selectDay = currentCalender.get(Calendar.DAY_OF_MONTH);
+        callback();
 
         oneDays.clear();
-        for(int i=oneStartDay;i<=oneEndDay;i++){
+        for (int i = oneStartDay; i <= oneEndDay; i++) {
             oneDays.add(i);
         }
 
         twoDays.clear();
-        for(int i=twoStartDay;i<=twoEndDay;i++){
+        for (int i = twoStartDay; i <= twoEndDay; i++) {
+            twoDays.add(i);
+        }
+
+        mYearList.clear();
+        mMonthList.clear();
+        mDayList.clear();
+
+        for (int i = startYear; i <= endYear; i++) {
+            mYearList.add(i);
+        }
+
+//        wheel_date_picker_day.setData(mDayList);
+//        wheel_date_picker_month.setData(mMonthList);
+        wheel_date_picker_year.setData(mYearList);
+        int posYear = 0;
+        for (int i = 0; i + startYear <= endYear; i++) {
+            if (currentCalender.get(Calendar.YEAR) == i + startYear) {
+                posYear = i;
+                break;
+            }
+        }
+        wheel_date_picker_year.setSelectedItemPosition(posYear);
+
+        int posMonth = 0;
+        for (int month = 1, j = 0; month <= 12; month++,j++) {
+            mMonthList.add(month);
+            if(month == (currentCalender.get(Calendar.MONTH)+1)){
+                posMonth = j;
+            }
+        }
+
+        wheel_date_picker_month.setData(mMonthList);
+        wheel_date_picker_month.setSelectedItemPosition(posMonth);
+
+        int posDay = 0;
+        for (int day = 1, k = 0; day <= currentCalender.getActualMaximum(Calendar.DAY_OF_MONTH); day++,k++) {
+            mDayList.add(day);
+            if(day == (currentCalender.get(Calendar.DAY_OF_MONTH))){
+                posDay = k;
+            }
+        }
+
+        wheel_date_picker_day.setData(mDayList);
+        wheel_date_picker_day.setSelectedItemPosition(posDay);
+    }
+
+    private void initFirst() {
+        oneYear = startCalender.get(Calendar.YEAR);
+        twoYear = endCalender.get(Calendar.YEAR);
+        oneMonth = startCalender.get(Calendar.MONTH) + 1;
+        twoMonth = endCalender.get(Calendar.MONTH) + 1;
+        int oneStartDay = startCalender.get(Calendar.DAY_OF_MONTH);
+        int oneEndDay = startCalender.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int twoStartDay = 1;
+        int twoEndDay = endCalender.get(Calendar.DAY_OF_MONTH);
+        selectYear = oneYear;
+        selectMonth = oneMonth;
+        selectDay = oneStartDay;
+        callback();
+        oneDays.clear();
+        for (int i = oneStartDay; i <= oneEndDay; i++) {
+            oneDays.add(i);
+        }
+
+        twoDays.clear();
+        for (int i = twoStartDay; i <= twoEndDay; i++) {
             twoDays.add(i);
         }
 
@@ -300,30 +397,29 @@ public class CycleDatePicker extends LinearLayout {
         wheel_date_picker_day.setData(mDayList);
         wheel_date_picker_month.setData(mMonthList);
         wheel_date_picker_year.setData(mYearList);
+
     }
 
-    private void initLast(){
+    private void initLast() {
         oneYear = startCalender.get(Calendar.YEAR);
         twoYear = endCalender.get(Calendar.YEAR);
-        oneMonth = startCalender.get(Calendar.MONTH)+1;
-        twoMonth = endCalender.get(Calendar.MONTH)+1;
-        int oneStartDay  = startCalender.get(Calendar.DAY_OF_MONTH);
+        oneMonth = startCalender.get(Calendar.MONTH) + 1;
+        twoMonth = endCalender.get(Calendar.MONTH) + 1;
+        int oneStartDay = startCalender.get(Calendar.DAY_OF_MONTH);
         int oneEndDay = startCalender.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int twoStartDay  = 1;
+        int twoStartDay = 1;
         int twoEndDay = endCalender.get(Calendar.DAY_OF_MONTH);
-            selectYear = twoYear;
-            selectMonth = twoMonth;
-            selectDay = oneEndDay;
-
-            callback();
-
+        selectYear = twoYear;
+        selectMonth = twoMonth;
+        selectDay = oneEndDay;
+        callback();
         oneDays.clear();
-        for(int i=oneStartDay;i<=oneEndDay;i++){
+        for (int i = oneStartDay; i <= oneEndDay; i++) {
             oneDays.add(i);
         }
 
         twoDays.clear();
-        for(int i=twoStartDay;i<=twoEndDay;i++){
+        for (int i = twoStartDay; i <= twoEndDay; i++) {
             twoDays.add(i);
         }
 
@@ -359,7 +455,7 @@ public class CycleDatePicker extends LinearLayout {
         } else {
             //不同年份
             int startMonth = 1;
-            int endMonth = this.endCalender.get(Calendar.MONTH)+1;
+            int endMonth = this.endCalender.get(Calendar.MONTH) + 1;
             for (int i = startMonth; i <= endMonth; i++) {
                 mMonthList.add(i);
             }
@@ -371,15 +467,16 @@ public class CycleDatePicker extends LinearLayout {
             }
         }
         wheel_date_picker_day.setData(mDayList);
-        wheel_date_picker_day.setSelectedItemPosition(mDayList.size()-1);
+        wheel_date_picker_day.setSelectedItemPosition(mDayList.size() - 1);
         wheel_date_picker_month.setData(mMonthList);
-        wheel_date_picker_month.setSelectedItemPosition(mMonthList.size()-1);
+        wheel_date_picker_month.setSelectedItemPosition(mMonthList.size() - 1);
         wheel_date_picker_year.setData(mYearList);
         wheel_date_picker_year.setSelectedItemPosition(mYearList.size() - 1);
     }
+
     /**
      * 根据年 月 获取对应的月份 天数
-     * */
+     */
     public static int getDaysByYearMonth(int year, int month) {
 
         Calendar a = Calendar.getInstance();
@@ -391,16 +488,16 @@ public class CycleDatePicker extends LinearLayout {
         return maxDate;
     }
 
-    private void callback(){
+    private void callback() {
         String formatDate = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
         Date retDate = null;
         try {
-             retDate = sdf.parse(selectYear+"-"+selectMonth+"-"+selectDay);
+            retDate = sdf.parse(selectYear + "-" + selectMonth + "-" + selectDay);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(mCycleDatePickerSelect != null){
+        if (mCycleDatePickerSelect != null) {
             mCycleDatePickerSelect.selectDate(retDate);
         }
     }

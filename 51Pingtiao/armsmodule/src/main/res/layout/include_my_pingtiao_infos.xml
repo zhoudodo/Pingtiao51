@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="100"
+            android:textStyle="bold"
             android:textColor="@color/orange_color_FFA300"
             android:textSize="24sp" />
     </LinearLayout>
@@ -60,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="10000"
+            android:textStyle="bold"
             android:textColor="@color/red_color_EB606A"
             android:textSize="24sp" />
     </LinearLayout>
@@ -93,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="10000"
+            android:textStyle="bold"
             android:textColor="@color/red_color_EB606A"
             android:textSize="24sp" />
     </LinearLayout>

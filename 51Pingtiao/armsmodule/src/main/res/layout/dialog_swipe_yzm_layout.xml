@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_yzm_bg"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:text="@string/security_yz"
+        android:textColor="@color/gray_color_969696"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="@string/swipe_hint"
+        android:textColor="@color/black_color_333333"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp">
+
+        <com.pingtiao51.armsmodule.mvp.ui.custom.view.swipecaptcha.RxSwipeCaptcha
+            android:id="@+id/swipeCaptchaView"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="centerCrop"
+            app:captchaHeight="40dp"
+            app:captchaWidth="40dp"
+            tools:src="@drawable/douyu" />
+
+        <SeekBar
+            android:id="@+id/dragBar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:progressDrawable="@drawable/dragbg"
+            android:splitTrack="false"
+            android:thumb="@drawable/thumb_bg"
+            android:thumbOffset="0dip" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:id="@+id/fail_hint"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="请控制拼图块对准缺口"
+            android:textColor="@color/redFF3333"
+            android:textSize="12sp"
+            />
+        <ImageView
+            android:id="@+id/cancel"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/yzm_guanbi"/>
+        <ImageView
+            android:id="@+id/reset"
+            android:layout_toLeftOf="@id/cancel"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yzm_shuaxin"/>
+    </RelativeLayout>
+
+</LinearLayout>

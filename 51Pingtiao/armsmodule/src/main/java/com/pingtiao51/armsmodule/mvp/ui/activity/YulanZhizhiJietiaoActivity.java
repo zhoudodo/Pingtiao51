@@ -81,7 +81,7 @@ public class YulanZhizhiJietiaoActivity extends BaseArmsActivity<YulanZhizhiJiet
         selectList.clear();
         selectList.addAll(tempList);
         String url = selectList.get(0).getPath();
-        GlideProxyHelper.loadImgForUrl(img,url);
+        GlideProxyHelper.loadImgForLocal(img,url);
     }
 
     public final static String PICTURE_DATA = "picture_data";
@@ -171,7 +171,7 @@ public class YulanZhizhiJietiaoActivity extends BaseArmsActivity<YulanZhizhiJiet
                     // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
                     for (LocalMedia media : selectList) {
                         Log.i("图片-----》", media.getPath());
-                        GlideProxyHelper.loadImgForUrl(img, media.getPath());
+                        GlideProxyHelper.loadImgForLocal(img, media.getPath());
                     }
                     break;
             }

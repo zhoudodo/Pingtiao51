@@ -82,4 +82,6 @@
     <string name="shoutiao_dijiaoren_hint">*递交人是指递交钱款或物品的人，也是收取收条的人。</string>
     <string name="my_bankcards">我的银行卡</string>
     <string name="avatar">头像</string>
+    <string name="security_yz">安全验证</string>
+    <string name="swipe_hint">拖动下方滑块完成拼图</string>
 </resources>

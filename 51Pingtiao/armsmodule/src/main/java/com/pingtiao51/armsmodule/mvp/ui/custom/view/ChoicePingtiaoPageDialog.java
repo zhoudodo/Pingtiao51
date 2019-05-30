@@ -14,6 +14,10 @@ import com.zls.baselib.custom.view.dialog.FrameDialog;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 public class ChoicePingtiaoPageDialog extends FrameDialog {
 
@@ -27,6 +31,10 @@ public class ChoicePingtiaoPageDialog extends FrameDialog {
     }
     ChoicePingtiaoPageInterface mChoicePingtiaoPageInterface;
 
+    public void setPosition(int pos){
+        mChoicePingtiaoPageAdapter.setCheckPosition(pos);
+        mChoicePingtiaoPageAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected int getViewIds() {
@@ -53,7 +61,13 @@ public class ChoicePingtiaoPageDialog extends FrameDialog {
                     if(mChoicePingtiaoPageInterface != null){
                         mChoicePingtiaoPageInterface.choicePingtiaoPage((String) adapter.getData().get(position));
                     }
-                    dismiss();
+                Observable.timer(200,TimeUnit.MILLISECONDS)
+                        .subscribe(new Consumer<Long>() {
+                            @Override
+                            public void accept(Long aLong) throws Exception {
+                                dismiss();
+                            }
+                        }).isDisposed();
             }
         });
     }

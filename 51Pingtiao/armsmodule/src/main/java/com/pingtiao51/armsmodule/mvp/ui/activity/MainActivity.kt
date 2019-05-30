@@ -29,6 +29,7 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.AppUpdateDialog
 import com.pingtiao51.armsmodule.mvp.ui.fragment.CreditFragment
 import com.pingtiao51.armsmodule.mvp.ui.fragment.HomeFragment
 import com.pingtiao51.armsmodule.mvp.ui.fragment.MyFragment
+import com.pingtiao51.armsmodule.mvp.ui.fragment.NewInfoFragment
 import com.pingtiao51.armsmodule.mvp.ui.helper.AppUpdateHelper
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst
 import com.pingtiao51.armsmodule.mvp.ui.helper.UrlDecoderHelper
@@ -98,6 +99,7 @@ class MainActivity : BaseArmsActivity<MainPresenter>(), MainContract.View, View.
         fragments = arrayOf(
                 HomeFragment.newInstance(),
                 CreditFragment.newInstance(),
+//                NewInfoFragment.newInstance(),
                 MyFragment.newInstance()
         )
 
@@ -105,24 +107,28 @@ class MainActivity : BaseArmsActivity<MainPresenter>(), MainContract.View, View.
         pages = arrayOf(
                 findViewById(R.id.ll_main_page1),
                 findViewById(R.id.ll_main_page2),
+//                findViewById(R.id.ll_main_page4),
                 findViewById(R.id.ll_main_page3)
         )
 
         imgs = arrayOf(
                 findViewById(R.id.act_main_iv_page1),
                 findViewById(R.id.act_main_iv_page2),
+//                findViewById(R.id.act_main_iv_page4),
                 findViewById(R.id.act_main_iv_page3)
         )
 
         tvs = arrayOf(
                 findViewById(R.id.act_main_tv_page1),
                 findViewById(R.id.act_main_tv_page2),
+//                findViewById(R.id.act_main_tv_page4),
                 findViewById(R.id.act_main_tv_page3)
         )
 
 
         imgs[0].setImageDrawable(SelectorUtil.getDrawableWithDrawa(R.drawable.shouye_icon, R.drawable.shouye))
         imgs[1].setImageDrawable(SelectorUtil.getDrawableWithDrawa(R.drawable.xinyogn_icon, R.drawable.xinyong))
+//        imgs[2].setImageDrawable(SelectorUtil.getDrawableWithDrawa(R.drawable.zixun, R.drawable.zixun_gray))
         imgs[2].setImageDrawable(SelectorUtil.getDrawableWithDrawa(R.drawable.wode_icon, R.drawable.wode))
 
 
@@ -207,6 +213,9 @@ class MainActivity : BaseArmsActivity<MainPresenter>(), MainContract.View, View.
             R.id.ll_main_page2 -> {
                 fragmentChange(1)
             }
+//            R.id.ll_main_page4 -> {
+//                fragmentChange(2)
+//            }
             R.id.ll_main_page3 -> {
                 fragmentChange(2)
             }

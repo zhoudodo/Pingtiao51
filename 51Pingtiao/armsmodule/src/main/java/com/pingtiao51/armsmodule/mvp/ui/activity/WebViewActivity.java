@@ -1,12 +1,20 @@
 package com.pingtiao51.armsmodule.mvp.ui.activity;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jess.arms.utils.UrlEncoderUtils;
+import com.pingtiao51.armsmodule.BuildConfig;
 import com.pingtiao51.armsmodule.R;
+import com.pingtiao51.armsmodule.app.utils.webview.InterceptWebViewClient;
 import com.pingtiao51.armsmodule.mvp.ui.helper.JsInterface;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
@@ -45,7 +53,7 @@ public class WebViewActivity extends BaseWebViewActivity {
     TextView mTitle;
     @Override
     public void setWebClient() {
-//        findViewById(R.id.linear).setVisibility(BuildConfig.DEBUG?View.VISIBLE:View.GONE);
+        findViewById(R.id.linear).setVisibility(BuildConfig.DEBUG?View.VISIBLE:View.GONE);
         mTitle = findViewById(R.id.toolbar_title);
         JsInterface jsInterface = new JsInterface(
                 SavePreference.getStr(this, PingtiaoConst.KEY_TOKEN),
@@ -54,7 +62,9 @@ public class WebViewActivity extends BaseWebViewActivity {
                 );
 
         progressWebView.addJavascriptInterface(jsInterface,"Java2JS");
-        progressWebView.setWebViewClient(new WebViewClient());
+        progressWebView.setWebViewClient(new InterceptWebViewClient(this){
+
+        });
     }
 
 
@@ -72,7 +82,11 @@ public class WebViewActivity extends BaseWebViewActivity {
 
     @Override
     public void setRightTitle(String str) {
-
+        super.setRightTitle(str);
+    }
+    @Override
+    public void setRightClick(String str,String jscode) {
+        super.setRightClick(str,jscode);
     }
 
 

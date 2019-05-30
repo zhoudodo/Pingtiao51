@@ -46,7 +46,7 @@ public class PingtiaoZhizhiShouAdapter extends BaseMultiItemQuickAdapter<Pingtia
                 helper.setText(R.id.daihuan_money, sp4);
                 helper.setText(R.id.chujieren, "经手人：" + item.getBorrower());
                 helper.setText(R.id.huankuan_shijian, "经手时间：" + item.getRepaymentDate());
-                helper.setBackgroundRes(R.id.item_bg, R.drawable.zhizhi_item_bg);
+                helper.setBackgroundRes(R.id.item_bg, R.drawable.dianzipingtiao_item_bg2);
                 helper.setGone(R.id.jiekuan_money, true);
                 helper.setText(R.id.jiekuan_money,"递交人："+item.getLender());
 

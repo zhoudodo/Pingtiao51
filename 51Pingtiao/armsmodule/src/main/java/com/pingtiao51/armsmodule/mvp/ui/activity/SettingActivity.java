@@ -23,6 +23,7 @@ import com.pingtiao51.armsmodule.app.utils.OssManager;
 import com.pingtiao51.armsmodule.di.component.DaggerSettingComponent;
 import com.pingtiao51.armsmodule.mvp.contract.SettingContract;
 import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.ExitAppTag;
+import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.UserAvatarChangeTag;
 import com.pingtiao51.armsmodule.mvp.presenter.SettingPresenter;
 
 import com.pingtiao51.armsmodule.R;
@@ -80,9 +81,9 @@ public class SettingActivity extends BaseArmsActivity<SettingPresenter> implemen
     public void initData(@Nullable Bundle savedInstanceState) {
             setTitle("设置");
           String avatarUrl =  getIntent().getStringExtra(AVATAR);
-          if(!TextUtils.isEmpty(avatarUrl)){
+//          if(!TextUtils.isEmpty(avatarUrl)){
               GlideProxyHelper.loadImgByPlaceholder(user_avatar2,R.drawable.wode_touxiang,UrlDecoderHelper.decode(avatarUrl));
-          }
+//          }
     }
 
     @OnClick({R.id.xiugaidenglumima,R.id.xiugaiqianyuemima,R.id.exit_app
@@ -192,7 +193,8 @@ public class SettingActivity extends BaseArmsActivity<SettingPresenter> implemen
                     // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
                     for (LocalMedia media : selectList) {
                         Log.i("图片-----》", media.getPath());
-                        GlideProxyHelper.loadImgForUrl(user_avatar2, media.getCompressPath());
+                        GlideProxyHelper.loadImgForLocal(user_avatar2, media.getCompressPath());
+                        EventBus.getDefault().post(new UserAvatarChangeTag(media.getCompressPath()));
                         uploadFile(media,0);
                     }
                     break;

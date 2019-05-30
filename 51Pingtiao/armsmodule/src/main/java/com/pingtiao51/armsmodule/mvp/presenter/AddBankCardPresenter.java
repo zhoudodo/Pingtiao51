@@ -15,6 +15,7 @@ import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
+import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.pingtiao51.armsmodule.mvp.contract.AddBankCardContract;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
@@ -79,6 +80,8 @@ public class AddBankCardPresenter extends BasePresenter<AddBankCardContract.Mode
                     public void onNext(BaseJson<Object> objectBaseJson) {
                         if (objectBaseJson.isSuccess()) {
                             mRootView.onSucAddCard();
+                        }else{
+                            ArmsUtils.snackbarText(objectBaseJson.getMessage());
                         }
                     }
                 });

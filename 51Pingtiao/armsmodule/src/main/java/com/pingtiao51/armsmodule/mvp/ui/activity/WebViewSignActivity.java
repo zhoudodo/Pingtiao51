@@ -16,6 +16,7 @@ import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.jess.arms.utils.UrlEncoderUtils;
 import com.pingtiao51.armsmodule.R;
+import com.pingtiao51.armsmodule.app.utils.webview.InterceptWebViewClient;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
 import com.pingtiao51.armsmodule.mvp.model.api.service.PingtiaoApi;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CloseElectronicNoteRequest;
@@ -75,10 +76,10 @@ public class WebViewSignActivity extends BaseWebViewActivity {
                 SavePreference.getStr(this, PingtiaoConst.KEY_TOKEN),
                 this,
                 this
-                );
+        );
 
         progressWebView.addJavascriptInterface(jsInterface, "Java2JS");
-        progressWebView.setWebViewClient(new WebViewClient() {
+        progressWebView.setWebViewClient(new InterceptWebViewClient(this) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 //后台重定向网页 http://%s.51pingtiao.com/borrowShare?id=%s&userType=0&from=list
@@ -87,7 +88,7 @@ public class WebViewSignActivity extends BaseWebViewActivity {
                     h5SharePage();
                     return true;
                 } else if (url.contains(XIE_SHOUTIAO_RETURNURL)) {
-                        toPingtiaoList();
+                    toPingtiaoList();
                     return true;
                 } else {
                     return super.shouldOverrideUrlLoading(view, url);
@@ -130,7 +131,7 @@ public class WebViewSignActivity extends BaseWebViewActivity {
                                             public void onNext(BaseJson<Object> rep) {
                                                 if (rep.isSuccess()) {
                                                     finish();
-                                                }else{
+                                                } else {
                                                     ArmsUtils.snackbarText(rep.getMessage());
                                                 }
                                             }
@@ -159,7 +160,7 @@ public class WebViewSignActivity extends BaseWebViewActivity {
         Bundle bundle1 = new Bundle();
         bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "分享");
         bundle1.putInt(WebViewShareActivity.USER_TYPE, mType);
-        bundle1.putInt(WebViewShareActivity.NOTE_ID,Integer.valueOf(mNoteid));
+        bundle1.putInt(WebViewShareActivity.NOTE_ID, Integer.valueOf(mNoteid));
         bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + "borrowShare?id=" + mNoteid + "&userType=" + mType);
         ActivityUtils.startActivity(bundle1, WebViewShareActivity.class);
         finish();
@@ -171,6 +172,7 @@ public class WebViewSignActivity extends BaseWebViewActivity {
     private void toPingtiaoList() {
         Bundle bundleX = new Bundle();
         bundleX.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI_SHOU);
+        bundleX.putInt(MyPingtiaoActivity.FINISH_CREATE, MyPingtiaoActivity.BACK_FINISH_CREATE);
         ActivityUtils.startActivity(bundleX, MyPingtiaoActivity.class);
         ActivityUtils.finishActivity(CreateDianziJietiaoActivity.class);
         ActivityUtils.finishActivity(CreateJietiaoActivity.class);
@@ -183,7 +185,7 @@ public class WebViewSignActivity extends BaseWebViewActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(mTitle != null) {
+                if (mTitle != null) {
                     mTitle.setText(str);
                 }
             }
@@ -192,10 +194,13 @@ public class WebViewSignActivity extends BaseWebViewActivity {
 
     @Override
     public void setRightTitle(String str) {
-
+        super.setRightTitle(str);
     }
 
-
+    @Override
+    public void setRightClick(String str, String jscode) {
+        super.setRightClick(str, jscode);
+    }
 
 
     @Override

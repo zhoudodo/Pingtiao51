@@ -58,7 +58,7 @@ public class PingtiaoZhizhiJieAdapter extends BaseMultiItemQuickAdapter<Pingtiao
                 helper.setText(R.id.jiekuan_money, "借款人：" + item.getBorrower());
                 helper.setText(R.id.huankuan_shijian, "还款时间：" + item.getRepaymentDate());
                 helper.setImageResource(R.id.dianzipingtiao_icon_status, R.drawable.dianzipingtiao_jie_icon);
-                helper.setBackgroundRes(R.id.item_bg, R.drawable.zhizhi_item_bg);
+                helper.setBackgroundRes(R.id.item_bg, R.drawable.dianzipingtiao_item_bg2);
                 break;
         }
     }

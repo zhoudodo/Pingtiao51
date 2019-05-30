@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_ffffff"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <include
@@ -10,8 +11,8 @@
         layout="@layout/include_my_pingtiao_infos"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"></include>
     <com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout
         android:id="@+id/refresh_layout"

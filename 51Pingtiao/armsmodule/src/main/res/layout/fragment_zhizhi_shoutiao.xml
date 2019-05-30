@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
+    android:background="@color/white_ffffff"
     android:focusableInTouchMode="true">
 
     <com.pingtiao51.armsmodule.mvp.ui.custom.view.AdvanceSwipeRefreshLayout

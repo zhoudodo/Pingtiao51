@@ -386,6 +386,8 @@ public class DianziJietiaoFragment extends BaseArmFragment<DianziJietiaoPresente
         jueseReq = userRoleType;
         this.loanPeriodType = loanPeriodType;
         this.remainderRepayDaysType = remainderRepayDaysType;
-        mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
-    }
+        if(mPresenter != null) {
+            mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
+        }
+        }
 }
