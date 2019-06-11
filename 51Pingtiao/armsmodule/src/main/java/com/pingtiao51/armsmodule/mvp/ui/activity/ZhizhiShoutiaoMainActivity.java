@@ -34,6 +34,7 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.CycleDatePickerDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.DatePickerDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.JiekuanyongtuDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.GlideProxyHelper;
+import com.umeng.analytics.MobclickAgent;
 
 
 import java.util.ArrayList;
@@ -149,6 +150,7 @@ public class ZhizhiShoutiaoMainActivity extends BaseArmsActivity<ZhizhiShoutiaoM
             case R.id.save_btn:
                 if (checkCanCreate()) {
                     //TODO 纸质借条保存
+                    MobclickAgent.onEvent(this, "beifenshoutiao_save", "备份收条页\t点击“保存”");
                     findViewById(R.id.save_btn).setEnabled(false);
                     findViewById(R.id.save_btn).postDelayed(new Runnable() {
                         @Override

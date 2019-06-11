@@ -45,6 +45,7 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.BankPayDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.CycleDatePickerDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.dialog.DialogChooseNormal;
 
 import org.greenrobot.eventbus.EventBus;
@@ -170,6 +171,7 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
     }
 */
     private void yulanshoutiao() {
+        MobclickAgent.onEvent(this, "dianzishoutiaoluyan", "写电子收条\t点击“预览”");
         Intent intent = new Intent(XieShoutiaoActivity.this, YulanShoutiaoActivity.class);
         Bundle bundle = new Bundle();
         String hejijine = TextUtils.isEmpty(xieshoutiao_dijiaojine_edit.getText().toString()) ? "0" : xieshoutiao_dijiaojine_edit.getText().toString();
@@ -243,6 +245,7 @@ public class XieShoutiaoActivity extends BaseArmsActivity<XieShoutiaoPresenter> 
             case R.id.xiejietiao_btn:
                 if (checkAllPass()) {
 //                    showLoading("正在生成收条，请等待...");
+                    MobclickAgent.onEvent(this, "shengchengshoutiao", "写电子收条\t点击“生成收条”");
                     findViewById(R.id.xiejietiao_btn).setEnabled(false);
                     findViewById(R.id.xiejietiao_btn).postDelayed(new Runnable() {
                         @Override

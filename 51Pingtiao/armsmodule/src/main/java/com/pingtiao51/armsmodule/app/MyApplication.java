@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
 import cn.jpush.android.api.JPushInterface;
@@ -79,11 +80,18 @@ public class MyApplication extends BaseApplication {
      * 参数4:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
      * 参数5:Push推送业务的secret
      */
+    public static String sChannel;
+
     private void initUmeng() {
-//        UMConfigure.setLogEnabled(true);
+        //UMConfigure.setLogEnabled(true);
         String channel = BuildConfig.DEBUG ? "DEBUG" : WalleChannelReader.getChannel(this);
+        sChannel = channel;
         UMConfigure.init(this, UMENG_APPKEY, channel, UMConfigure.DEVICE_TYPE_PHONE, null);
-//        UMConfigure.setLogEnabled(true);
+        // UMConfigure.setLogEnabled(true);
+        // 选用LEGACY_AUTO页面采集模式
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.LEGACY_MANUAL);
+        // 支持在子进程中统计自定义事件
+        UMConfigure.setProcessEvent(true);
     }
 
     /**
@@ -100,9 +108,8 @@ public class MyApplication extends BaseApplication {
     /**
      * 注册极光推送
      */
-    private void initJpush(){
-        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
-
+    private void initJpush() {
+        JPushInterface.setDebugMode(!BuildConfig.DEBUG);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
     }
 }

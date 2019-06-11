@@ -13,6 +13,7 @@ import com.pingtiao51.armsmodule.mvp.model.entity.response.UserDetailInfoRespons
 import com.pingtiao51.armsmodule.mvp.presenter.CreateDianziJietiaoPresenter
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference
+import com.umeng.analytics.MobclickAgent
 import com.zls.baselib.custom.view.dialog.DialogHintNormal
 import kotlinx.android.synthetic.main.activity_create_dianzi_jietiao.*
 
@@ -74,6 +75,7 @@ class CreateDianziJietiaoActivity : BaseArmsActivity<CreateDianziJietiaoPresente
                 //未实名认证
                 showUserVertify();
             } else {
+                MobclickAgent.onEvent(this, "woshijiekuanren", "新建电子借条页\t点击“我是借款人”")
                 val intent = Intent(this, XieJietiaoActivity::class.java)
                 intent.putExtra(XieJietiaoActivity.XieJietiaoActivity, XieJietiaoActivity.JIEKUANREN)
                 startActivity(intent)
@@ -84,8 +86,9 @@ class CreateDianziJietiaoActivity : BaseArmsActivity<CreateDianziJietiaoPresente
             // 我是出借人跳转
             if (mUserDetailInfoResponse === null || (!mUserDetailInfoResponse!!.isVerified!!)) {
                 //未实名认证
-                showUserVertify();
+                showUserVertify()
             } else {
+                MobclickAgent.onEvent(this, "woshichujieren", "新建电子借条页\t点击“我是出借人”")
                 val intent = Intent(this, XieJietiaoActivity::class.java)
                 intent.putExtra(XieJietiaoActivity.XieJietiaoActivity, XieJietiaoActivity.CHUJIEREN)
                 startActivity(intent)

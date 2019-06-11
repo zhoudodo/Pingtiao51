@@ -104,11 +104,13 @@ public class MoveView extends View {
                 }
 
                 float maxH = (screenHeight- AutoSizeUtils.dp2px(getContext(),50) - barHeight - AutoSizeUtils.dp2px(getContext(),57) - height);
-                float vaildValueY = event.getRawY() > screenHeight - AutoSizeUtils.dp2px(getContext(),50) - height? screenHeight - AutoSizeUtils.dp2px(getContext(),50)-height:event.getRawY();
-                float nowY = vaildValueY - touchY - barHeight - AutoSizeUtils.dp2px(getContext(),57);
+//                float vaildValueY = event.getRawY() > screenHeight - AutoSizeUtils.dp2px(getContext(),50) - height? screenHeight - AutoSizeUtils.dp2px(getContext(),50)-height:event.getRawY();
+                float nowY = event.getRawY() - touchY - barHeight - AutoSizeUtils.dp2px(getContext(),57);
                 float nowX = event.getRawX() - touchX;
                 nowX = nowX < 0 ? 0 : (nowX + width > screenWidth) ? (screenWidth - width) : nowX;
                 nowY = nowY < 0 ? 0 : nowY;
+                nowY = nowY > (screenHeight - barHeight - AutoSizeUtils.dp2px(getContext(),57) - AutoSizeUtils.dp2px(getContext(),50) - height) ?
+                        (screenHeight - barHeight - AutoSizeUtils.dp2px(getContext(),57) - AutoSizeUtils.dp2px(getContext(),50) - height) : nowY;
                 this.setY(nowY);
                 this.setX(nowX);
                 invalidate();

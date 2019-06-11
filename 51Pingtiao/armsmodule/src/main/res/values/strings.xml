@@ -55,6 +55,7 @@
     <string name="qianzhangfufeiren">签章付费人</string>
     <string name="fuwufei">服务费</string>
     <string name="xiejietiao_hint2">*为避免您的利益受损，使用凭条时请注意保存支付宝/微信转账 记录，银行流水等凭证</string>
+    <string name="xiejietiao_hint3">*请您在签订借条前确认借款金额、日期、利率等准确无误，并注意保管打款记录、支付宝/微信转账记录及银行流水等，以避免您的利益受损。如果您认为自己受到套路贷、暴力催收等胁迫，请勿签订借条并及时报警！</string>
     <string name="nianhualilv">年化利率</string>
     <string name="jingshouren">经手人</string>
     <string name="dijiaoren">递交人</string>
@@ -84,4 +85,8 @@
     <string name="avatar">头像</string>
     <string name="security_yz">安全验证</string>
     <string name="swipe_hint">拖动下方滑块完成拼图</string>
+    <string name="jiekuanren_xiejietiao_hint">如果出借人要求您填写或确认借款金额、时间、利率与实际借款不符的借条，均涉嫌套路贷或欺诈，请勿签订本借条并报警！</string>
+    <string name="chujieren_xiejietiao_hint">本人确保出借的资金为自有资金，且出借行为是合法的民间借贷。</string>
+    <string name="jiekuanren_xiejietiao_hint_sure">我已知悉</string>
+    <string name="chujieren_xiejietiao_hint_sure">我已确认</string>
 </resources>

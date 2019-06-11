@@ -22,6 +22,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.presenter.LoginPresenter;
 import com.pingtiao51.armsmodule.mvp.ui.helper.EditCheckHelper;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -174,12 +175,12 @@ public class InputLoginView extends FrameLayout {
     public void setTypeView(int type) {
         mGetYzm.setText("获取验证码");
         mGetYzm.setEnabled(true);
-        if(authTimer != null) {
+        if (authTimer != null) {
             authTimer.cancel();
             authTimer.isGetAuth = false;
         }
-        for(int i=0; i< editViews.length;i++ ){
-            if(i>0){
+        for (int i = 0; i < editViews.length; i++) {
+            if (i > 0) {
                 editViews[i].setText("");
             }
         }
@@ -230,6 +231,7 @@ public class InputLoginView extends FrameLayout {
         if (!EditCheckHelper.checkInputPhoneToast(editViews[0])) {
             return;
         }
+        getCodeUmengEvent();
         if (authTimer == null) {
             authTimer = new AuthCodeTimer(60000, 1000); // 第一参数是总的时间，第二个是间隔时间
         }
@@ -237,7 +239,28 @@ public class InputLoginView extends FrameLayout {
         authTimer.start();
     }
 
+    /**
+     * Umeng 埋点
+     */
+    private void getCodeUmengEvent() {
+        switch (viewType) {
+            case PSD_LOGIN:
+
+                break;
+            case CODE_LOGIN:
+                MobclickAgent.onEvent(getContext(), "code_huoquyanzhenma", "登录页\t点击“验证码登录”的“获取验证码”");
+                break;
+            case REGISTER:
+
+                break;
+            case CHANGE_PSD:
+                MobclickAgent.onEvent(getContext(), "psd_huoquyanzhenma", "登登录页\t点击“忘记密码”的“获取验证码”");
+                break;
+        }
+    }
+
     SwipeYzmDialog mSwipeYzmDialog;
+
     /* 定义一个倒计时的内部类 */
     private class AuthCodeTimer extends CountDownTimer {
         private boolean isGetAuth = false; //是否已经发送请求
@@ -295,7 +318,7 @@ public class InputLoginView extends FrameLayout {
                 break;
         }
         //获取验证码
-        mLoginPresenter.sendCode(phoneNumber,type);
+        mLoginPresenter.sendCode(phoneNumber, type);
     }
 
 
@@ -303,7 +326,7 @@ public class InputLoginView extends FrameLayout {
     public void loginPhone() {
         String phoneNum = editViews[0].getText().toString().trim();
         String psw = editViews[1].getText().toString().trim();
-        mLoginPresenter.loginCode(false,psw,Long.valueOf(phoneNum));
+        mLoginPresenter.loginCode(false, psw, Long.valueOf(phoneNum));
     }
 
 
@@ -421,12 +444,14 @@ public class InputLoginView extends FrameLayout {
         String authCode = editViews[2].getText().toString().trim();
         String psw = editViews[3].getText().toString().trim();
 
-        mLoginPresenter.updatePsw(Long.valueOf(phoneNum),authCode,psw);
+        mLoginPresenter.updatePsw(Long.valueOf(phoneNum), authCode, psw);
 
     }
-    public static enum  CodeType {
-        REGISTER("REGISTER"),LOGIN("LOGIN"),RESET_PASSWORD("RESET_PASSWORD"),IDENTITY_AUTH("IDENTITY_AUTH");
+
+    public static enum CodeType {
+        REGISTER("REGISTER"), LOGIN("LOGIN"), RESET_PASSWORD("RESET_PASSWORD"), IDENTITY_AUTH("IDENTITY_AUTH");
         private String type;
+
         CodeType(String s) {
             this.type = s;
         }
@@ -446,16 +471,20 @@ public class InputLoginView extends FrameLayout {
         }
         switch (viewType) {
             case 0:
+                MobclickAgent.onEvent(getContext(), "mima_denglu", "登录页\t点击“密码登录”的“登录”");
                 loginPhone();
                 break;
             case 1:
+                MobclickAgent.onEvent(getContext(), "yanzhengma_denglu", "登录页\t点击“验证码登录”的“登录”");
                 loginAuthCode();
                 break;
             case 2:
                 registerPhone();
                 break;
             case 3:
+                MobclickAgent.onEvent(getContext(), "wangjimima_denglu", "登录页\t点击“忘记密码”的“登录”");
                 updatePswlogin();
+
                 break;
         }
 

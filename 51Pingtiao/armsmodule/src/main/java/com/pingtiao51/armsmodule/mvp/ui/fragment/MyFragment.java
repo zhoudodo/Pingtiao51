@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.ArmsUtils;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.di.component.DaggerMyComponent;
@@ -345,6 +347,9 @@ public class MyFragment extends BaseArmFragment<MyPresenter> implements MyContra
     public void tokenInvalid(String message) {
         mRefreshLayout.finishRefresh();
         visibleMyPage(false);
+        Bundle bundle = new Bundle();
+        bundle.putInt(LoginActivity.LOGIN_MODE, InputLoginView.CODE_LOGIN);
+        ActivityUtils.startActivity(bundle, LoginActivity.class);
 //        ArmsUtils.snackbarText(message);
     }
 

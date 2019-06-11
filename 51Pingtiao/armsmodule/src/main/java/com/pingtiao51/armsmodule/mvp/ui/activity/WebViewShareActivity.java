@@ -39,6 +39,7 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.UrlDecoderHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.share.ShareHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.webview.ProgressWebView;
 
 import java.io.UnsupportedEncodingException;
@@ -139,8 +140,8 @@ public class WebViewShareActivity extends BaseWebViewActivity {
      super.setRightTitle(str);
     }
     @Override
-    public void setRightClick(String str,String jscode) {
-        super.setRightClick(str,jscode);
+    public void setRightClick(String typeName,String str,String jscode) {
+        super.setRightClick(typeName,str,jscode);
     }
 
 
@@ -236,6 +237,7 @@ public class WebViewShareActivity extends BaseWebViewActivity {
             mShareDialog.setShareListener(new ShareDialog.ShareClickListener() {
                 @Override
                 public void shareWechat() {
+                    MobclickAgent.onEvent(WebViewShareActivity.this, "fenxiangweixin", "借条分享页\t选择“分享至微信好友”");
                     WechatUtils.shareWeb(WebViewShareActivity.this,
                             Api.WECHAT_APPKEY,
                             mPingtiaoShareResponse.getNoteShareWXVO().getShareUrl(),
@@ -246,7 +248,7 @@ public class WebViewShareActivity extends BaseWebViewActivity {
 
                 @Override
                 public void shareErweima() {
-
+                    MobclickAgent.onEvent(WebViewShareActivity.this, "fenxiangerweima", "借条分享页\t选择“二维码分享”");
                     Bundle bundle1 = new Bundle();
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "分享二维码");
                     String intentUrl = Api.BASE_H5_URL + "borrowShareCode?userType=" + mUserType + "&id=" + mNoteId;
@@ -256,12 +258,14 @@ public class WebViewShareActivity extends BaseWebViewActivity {
 
                 @Override
                 public void shareLianjie() {
+                    MobclickAgent.onEvent(WebViewShareActivity.this, "fenxianglianjie", "借条分享页\t选择“复制链接”");
                     share2Lianjie(mPingtiaoShareResponse.getNoteShareUrlVO().getShareUrl());
                     ArmsUtils.snackbarText("已复制到剪贴板");
                 }
 
                 @Override
                 public void shareDuanxin() {
+                    MobclickAgent.onEvent(WebViewShareActivity.this, "fenxiangduanxin", "借条分享页\t选择“发送短信”");
                     ShareHelper.sendSms(WebViewShareActivity.this, mPingtiaoShareResponse.getNoteShareSMSVO().getSmsContent());
                 }
             });

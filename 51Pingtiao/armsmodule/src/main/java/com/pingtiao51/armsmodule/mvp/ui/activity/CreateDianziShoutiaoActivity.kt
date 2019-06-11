@@ -13,6 +13,7 @@ import com.pingtiao51.armsmodule.mvp.model.entity.response.UserDetailInfoRespons
 import com.pingtiao51.armsmodule.mvp.presenter.CreateDianziShoutiaoPresenter
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference
+import com.umeng.analytics.MobclickAgent
 import com.zls.baselib.custom.view.dialog.DialogHintNormal
 import kotlinx.android.synthetic.main.activity_create_dianzi_shoutiao.*
 
@@ -70,6 +71,7 @@ class CreateDianziShoutiaoActivity : BaseArmsActivity<CreateDianziShoutiaoPresen
                 //未实名认证
                 showUserVertify();
             } else {
+                MobclickAgent.onEvent(this, "xieshoutiao", "新建电子收条\t点击“写收条”")
                 startAct(XieShoutiaoActivity::class.java)
             }
 

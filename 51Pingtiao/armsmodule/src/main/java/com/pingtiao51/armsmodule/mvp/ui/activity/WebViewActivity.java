@@ -85,8 +85,8 @@ public class WebViewActivity extends BaseWebViewActivity {
         super.setRightTitle(str);
     }
     @Override
-    public void setRightClick(String str,String jscode) {
-        super.setRightClick(str,jscode);
+    public void setRightClick(String typeName,String str,String jscode) {
+        super.setRightClick(typeName,str,jscode);
     }
 
 

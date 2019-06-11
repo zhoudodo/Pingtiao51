@@ -27,6 +27,7 @@ import com.pingtiao51.armsmodule.mvp.ui.broadcast.jpush.JpushManager;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -90,6 +91,7 @@ public class LoginActivity extends BaseArmsActivity<LoginPresenter> implements L
                     default:
                         switch (loginView.getViewType()) {
                             case InputLoginView.CHANGE_PSD:
+                                MobclickAgent.onEvent(this, "yanzhengmafanhui", "登录页\t点击“验证码登录”的“返回”");
                                 loginPsw();
                                 break;
                             case InputLoginView.PSD_LOGIN:
@@ -108,6 +110,7 @@ public class LoginActivity extends BaseArmsActivity<LoginPresenter> implements L
                 break;
             case R.id.login_psd:
                 //密码登录
+                MobclickAgent.onEvent(this, "code_wangjimima", "登录页\t点击“忘记密码”");
                 loginPsw();
                 break;
             case R.id.forget_psd:

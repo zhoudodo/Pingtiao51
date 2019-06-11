@@ -44,6 +44,7 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -99,6 +100,7 @@ public class CopyPingtiaoFragment extends BaseArmFragment<CopyPingtiaoPresenter>
         switch (v.getId()) {
             case R.id.woyaoxiepingtiao_beifen:
                 //我要备份凭条
+                MobclickAgent.onEvent(getActivity(), "woyaobeifenpingtiao", "点击“我要备份凭条”");
                 if(TextUtils.isEmpty(SavePreference.getStr(getActivity(),PingtiaoConst.KEY_TOKEN))){
                     tokenReq();
                 }else {

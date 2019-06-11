@@ -24,6 +24,7 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.YzmRequest;
 import com.pingtiao51.armsmodule.mvp.ui.helper.others.IdCardUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.dialog.DialogHintNormal;
 
 import butterknife.BindView;
@@ -85,6 +86,7 @@ public class ShimingrenzhengActivity extends BaseArmsActivity<ShimingrenzhengPre
             case R.id.shimingrenzheng_commit_btn:
                 if (checkCanCommit()) {
                     //TODO 实名认证成功
+                    MobclickAgent.onEvent(this, "shimingrenzhengtijiao", "实名认证页\t点击“提交”");
                     commitShimingrenzheng();
                 }
                 break;

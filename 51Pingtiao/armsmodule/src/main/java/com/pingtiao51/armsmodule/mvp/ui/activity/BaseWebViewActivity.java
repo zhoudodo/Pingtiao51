@@ -23,6 +23,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +34,14 @@ import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.UrlEncoderUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.app.utils.webview.ShouldInterceptRequestCallback;
+import com.pingtiao51.armsmodule.mvp.ui.helper.GlideProxyHelper;
 import com.pingtiao51.armsmodule.mvp.ui.helper.JsInterface;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
+import com.pingtiao51.armsmodule.mvp.ui.helper.UrlDecoderHelper;
+import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.pingtiao51.armsmodule.mvp.ui.helper.webview.WebviewUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.webview.ProgressWebView;
 
 import java.io.File;
@@ -62,9 +68,11 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
         super.onCreate(savedInstanceState);
         setContentView(setRootView());
         recIntent = getIntent();
+        initClearCache();
         initPageInfos();
         initWebViews();
         initPageConfig();
+
     }
 
 
@@ -73,6 +81,10 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
     public abstract ProgressWebView setProgressWebView();
 
     public abstract void setWebClient();
+
+    private void initClearCache(){
+        WebviewUtils.clearWebViewCache(this);
+    }
 
     private void initPageInfos() {
         String title = recIntent.getStringExtra(WEBVIEW_TITLE);
@@ -86,6 +98,7 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
                 e.printStackTrace();
             }
         }
+
         progressWebView.loadUrl(webviewUrl);
         progressWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -138,6 +151,8 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
         // 设置出现缩放工具
         settings.setBuiltInZoomControls(false);
         settings.setDomStorageEnabled(true);
+        //WebView默认不缓存
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (Build.VERSION.SDK_INT >= 8) {
             settings.setPluginState(WebSettings.PluginState.ON);
         } else {
@@ -159,13 +174,11 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
                 new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        Log.d("dodo","url = " + url);
                         return super.shouldOverrideUrlLoading(view, url);
                     }
 
                     @Override
                     public void onLoadResource(WebView view, String url) {
-                        Log.d("dodo","url2 = " + url);
                         super.onLoadResource(view, url);
                     }
                 }
@@ -295,10 +308,12 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
 
     protected TextView rightTv;
     protected TextView mTitle;
+    protected ImageView mRightImg;
 
     protected void initPageConfig() {
         mTitle = findViewById(R.id.toolbar_title);
         rightTv = findViewById(R.id.right_tv);
+        mRightImg = findViewById(R.id.right_img);
         rightTv.setText("");
         rightTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,37 +340,73 @@ public abstract class BaseWebViewActivity extends FragmentActivity implements Js
     }
 
     @Override
-    public void setRightClick(String str, String jscode) {
+    public void setRightClick(String typeName,String str, String jscode) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (rightTv != null) {
-                    if (TextUtils.isEmpty(str)) {
-                        rightTv.setVisibility(View.GONE);
-                    } else {
-                        rightTv.setVisibility(View.VISIBLE);
-                        rightTv.setText(str);
-                    }
-                    rightTv.setOnClickListener(new View.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void onClick(View v) {
-                            if (progressWebView != null) {
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                                    // 如果当前版本小于 JELLY_BEAN_MR2 版本，即4.4版本
-                                    progressWebView.loadUrl(jscode);
-                                } else {
-                                    //因为该方法在 Android 4.4 版本才可使用，所以使用时需进行版本判断
-                                    progressWebView.evaluateJavascript(jscode, new ValueCallback<String>() {
-                                        @Override
-                                        public void onReceiveValue(String value) {
+                if (JsInterface.TEXT.equals(typeName)) {
+                    rightTv.setVisibility(View.VISIBLE);
+                    mRightImg.setVisibility(View.GONE);
+                    if (rightTv != null) {
+                        if (TextUtils.isEmpty(str)) {
+                            rightTv.setVisibility(View.GONE);
+                        } else {
+                            rightTv.setVisibility(View.VISIBLE);
+                            rightTv.setText(str);
+                        }
+                        rightTv.setOnClickListener(new View.OnClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                            @Override
+                            public void onClick(View v) {
+                                MobclickAgent.onEvent(BaseWebViewActivity.this, "fasongduifang", "借条分享页\t点击“发送”或“发送对方”");
+                                if (progressWebView != null) {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                        // 如果当前版本小于 JELLY_BEAN_MR2 版本，即4.4版本
+                                        progressWebView.loadUrl(jscode);
+                                    } else {
+                                        //因为该方法在 Android 4.4 版本才可使用，所以使用时需进行版本判断
+                                        progressWebView.evaluateJavascript(jscode, new ValueCallback<String>() {
+                                            @Override
+                                            public void onReceiveValue(String value) {
 
-                                        }
-                                    });
+                                            }
+                                        });
+                                    }
                                 }
                             }
+                        });
+                    }
+                }else if(JsInterface.IMAGE.equals(typeName)){
+                    rightTv.setVisibility(View.GONE);
+                    mRightImg.setVisibility(View.VISIBLE);
+                    if (mRightImg != null) {
+                        if (TextUtils.isEmpty(str)) {
+                            mRightImg.setVisibility(View.GONE);
+                        } else {
+                            mRightImg.setVisibility(View.VISIBLE);
+                            GlideProxyHelper.loadImgForUrl(mRightImg,UrlDecoderHelper.decode(str));
                         }
-                    });
+                        mRightImg.setOnClickListener(new View.OnClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                            @Override
+                            public void onClick(View v) {
+                                if (progressWebView != null) {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                        // 如果当前版本小于 JELLY_BEAN_MR2 版本，即4.4版本
+                                        progressWebView.loadUrl(jscode);
+                                    } else {
+                                        //因为该方法在 Android 4.4 版本才可使用，所以使用时需进行版本判断
+                                        progressWebView.evaluateJavascript(jscode, new ValueCallback<String>() {
+                                            @Override
+                                            public void onReceiveValue(String value) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });

@@ -1,6 +1,7 @@
 package com.pingtiao51.armsmodule.mvp.presenter;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.FragmentScope;

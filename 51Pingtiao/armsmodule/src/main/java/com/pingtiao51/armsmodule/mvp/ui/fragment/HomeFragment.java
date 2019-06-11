@@ -33,6 +33,7 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.ShareDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.MagicIndicatorHelp;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 
@@ -80,6 +81,7 @@ public class HomeFragment extends BaseArmFragment<HomePresenter> implements Home
         switch (v.getId()) {
             case R.id.left_hetong:
                 //TODO 跳转H5 合同简介
+                MobclickAgent.onEvent(getActivity(), "shouye_left", "首页\t点击左上角“？”");
                 Bundle bundle = new Bundle();
                 bundle.putString(BaseWebViewActivity.WEBVIEW_TITLE, "51凭条介绍");
                 bundle.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + Api.CONTRACT);
@@ -103,11 +105,13 @@ public class HomeFragment extends BaseArmFragment<HomePresenter> implements Home
                 break;
             case R.id.right_xiaoxi:
                 //TODO 跳转H5 消息简介
+
                 if (TextUtils.isEmpty(SavePreference.getStr(getActivity(), PingtiaoConst.KEY_TOKEN))) {
                     Bundle bundlex = new Bundle();
                     bundlex.putInt(LoginActivity.LOGIN_MODE, InputLoginView.CODE_LOGIN);
                     startActBundle(bundlex, LoginActivity.class);
                 } else {
+                    MobclickAgent.onEvent(getActivity(), "shouye_xiaoxi", "首页\t点击“消息”");
                     Bundle bundle1 = new Bundle();
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_TITLE, "消息中心");
                     bundle1.putString(BaseWebViewActivity.WEBVIEW_URL, Api.BASE_H5_URL + Api.MESSAGE);

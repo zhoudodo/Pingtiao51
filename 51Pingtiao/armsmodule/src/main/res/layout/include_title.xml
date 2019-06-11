@@ -53,6 +53,17 @@
             android:textSize="16sp"
             android:textColor="@color/black_color_1e1e1e"
             />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/right_img"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:padding="4dp"
+            android:textSize="16sp"
+            android:textColor="@color/black_color_1e1e1e" />
+
     </RelativeLayout>
 
 

@@ -40,7 +40,9 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.NianhualilvDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.dialog.DialogChooseNormal;
+import com.zls.baselib.custom.view.dialog.DialogHintNormal;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -101,6 +103,8 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
     @BindView(R.id.xiejietiao_chujieren_xingming)
     TextView xiejietiao_chujieren_xingming;
 
+    @BindView(R.id.xiejietiao_hint_tv)
+    TextView xiejietiao_hint_tv;
     private int mType = JIEKUANREN;
 
     private void initPageConfig() {
@@ -116,13 +120,42 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
                 jiekuanrenzhifu.setImageDrawable(getResources().getDrawable(R.drawable.chujierenzhifu_cantselect));
                 hasJiekuanrenZhifu = true;
                 xiejietiao_feiyongzhifu_layout.setVisibility(View.GONE);
+                xiejietiao_hint_tv.setText(getResources().getString(R.string.xiejietiao_hint3));
+                initHintDialogHint(
+                        getString(R.string.jiekuanren_xiejietiao_hint),
+                        getString(R.string.jiekuanren_xiejietiao_hint_sure)
+                );
                 break;
             case CHUJIEREN://出借人
                 xiejietiao_chujieren_xingming.setText("借款人姓名");
                 xiejietiao_chujieren_shenfenzheng.setText("借款人身份证号");
                 xiejietiao_feiyongzhifu_layout.setVisibility(View.VISIBLE);
+                initHintDialogHint(
+                        getString(R.string.chujieren_xiejietiao_hint),
+                        getString(R.string.chujieren_xiejietiao_hint_sure)
+                );
                 break;
         }
+
+    }
+
+    DialogHintNormal mDialogHintNormal;
+
+    private void initHintDialogHint(String textContent, String sureContent) {
+
+        mDialogHintNormal = new DialogHintNormal.HintBuilder()
+                .setTitle("提醒")
+                .setContent(textContent)
+                .setBtn2Content(sureContent)
+                .setContext(this)
+                .setOnClickListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDialogHintNormal.dismiss();
+                    }
+                })
+                .build();
+        mDialogHintNormal.show();
     }
 
     @BindView(R.id.xiejietiao_jiekuanjine_edit)
@@ -138,21 +171,14 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
         initPageConfig();
-
-
         xiejietiao_jiekuanjine_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void afterTextChanged(Editable s) {
@@ -180,6 +206,7 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
      * 预览借条
      */
     private void yulanJietiao() {
+        MobclickAgent.onEvent(this, "dianzijietiaoyulan", "写电子借条\t点击“预览”");
         Intent intent = new Intent(this, YulanJietiaoActivity.class);
         Bundle mBundle = new Bundle();
         mBundle.putString(YulanJietiaoActivity.jiekuanjine, xiejietiao_jiekuanjine_edit.getText().toString());
@@ -373,6 +400,7 @@ public class XieJietiaoActivity extends BaseArmsActivity<XieJietiaoPresenter> im
                 break;
             case R.id.xiejietiao_btn:
                 if (checkCreateTiaojian()) {
+                    MobclickAgent.onEvent(this, "shengchengjietiao", "写电子借条\t点击“生成借条”");
                     findViewById(R.id.xiejietiao_btn).setEnabled(false);
                     /*findViewById(R.id.xiejietiao_btn).postDelayed(new Runnable() {
                         @Override

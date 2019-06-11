@@ -9,6 +9,7 @@ import android.view.View;
 import com.jess.arms.integration.cache.IntelligentCache;
 import com.jess.arms.utils.ArmsUtils;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.analytics.MobclickAgent;
 
 import timber.log.Timber;
 
@@ -56,11 +57,15 @@ public class FragmentLifecycleCallbacksImpl extends FragmentManager.FragmentLife
     @Override
     public void onFragmentResumed(FragmentManager fm, Fragment f) {
         Timber.i(f.toString() + " - onFragmentResumed");
+        String fName = f.getClass().getSimpleName();
+        MobclickAgent.onPageStart(fName); //统计页面("MainScreen"为页面名称，可自定义)
     }
 
     @Override
     public void onFragmentPaused(FragmentManager fm, Fragment f) {
         Timber.i(f.toString() + " - onFragmentPaused");
+        String fName = f.getClass().getSimpleName();
+        MobclickAgent.onPageEnd(fName);
     }
 
     @Override

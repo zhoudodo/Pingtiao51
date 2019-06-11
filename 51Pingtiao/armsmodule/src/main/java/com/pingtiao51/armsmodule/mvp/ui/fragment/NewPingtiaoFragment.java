@@ -57,6 +57,7 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -122,13 +123,14 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
     ChoicePingtiaoTypeDialog mChoicePingtiaoTypeDialog;
 
 
-    @OnClick({R.id.woyaoxiepingtiao, R.id.more_relative, R.id.more_layout,R.id.click_more,
+    @OnClick({R.id.woyaoxiepingtiao, R.id.more_relative, R.id.more_layout, R.id.click_more,
             R.id.daihuan_layout, R.id.daishou_layout, R.id.home_haihuan,
-            R.id.home_shoukuan,R.id.xinshouzhinan})
+            R.id.home_shoukuan, R.id.xinshouzhinan})
     public void onPageClick(View v) {
         switch (v.getId()) {
             case R.id.xinshouzhinan:
                 //TODO  跳转新手指南
+                MobclickAgent.onEvent(getActivity(), "shouye_xinshoubangzhu", "首页\t点击“新手帮助”");
                 SavePreference.save(PingtiaoConst.XINSHOU_ZHINAN, true);
                 xinshouzhinan.setVisibility(View.GONE);//未点击显示
                 Bundle bundlex1 = new Bundle();
@@ -138,6 +140,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                 break;
             case R.id.woyaoxiepingtiao:
                 //我要写凭条
+                MobclickAgent.onEvent(getActivity(), "woyaoxiepingtiao", "点击“我要写凭条”");
                 if (TextUtils.isEmpty(SavePreference.getStr(getActivity(), PingtiaoConst.KEY_TOKEN))) {
                     tokenReq();
                 } else {
@@ -161,7 +164,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
             case R.id.more_relative:
             case R.id.click_more:
                 //TODO 选择凭条类型
-                if(mChoicePingtiaoTypeDialog == null){
+                if (mChoicePingtiaoTypeDialog == null) {
                     mChoicePingtiaoTypeDialog = new ChoicePingtiaoTypeDialog(getActivity(), new ChoicePingtiaoTypeDialog.ChoicePingtiaoTypeInterface() {
                         @Override
                         public void choicePingtiaoType(String choice) {
@@ -189,7 +192,7 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                                     bundle.putInt(MyPingtiaoActivity.JUESE, MyPingtiaoActivity.JUESEALL);
                                     break;
                             }
-                    startActBundle(bundle, MyPingtiaoActivity.class);
+                            startActBundle(bundle, MyPingtiaoActivity.class);
                         }
                     });
                 }
@@ -441,12 +444,13 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                 switch (i) {
                     case 0:
                         jietiaomoban_first.setVisibility(View.VISIBLE);
-                        GlideProxyHelper.loadImgByPlaceholder(jietiaomoban, R.drawable.home_page_functions_bg,datas.get(0).getIconUrl());
+                        GlideProxyHelper.loadImgByPlaceholder(jietiaomoban, R.drawable.home_page_functions_bg, datas.get(0).getIconUrl());
                         jietiaomoban_tv.setText(datas.get(0).getName());
                         jietiaomoban_first.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                functionsConfig(datas.get(0),activities);
+                                MobclickAgent.onEvent(getActivity(), "chanxinyong", "首页\t点击-查信用\t");
+                                functionsConfig(datas.get(0), activities);
                             }
                         });
                         break;
@@ -457,7 +461,8 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                         shoutiaomoban_second.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                functionsConfig(datas.get(1),activities);
+                                MobclickAgent.onEvent(getActivity(), "qiujiekuan", "首页\t点击求借款");
+                                functionsConfig(datas.get(1), activities);
                             }
                         });
                         break;
@@ -468,7 +473,8 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                         jietiaozhenduan_third.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                functionsConfig(datas.get(2),activities);
+                                MobclickAgent.onEvent(getActivity(), "jietiaomoban", "首页\t点击借条模板");
+                                functionsConfig(datas.get(2), activities);
                             }
                         });
                         break;
@@ -479,7 +485,8 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
                         chazhengxin_fourth.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                functionsConfig(datas.get(3),activities);
+                                MobclickAgent.onEvent(getActivity(), "shoutiaomoban", "首页\t点击收条模板");
+                                functionsConfig(datas.get(3), activities);
                             }
                         });
                         break;
@@ -491,11 +498,11 @@ public class NewPingtiaoFragment extends BaseArmFragment<NewPingtiaoPresenter> i
     }
 
     private void functionsConfig(HomePageComResponse homePageComResponse, List<Class> activities) {
-        if(homePageComResponse == null){
+        if (homePageComResponse == null) {
             return;
         }
         boolean toWebPage = true;
-        if(homePageComResponse.getParams() != null) {
+        if (homePageComResponse.getParams() != null) {
             String name = homePageComResponse.getParams().getClassName();
             for (Class act : activities) {
                 if (act.getSimpleName().equals(name)) {

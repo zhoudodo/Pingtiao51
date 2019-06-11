@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.pingtiao51.armsmodule.R;
+import com.pingtiao51.armsmodule.mvp.ui.helper.umeng.UmengEventReport;
 import com.umeng.analytics.MobclickAgent;
 
 import timber.log.Timber;
@@ -29,6 +30,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         Timber.i(activity + " - onActivityCreated");
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
+        UmengEventReport.interceptCreateActivity(activity);
     }
 
     @Override
@@ -88,5 +90,6 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         Timber.i(activity + " - onActivityDestroyed");
         //横竖屏切换或配置改变时, Activity 会被重新创建实例, 但 Bundle 中的基础数据会被保存下来,移除该数据是为了保证重新创建的实例可以正常工作
         activity.getIntent().removeExtra("isInitToolbar");
+        UmengEventReport.interceptDestoryActivity(activity);
     }
 }

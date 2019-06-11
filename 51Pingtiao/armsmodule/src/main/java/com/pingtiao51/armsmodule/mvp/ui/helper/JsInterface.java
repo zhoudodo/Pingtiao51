@@ -20,10 +20,12 @@ import com.pingtiao51.armsmodule.mvp.ui.activity.LoginActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.MainActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.MyPingtiaoActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.WebViewActivity;
+import com.pingtiao51.armsmodule.mvp.ui.activity.WebViewShareActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiJietiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.activity.ZhizhiShoutiaoXiangqingActivity;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.H5PayReportDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -40,7 +42,7 @@ public class JsInterface {
 
         public void setRightTitle(String str);
 
-        public void setRightClick(String str, String jscode);
+        public void setRightClick(String typeName, String str, String jscode);
 
         public void showDialog();
 
@@ -122,10 +124,13 @@ public class JsInterface {
         }
     }
 
+    public final static String TEXT = "text";
+    public final static String IMAGE = "img";
+
     @JavascriptInterface
-    public void setRightClick(String rightTitle, String jscode) {
+    public void setRightClick(String typeName, String rightTitle, String jscode) {
         if (js2JavaInterface != null) {
-            js2JavaInterface.setRightClick(rightTitle, jscode);
+            js2JavaInterface.setRightClick(typeName, rightTitle, jscode);
         }
     }
 
@@ -157,6 +162,7 @@ public class JsInterface {
      */
     @JavascriptInterface
     public void setMainHome() {
+        MobclickAgent.onEvent(activity, "webview_fanhuishouye", "借条分享页\t点击“返回首页”");
         List<Activity> activities = ActivityUtils.getActivityList();
         for (Activity act : activities) {
             if (!(act instanceof MainActivity)) {
@@ -168,7 +174,7 @@ public class JsInterface {
     }
 
     /**
-     * 回到首页
+     * 回到登录页面
      */
     @JavascriptInterface
     public void setLogin() {
@@ -180,13 +186,14 @@ public class JsInterface {
      */
     @JavascriptInterface
     public void setMyPingtiao(String type) {
+        MobclickAgent.onEvent(activity, "webview_chakanjietiao", "借条分享页\t点击“查看借条”");
         Bundle bundle = new Bundle();
         bundle.putInt(MyPingtiaoActivity.TAG, MyPingtiaoActivity.DIAN_ZI);
         int juese = MyPingtiaoActivity.JIEKUANREN;
-        if("0".equals(type)){
-             juese = MyPingtiaoActivity.JIEKUANREN;
-        }else if("1".equals(type)){
-             juese = MyPingtiaoActivity.CHUJIEREN;
+        if ("0".equals(type)) {
+            juese = MyPingtiaoActivity.JIEKUANREN;
+        } else if ("1".equals(type)) {
+            juese = MyPingtiaoActivity.CHUJIEREN;
         }
         bundle.putInt(MyPingtiaoActivity.FINISH_CREATE, MyPingtiaoActivity.BACK_FINISH_CREATE);
         bundle.putInt(MyPingtiaoActivity.JUESE, juese);
@@ -228,15 +235,15 @@ public class JsInterface {
     private final static String SECRET_KEY = "6eb14834-749a-4c53-96a0-c3af53ae18c1";
 
     @JavascriptInterface
-    public void faceAuth(String id, String urlNotify,String tiaozhuanUrl) {
+    public void faceAuth(String id, String urlNotify, String tiaozhuanUrl) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 AuthBuilder mAuthBuilder = new AuthBuilder(id, AUTH_KEY, SECRET_KEY, urlNotify, new OnResultCallListener() {
                     @Override
                     public void onResultCall(String s, JSONObject object) {
-                        YhyResponse yhyResponse = ArmsUtils.obtainAppComponentFromContext(activity).gson().fromJson(s,YhyResponse.class);
-                        if("T".equals(yhyResponse.getResult_auth())){
+                        YhyResponse yhyResponse = ArmsUtils.obtainAppComponentFromContext(activity).gson().fromJson(s, YhyResponse.class);
+                        if ("T".equals(yhyResponse.getResult_auth())) {
                             Bundle bundle = new Bundle();
                             bundle.putString(BaseWebViewActivity.WEBVIEW_TITLE, "认证成功");
                             bundle.putString(BaseWebViewActivity.WEBVIEW_URL, tiaozhuanUrl);
