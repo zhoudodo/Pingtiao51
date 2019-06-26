@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import com.jess.arms.base.BaseApplication;
+import com.jess.arms.utils.ArmsUtils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.pingtiao51.armsmodule.BuildConfig;
 import com.pingtiao51.armsmodule.R;
@@ -24,6 +25,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
 import cn.jpush.android.api.JPushInterface;
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 public class MyApplication extends BaseApplication {
 
@@ -63,6 +65,7 @@ public class MyApplication extends BaseApplication {
         initUmeng();
         initWeChat();
         initJpush();
+        initBaseUrls();
     }
 
     @Override
@@ -111,5 +114,13 @@ public class MyApplication extends BaseApplication {
     private void initJpush() {
         JPushInterface.setDebugMode(!BuildConfig.DEBUG);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
+    }
+
+    /**
+     * 配置baseUrl
+     */
+    public static final String BASE_URL2 = "BaseUrl2";
+    public static void initBaseUrls(){
+        RetrofitUrlManager.getInstance().putDomain(BASE_URL2,BuildConfig.BASE_URL2);
     }
 }

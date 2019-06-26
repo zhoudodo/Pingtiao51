@@ -27,6 +27,8 @@ import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.dialog.DialogHintNormal;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -180,11 +182,30 @@ public class ShimingrenzhengActivity extends BaseArmsActivity<ShimingrenzhengPre
             ArmsUtils.snackbarText("请填写正确的身份证号");
             return false;
         }
+
+        if(!checkAdult()){
+            showHintDialog();
+            return false;
+        }
+
+
 //        if (TextUtils.isEmpty(yzm.getText().toString())) {
 //            ArmsUtils.snackbarText("请输入验证码");
 //            return false;
 //        }
+
+
+
         return true;
+    }
+
+    /**
+     * 是否成年
+     * @return
+     */
+    private boolean checkAdult(){
+        Date birthDate = IdCardUtils.getBirthDate(shimingrenzheng_shenfenzhenghao_edit.getText().toString());
+        return IdCardUtils.checkAdult(birthDate);
     }
 
     private void initEdits() {

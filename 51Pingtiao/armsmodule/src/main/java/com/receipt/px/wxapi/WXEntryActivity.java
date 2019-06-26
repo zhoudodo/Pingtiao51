@@ -8,12 +8,16 @@ import android.support.v4.app.FragmentActivity;
 import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.R;
 import com.pingtiao51.armsmodule.mvp.model.api.Api;
+import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.WechatLoginTag;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHandler {
@@ -52,6 +56,12 @@ public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHand
                         case ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX:
                             //微信分享成功
                             ArmsUtils.snackbarText("分享成功");
+
+                            break;
+                        case ConstantsAPI.COMMAND_SENDAUTH:
+                            WechatLoginTag event = new WechatLoginTag(((SendAuth.Resp) baseResp).code);
+                            EventBus.getDefault().post(event);
+                            ArmsUtils.snackbarText("微信登录成功");
                             break;
                         default:
                             break;
@@ -64,6 +74,10 @@ public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHand
                         //微信分享成功
                         ArmsUtils.snackbarText("分享取消");
                         break;
+
+                    case ConstantsAPI.COMMAND_SENDAUTH:
+                        ArmsUtils.snackbarText("微信登录取消");
+                        break;
                     default:
                         break;
                 }
@@ -75,6 +89,9 @@ public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHand
                         //微信分享成功
                         ArmsUtils.snackbarText("分享取消");
                         break;
+                    case ConstantsAPI.COMMAND_SENDAUTH:
+                        ArmsUtils.snackbarText("微信登录取消");
+                        break;
                     default:
                         break;
                 }
@@ -85,6 +102,10 @@ public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHand
                     case ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX:
                         //微信分享成功
                         ArmsUtils.snackbarText("分享失败");
+                        finish();
+                        break;
+                    case ConstantsAPI.COMMAND_SENDAUTH:
+                        ArmsUtils.snackbarText("微信登录失败");
                         finish();
                         break;
                     default:

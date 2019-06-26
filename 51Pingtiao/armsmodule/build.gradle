@@ -80,7 +80,9 @@ android {
 //            buildConfigField "String", "BASE_H5_URL", "\"http://pt.51pingtiao.com/#/\""
 //            buildConfigField "String", "BASE_H5_URL", "\"http://app.51pingtiao.com/#/\""
             buildConfigField "String", "BASE_URL", "\"http://192.168.180.155:8001/\""
+            buildConfigField "String", "BASE_URL2", "\"http://192.168.180.155:8100/\""
             buildConfigField "String", "BASE_H5_URL", "\"http://app.px.eryiyi.com/#/\""
+
 //            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
             ndk {
                 abiFilters 'armeabi', 'armeabi-v7a'
@@ -100,6 +102,7 @@ android {
 //            buildConfigField "String", "TRACK_BASE_URL", "\"https://data.qulicai8.com/\""
 //            buildConfigField "String", "BASE_H5_URL", "\"http://pt.51pingtiao.com/#/\""
             buildConfigField "String", "BASE_URL", "\"http://api.51pingtiao.com/\""
+            buildConfigField "String", "BASE_URL2", "\"http://api.51pingtiao.com/\""
             buildConfigField "String", "BASE_H5_URL", "\"http://app.51pingtiao.com/#/\""
 //            buildConfigField "String", "MOXIE_API_KEY", "\"462efea018e746179eb81789e22d694d\""
 //            buildConfigField "String", "MOXIE_API_KEY", "\"9dab09bbd44f4730a82b9a7f1543519f\""
@@ -389,6 +392,9 @@ dependencies {
     //有盾aar集成
     api(name: 'UDSDKV4.0.LL190509.20190509', ext: 'aar')
     implementation project(':picture_library')
+
+    //android 9 pie 指纹识别 RxKotlin封装库  github:https://github.com/pwittchen/RxBiometric#usage
+//    implementation 'com.github.pwittchen:rxbiometric:0.1.0'
 }
 
 walle {

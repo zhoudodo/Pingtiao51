@@ -130,9 +130,9 @@ public final class GlobalConfiguration implements ConfigModule {
                     okhttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
                     //添加网络接口监听
                     okhttpBuilder.addInterceptor(new HttpLoggingInterceptor(new HttpLoggerInterceptor()).setLevel(HttpLoggingInterceptor.Level.BODY));
-                okhttpBuilder.addInterceptor(chain -> {
+                    okhttpBuilder.addInterceptor(chain -> {
                         Request original = chain.request();
-                        String token = TextUtils.isEmpty(SavePreference.getStr(Utils.getApp(),PingtiaoConst.KEY_TOKEN))? "":SavePreference.getStr(Utils.getApp(),PingtiaoConst.KEY_TOKEN);
+                        String token = TextUtils.isEmpty(SavePreference.getStr(Utils.getApp(), PingtiaoConst.KEY_TOKEN)) ? "" : SavePreference.getStr(Utils.getApp(), PingtiaoConst.KEY_TOKEN);
                         Request request = original.newBuilder()
                                 .header("token", token)
                                 .method(original.method(), original.body())
@@ -144,7 +144,7 @@ public final class GlobalConfiguration implements ConfigModule {
                     //使用一行代码监听 Retrofit／Okhttp 上传下载进度监听, 以及 Glide 加载进度监听, 详细使用方法请查看 https://github.com/JessYanCoding/ProgressManager
                     ProgressManager.getInstance().with(okhttpBuilder);
                     //让 Retrofit 同时支持多个 BaseUrl 以及动态改变 BaseUrl, 详细使用方法请查看 https://github.com/JessYanCoding/RetrofitUrlManager
-//                    RetrofitUrlManager.getInstance().with(okhttpBuilder);
+                    RetrofitUrlManager.getInstance().with(okhttpBuilder);
 
                 })
                 .rxCacheConfiguration((context1, rxCacheBuilder) -> {//这里可以自己自定义配置 RxCache 的参数
@@ -173,8 +173,7 @@ public final class GlobalConfiguration implements ConfigModule {
     public void injectFragmentLifecycle(Context context, List<FragmentManager.FragmentLifecycleCallbacks> lifecycles) {
         //FragmentLifecycleCallbacks 中的所有方法都会在 Fragment (包括三方库) 的对应生命周期中被调用, 所以在对应的方法中可以扩展一些自己需要的逻辑
         //可以根据不同的逻辑添加多个实现类
-        lifecycles.add(new FragmentLifecycleCallbacksImpl()
-        {
+        lifecycles.add(new FragmentLifecycleCallbacksImpl() {
 
         });
     }

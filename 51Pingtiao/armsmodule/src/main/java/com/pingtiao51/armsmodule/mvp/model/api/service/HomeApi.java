@@ -1,8 +1,11 @@
 package com.pingtiao51.armsmodule.mvp.model.api.service;
 
+import com.pingtiao51.armsmodule.app.MyApplication;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.AllMessageStatisticsRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CheckUpdateRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.HomeBannerRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.NewsDetailRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.NewsInfoRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.PingTiaoSeachRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ResetPswRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ShouHuanKuanRequest;
@@ -11,6 +14,8 @@ import com.pingtiao51.armsmodule.mvp.model.entity.response.CheckUpdateResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.HomeBannerResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.HomeMessageScrollResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.HomePageComResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.NewsDetailInfoResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.NewsInfoResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.PingTiaoSeachResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.ShouHuanKuanResponse;
 
@@ -19,8 +24,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface HomeApi {
 
@@ -86,6 +93,26 @@ public interface HomeApi {
      */
     @POST("pingtiao/common/appVersion")
     Observable<BaseJson<CheckUpdateResponse>> checkUpdate(@Body CheckUpdateRequest request);
+
+    /**
+     * 获取banner或者是咨询列表
+     *
+     * @param
+     * @return
+     */
+    @Headers({"Domain-Name: " + MyApplication.BASE_URL2})
+    @POST("gateway/article/mobile/list")
+    Observable<BaseJson<NewsInfoResponse>> getNewsInfo(@Body NewsInfoRequest request);
+
+    /**
+     * 获取banner或者是咨询列表
+     *
+     * @param
+     * @return
+     */
+    @Headers({"Domain-Name: " + MyApplication.BASE_URL2})
+    @POST("gateway/article/mobile/detail")
+    Observable<BaseJson<NewsDetailInfoResponse>> getNewsDetail(@Body NewsDetailRequest request);
 
 
 }

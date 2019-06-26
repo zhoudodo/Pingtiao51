@@ -38,7 +38,6 @@ import com.pingtiao51.armsmodule.mvp.ui.custom.view.CycleDatePickerDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.JiekuanyongtuDialog;
 import com.pingtiao51.armsmodule.mvp.ui.custom.view.NianhualilvDialog;
 import com.pingtiao51.armsmodule.mvp.ui.helper.PingtiaoConst;
-import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
 import com.pingtiao51.armsmodule.mvp.ui.helper.sp.SavePreference;
 import com.umeng.analytics.MobclickAgent;
 import com.zls.baselib.custom.view.dialog.DialogChooseNormal;

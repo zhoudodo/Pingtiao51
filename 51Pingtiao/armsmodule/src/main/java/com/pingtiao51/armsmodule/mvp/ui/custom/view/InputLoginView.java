@@ -32,6 +32,14 @@ import butterknife.Unbinder;
 
 public class InputLoginView extends FrameLayout {
 
+    public interface InputLoginViewInterface {
+        public void sendCode(String phoneNumber, String type);
+
+        public void loginCode(boolean b, String psw, long phoneNum);
+
+        public void updatePsw(long phoneNum, String authCode, String psw);
+    }
+
     @BindViews({R.id.rl_login_et_userid, R.id.rl_login_et_password
             , R.id.login_et_auth, R.id.rl_login_et_password_new})
     RelativeLayout[] rlRootView;
@@ -47,11 +55,12 @@ public class InputLoginView extends FrameLayout {
     TextView mGetYzm;
     @BindViews({R.id.login_yanjing, R.id.login_yanjing_news})
     CheckBox[] checkBoxes;
-    LoginPresenter mLoginPresenter;
 
-    public void setmLoginPresenter(LoginPresenter L) {
-        this.mLoginPresenter = L;
+    InputLoginViewInterface mViewInterface;
+    public void registerInterface(InputLoginViewInterface viewInterface){
+         mViewInterface = viewInterface;
     }
+
 
     private int viewType = 0; //子视图type类型
 
@@ -318,7 +327,9 @@ public class InputLoginView extends FrameLayout {
                 break;
         }
         //获取验证码
-        mLoginPresenter.sendCode(phoneNumber, type);
+        if(mViewInterface != null) {
+            mViewInterface.sendCode(phoneNumber, type);
+        }
     }
 
 
@@ -326,7 +337,9 @@ public class InputLoginView extends FrameLayout {
     public void loginPhone() {
         String phoneNum = editViews[0].getText().toString().trim();
         String psw = editViews[1].getText().toString().trim();
-        mLoginPresenter.loginCode(false, psw, Long.valueOf(phoneNum));
+        if(mViewInterface != null) {
+            mViewInterface.loginCode(false, psw, Long.valueOf(phoneNum));
+        }
     }
 
 
@@ -334,7 +347,9 @@ public class InputLoginView extends FrameLayout {
     private void loginAuthCode() {
         String mAuthcode = editViews[2].getText().toString().trim();
         String phoneNum = editViews[0].getText().toString().trim();
-        mLoginPresenter.loginCode(true, mAuthcode, Long.valueOf(phoneNum));
+        if(mViewInterface != null) {
+            mViewInterface.loginCode(true, mAuthcode, Long.valueOf(phoneNum));
+        }
     }
 
     //自动登录方法抽取
@@ -443,8 +458,9 @@ public class InputLoginView extends FrameLayout {
         String phoneNum = editViews[0].getText().toString().trim();
         String authCode = editViews[2].getText().toString().trim();
         String psw = editViews[3].getText().toString().trim();
-
-        mLoginPresenter.updatePsw(Long.valueOf(phoneNum), authCode, psw);
+        if(mViewInterface != null) {
+            mViewInterface.updatePsw(Long.valueOf(phoneNum), authCode, psw);
+        }
 
     }
 

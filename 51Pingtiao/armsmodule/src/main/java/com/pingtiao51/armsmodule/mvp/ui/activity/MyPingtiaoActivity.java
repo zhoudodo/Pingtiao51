@@ -581,7 +581,6 @@ public class MyPingtiaoActivity extends BaseArmsActivity<MyPingtiaoPresenter> im
     }
 
     private void refreshFragment(){
-
        if(mFragment.get(currentTabIndex) instanceof SearchPingtiaoListInterface){
            ((SearchPingtiaoListInterface)mFragment.get(currentTabIndex)).getPingtiaoList(
                    mEnoteType+"",

@@ -1,7 +1,9 @@
 package com.pingtiao51.armsmodule.mvp.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -246,4 +248,6 @@ public class AddBankCardActivity extends BaseArmsActivity<AddBankCardPresenter> 
     public void getAuthCode() {
         mPresenter.sendCode(addbank_shoujihao_edit.getText().toString(),InputLoginView.CodeType.IDENTITY_AUTH.getType());
     }
+
+
 }

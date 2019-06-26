@@ -3,6 +3,7 @@ package com.pingtiao51.armsmodule.mvp.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -359,7 +360,9 @@ public class DianziShoutiaoFragment extends BaseArmFragment<DianziShoutiaoPresen
 
     @Override
     public void getPingtiaoList(String enoteType, int page, String queryName, String queryScopeType, int size, String sortType, String userRoleType, String loanPeriodType, String remainderRepayDaysType) {
+        isLoadMore = false;
         if(mPresenter != null) {
+            mPingtiaoShouAdapter.setEnableLoadMore(false);
             mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
         }
         }

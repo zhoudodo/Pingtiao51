@@ -1,19 +1,10 @@
 package com.pingtiao51.armsmodule.mvp.ui.custom.view;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jess.arms.utils.ArmsUtils;
 import com.pingtiao51.armsmodule.R;
-import com.pingtiao51.armsmodule.mvp.model.api.Api;
-import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
-import com.pingtiao51.armsmodule.mvp.ui.helper.share.ShareHelper;
 import com.zls.baselib.custom.view.dialog.FrameDialog;
 
 /**

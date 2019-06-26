@@ -10,7 +10,7 @@ import com.pingtiao51.armsmodule.mvp.model.entity.eventbus.H5PaySuccessTag;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CreateReportRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.CreateDingdanResponse;
-import com.pingtiao51.armsmodule.mvp.ui.helper.img.WechatUtils;
+import com.pingtiao51.armsmodule.mvp.ui.helper.wechat.WechatUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

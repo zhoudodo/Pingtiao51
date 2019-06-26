@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/include_title">
+    </include>
+
+    <com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView
+        android:id="@+id/bind_phone_input_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+    </com.pingtiao51.armsmodule.mvp.ui.custom.view.InputLoginView>
+    <TextView
+        android:id="@+id/bind_phone_ok"
+        android:layout_width="311dp"
+        android:layout_height="41dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="31dp"
+        android:background="@drawable/btn_login_normal"
+        android:gravity="center"
+        android:text="完成"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

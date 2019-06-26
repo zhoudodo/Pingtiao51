@@ -4,6 +4,7 @@ import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.LoginResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.WxLoginResponse;
 
 import io.reactivex.Observable;
 
@@ -27,6 +28,7 @@ public interface LoginContract {
             void loginSuc(LoginResponse loginResponse,String phoneNum);
             void changePswSuc(Object object);
             void registerSuc(LoginResponse loginResponse);
+            void wxLoginSuc(WxLoginResponse response);
 
     }
 
@@ -51,5 +53,10 @@ public interface LoginContract {
          * 重置密码
          */
         Observable<BaseJson<Object>> resetLoginPassword(long phoneNum,String code,String psw);
+
+        /**
+         * 微信登录
+         */
+        Observable<BaseJson<WxLoginResponse>> wxLogin(String code);
     }
 }

@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
@@ -152,6 +153,20 @@ public class NewPingtiaoPresenter extends BasePresenter<NewPingtiaoContract.Mode
                             }
                     }
                 });
+//        .subscribe(new Consumer<BaseJson<List<HomeMessageScrollResponse>>>() {
+//            @Override
+//            public void accept(BaseJson<List<HomeMessageScrollResponse>> listBaseJson) throws Exception {
+//                if(listBaseJson.isSuccess()){
+//                    mRootView.sucMessage(listBaseJson.getData());
+//                }
+//            }
+//        }, new Consumer<Throwable>() {
+//            @Override
+//            public void accept(Throwable throwable) throws Exception {
+//                Log.d("dodo1","throwable = " + throwable.getMessage());
+//            }
+//        })
+//        .isDisposed();
     }
 
     /**

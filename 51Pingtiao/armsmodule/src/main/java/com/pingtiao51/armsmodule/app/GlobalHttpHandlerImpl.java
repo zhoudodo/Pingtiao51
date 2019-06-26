@@ -1,10 +1,8 @@
 package com.pingtiao51.armsmodule.app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.alibaba.sdk.android.oss.common.utils.IOUtils;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.google.gson.Gson;
 import com.jess.arms.http.GlobalHttpHandler;
@@ -20,24 +18,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okio.Buffer;
-import okio.BufferedSource;
 
 /**
  * ================================================

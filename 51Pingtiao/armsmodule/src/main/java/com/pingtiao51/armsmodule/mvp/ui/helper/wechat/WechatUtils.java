@@ -1,10 +1,13 @@
-package com.pingtiao51.armsmodule.mvp.ui.helper.img;
+package com.pingtiao51.armsmodule.mvp.ui.helper.wechat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.authreal.util.ToastUtil;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.jess.arms.utils.ArmsUtils;
+import com.pingtiao51.armsmodule.mvp.ui.helper.img.ImageUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -107,5 +110,26 @@ public class WechatUtils {
         req.sign = sign;//签名
 
         api.sendReq(req);//将订单信息对象发送给微信服务器，即发送支付请求
+    }
+
+    /**
+     * 微信登录
+     * @param context
+     * @param appId
+     */
+    public static void loginWx(
+            Context context,
+            String appId
+    ) {
+        IWXAPI  api = WXAPIFactory.createWXAPI(context, appId, false);
+        if (api.isWXAppInstalled()) {
+            // send auth request
+            final SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_pingxin";
+            api.sendReq(req);
+        } else {
+            ArmsUtils.snackbarText("请先安装微信客户端");
+        }
     }
 }

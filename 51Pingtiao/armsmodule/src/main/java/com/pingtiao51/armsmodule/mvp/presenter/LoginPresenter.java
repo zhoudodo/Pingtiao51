@@ -19,6 +19,7 @@ import com.jess.arms.utils.RxLifecycleUtils;
 import com.pingtiao51.armsmodule.mvp.contract.LoginContract;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.LoginResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.WxLoginResponse;
 
 
 /**
@@ -105,6 +106,24 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                         public void onNext(BaseJson<Object> responseBaseJson) {
                             if(responseBaseJson.isSuccess()){
                                 mRootView.changePswSuc(responseBaseJson.getData());
+                            }else{
+                                ArmsUtils.snackbarText(responseBaseJson.getMessage());
+                            }
+                        }
+                    });
+    }
+
+
+    public void wxLogin(String code){
+            mModel.wxLogin(code)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                    .subscribe(new ErrorHandleSubscriber<BaseJson<WxLoginResponse>>(mErrorHandler) {
+                        @Override
+                        public void onNext(BaseJson<WxLoginResponse> responseBaseJson) {
+                            if(responseBaseJson.isSuccess()){
+                                mRootView.wxLoginSuc(responseBaseJson.getData());
                             }else{
                                 ArmsUtils.snackbarText(responseBaseJson.getMessage());
                             }

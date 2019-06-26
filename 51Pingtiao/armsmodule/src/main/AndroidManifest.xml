@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -42,24 +41,24 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     //通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.BATTERY_STATS"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:name=".app.MyApplication"
@@ -103,6 +102,9 @@
         <activity android:name=".mvp.ui.activity.SettingActivity" />
         <activity
             android:name=".mvp.ui.activity.LoginActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".mvp.ui.activity.BindPhoneNumActivity"
             android:launchMode="singleTop" />
         <activity
             android:name=".mvp.ui.activity.MyPingtiaoActivity"
@@ -195,8 +197,9 @@
         </receiver>
 
         <activity android:name=".mvp.ui.activity.HuankuanFangshiActivity" />
-        <activity android:name=".mvp.ui.activity.MyBankCardsActivity"></activity>
-        <activity android:name=".mvp.ui.activity.WebViewZXActivity"></activity>
+        <activity android:name=".mvp.ui.activity.MyBankCardsActivity" />
+        <activity android:name=".mvp.ui.activity.WebViewZXActivity" />
+        <activity android:name=".mvp.ui.activity.NewsInfoDetailActivity"></activity>
     </application>
 
 </manifest>

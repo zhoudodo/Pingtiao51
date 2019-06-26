@@ -234,6 +234,12 @@ public class JsInterface {
     private final static String AUTH_KEY = "b240ecac-d1a6-424d-95cf-9f79cc75adee";
     private final static String SECRET_KEY = "6eb14834-749a-4c53-96a0-c3af53ae18c1";
 
+    /**
+     * 人脸识别
+     * @param id 商品编号
+     * @param urlNotify  回调地址
+     * @param tiaozhuanUrl 跳转地址
+     */
     @JavascriptInterface
     public void faceAuth(String id, String urlNotify, String tiaozhuanUrl) {
         activity.runOnUiThread(new Runnable() {

@@ -97,6 +97,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
     public void onResume() {
         super.onResume();
         mPage = 1;
+        Log.d("dodoP","onResume()  " + "isRefresh ="+ isRefresh + "isLordMore = "+ isLoadMore);
         reqDatas(searchName, statusReq, sortReq, jueseReq,loanPeriodType,remainderRepayDaysType);
     }
 
@@ -207,6 +208,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
 
     @Override
     public void onRefresh() {
+        Log.d("dodoP","onRefresh  " + "isRefresh ="+ isRefresh + "isLordMore = "+ isLoadMore);
         mPingtiaoZhizhiJieAdapter.setEnableLoadMore(false);
         mPage = 1;
         isRefresh = true;
@@ -218,6 +220,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
 
     @Override
     public void onLoadMoreRequested() {
+        Log.d("dodoP","onLoadMoreRequested  " + "isRefresh ="+ isRefresh + "isLordMore = "+ isLoadMore);
         refresh_layout.setEnabled(false);
         mPingtiaoZhizhiJieAdapter.setEnableLoadMore(true);
         isLoadMore = true;
@@ -232,6 +235,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
     @Override
     public void onSucPingtiaoList(PingtiaoDetailListResponse rep) {
         //数据返回
+        Log.d("dodoP","onSucPingtiaoList  " + "isRefresh ="+ isRefresh + "isLordMore = "+ isLoadMore);
         List<PingtiaoDetailResponse> list = rep.getList();
         for(PingtiaoDetailResponse response:list){
             response.itemType = PingtiaoDetailResponse.ZHIZHI_JIETIAO;
@@ -246,6 +250,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
             recyclerView.setVisibility(View.VISIBLE);
         }
         if (isRefresh) {
+            isRefresh = false;
             //刷新
             refresh_layout.setRefreshing(false);
             mDatas.clear();
@@ -253,6 +258,7 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
             mPingtiaoZhizhiJieAdapter.notifyDataSetChanged();
         } else if (isLoadMore) {
             //加载更多
+            isLoadMore = false;
             mDatas.addAll(list);
             mPingtiaoZhizhiJieAdapter.notifyDataSetChanged();
             if (list.size() >= SIZE) {
@@ -311,9 +317,15 @@ public class ZhizhiJietiaoFragment extends BaseArmFragment<ZhizhiJietiaoPresente
         );
     }
 
+
+
     @Override
     public void getPingtiaoList(String enoteType, int page, String queryName, String queryScopeType, int size, String sortType, String userRoleType, String loanPeriodType, String remainderRepayDaysType) {
+        Log.d("dodoP","getPingtiaoList  " + "isRefresh ="+ isRefresh + "isLordMore = "+ isLoadMore);
+        isLoadMore = false;
         if(mPresenter != null) {
+            Log.d("dodoP","getPingtiaoList()  is come in");
+            mPingtiaoZhizhiJieAdapter.setEnableLoadMore(false);
             mPresenter.getPingtiaoList(enoteType, page, queryName, queryScopeType, size, sortType, userRoleType, loanPeriodType, remainderRepayDaysType);
         }
     }

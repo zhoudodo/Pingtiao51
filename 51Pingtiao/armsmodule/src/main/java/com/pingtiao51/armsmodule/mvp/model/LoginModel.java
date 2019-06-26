@@ -16,8 +16,10 @@ import com.pingtiao51.armsmodule.mvp.model.entity.User;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.CodeLoginRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.ResetPswRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.SendCodeRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.WxLoginRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.LoginResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.WxLoginResponse;
 
 import javax.inject.Inject;
 
@@ -106,6 +108,20 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
                         phoneNum,
                         code
 
+                ));
+    }
+
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public Observable<BaseJson<WxLoginResponse>> wxLogin(String code) {
+        return mRepositoryManager.obtainRetrofitService(UserService.class)
+                .wxLogin(new WxLoginRequest(
+                        AppUtils.getAppVersionName(),
+                        code,
+                        PhoneUtils.getDeviceId(),
+                        null, null, "ANDRIOD",
+                        null,"ANDROID_YINGYONGBAO"
                 ));
     }
 

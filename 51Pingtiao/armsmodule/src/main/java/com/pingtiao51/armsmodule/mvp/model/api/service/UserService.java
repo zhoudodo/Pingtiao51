@@ -7,9 +7,13 @@ import com.pingtiao51.armsmodule.mvp.model.entity.request.SendCodeRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.UnBindCardRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.UserDetailInfoRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.request.UserHeaderSettingRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.WxBindPhoneRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.WxLoginRequest;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.LoginResponse;
 import com.pingtiao51.armsmodule.mvp.model.entity.response.UserDetailInfoResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.WxBindPhoneResponse;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.WxLoginResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -41,6 +45,22 @@ public interface UserService {
      */
     @POST("pingtiao/resetLoginPassword")
     Observable<BaseJson<Object>> resetLoginPassword(@Body ResetPswRequest request);
+
+   /**
+     * 微信登录
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/wxLogin")
+    Observable<BaseJson<WxLoginResponse>> wxLogin(@Body WxLoginRequest request);
+
+   /**
+     * 微信绑定手机号
+     * @param request
+     * @return
+     */
+    @POST("pingtiao/wxLoginBindingPhone")
+    Observable<BaseJson<WxBindPhoneResponse>> wxLoginBindingPhone(@Body WxBindPhoneRequest request);
 
 
 

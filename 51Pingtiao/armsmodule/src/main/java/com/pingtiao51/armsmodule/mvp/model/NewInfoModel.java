@@ -11,6 +11,12 @@ import com.jess.arms.di.scope.FragmentScope;
 import javax.inject.Inject;
 
 import com.pingtiao51.armsmodule.mvp.contract.NewInfoContract;
+import com.pingtiao51.armsmodule.mvp.model.api.service.HomeApi;
+import com.pingtiao51.armsmodule.mvp.model.entity.request.NewsInfoRequest;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.BaseJson;
+import com.pingtiao51.armsmodule.mvp.model.entity.response.NewsInfoResponse;
+
+import io.reactivex.Observable;
 
 
 /**
@@ -42,5 +48,20 @@ public class NewInfoModel extends BaseModel implements NewInfoContract.Model {
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseJson<NewsInfoResponse>> getBanner(NewsInfoRequest request) {
+        return mRepositoryManager.obtainRetrofitService(HomeApi.class).getNewsInfo(request);
+    }
+
+    @Override
+    public Observable<BaseJson<NewsInfoResponse>> refreshNews(NewsInfoRequest request) {
+        return mRepositoryManager.obtainRetrofitService(HomeApi.class).getNewsInfo(request);
+    }
+
+    @Override
+    public Observable<BaseJson<NewsInfoResponse>> loadMoreNews(NewsInfoRequest request) {
+        return mRepositoryManager.obtainRetrofitService(HomeApi.class).getNewsInfo(request);
     }
 }
